@@ -14,7 +14,7 @@ import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
 import org.eclipse.rdf4j.sail.nativerdf.NativeStore;
 
-import it.unipd.dei.ims.data.BSBMQueries;
+import it.unipd.dei.ims.data.BSBMQuery1;
 import it.unipd.dei.ims.data.MyPaths;
 import it.unipd.dei.ims.data.Queries;
 
@@ -26,7 +26,8 @@ public class PerformCountQuery {
 	public static void main(String[] args)
 			throws IOException {
 		// open already existing repository
-		String path = MyPaths.reduced_index_path;
+		new MyPaths();
+		String path = MyPaths.querying_index;
 		
 		
 		File dataDir = new File(path);

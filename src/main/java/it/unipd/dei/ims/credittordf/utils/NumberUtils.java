@@ -1,5 +1,7 @@
 package it.unipd.dei.ims.credittordf.utils;
 
+import java.util.regex.Pattern;
+
 /** Contains methods useful with strings and RDF in general
  * (the truth is I did not know where else to put these methods)
  * */
@@ -29,6 +31,14 @@ public class NumberUtils {
 	        }
 	    }
 	    return true;
+	}
+	
+	/** checks if the given string is a date, following the format
+	 * required by BSBM, i.e. YYYY-MM-DDT00:00:00*/
+	public static boolean isBSBMDate(String supposedDate) {
+		String regex = "\\d\\d\\d\\d-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d";
+		
+		return Pattern.matches(regex, supposedDate);
 	}
 
 }

@@ -37,6 +37,9 @@ public class ConnectionHandler {
 	}
 	
 	public static void closeConnection() throws SQLException {
+		if(connection == null)
+			return;
+		
 		connection.close();
 		connection = null;
 		connectionSet = false;

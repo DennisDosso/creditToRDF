@@ -9,4 +9,7 @@ public class Queries {
 			"where {?s ?p ?o}";
 	
 	public static String get_all_triples = "SELECT ?s ?p ?o WHERE { ?s ?p ?o.}";
+	
+	public static String SPARQL_SELECT_QUERY;
+	public static String SPARQL_CONSTRUCT_QUERY;
 }

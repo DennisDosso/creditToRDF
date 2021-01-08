@@ -59,8 +59,10 @@ public class TripleStoreHandler {
 	}
 	
 	public static void closeRepositoryAndConnextion() {
-		connection.close();
-		repository.shutDown();
+		if(connection!= null && connection.isOpen())
+			connection.close();
+		if(repository != null)
+			repository.shutDown();
 	}
 	
 

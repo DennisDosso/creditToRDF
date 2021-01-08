@@ -1,6 +1,6 @@
 package it.unipd.dei.ims.data;
 
-public class BSBMQueries {
+public class BSBMQuery1 {
 	
 	//initializes all the values
 	public static void init() {
@@ -24,8 +24,7 @@ public class BSBMQueries {
 			"        bsbm:productPropertyNumeric1 ?value1 .\n" + 
 			"    FILTER (?value1 > 300) .\n" + 
 			"	}\n" + 
-			"ORDER BY ?label\n" + 
-			"LIMIT 20";
+			"ORDER BY ?label\n";			;
 	
 	public static String parameter_query_1 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
 			"PREFIX bsbm-inst: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/>\n" + 
@@ -62,6 +61,23 @@ public class BSBMQueries {
 			"?product bsbm:productPropertyNumeric1 ?value1 . \n" + 
 			"	FILTER (?value1 > %s) \n" + 
 			"	}\n" + 
+			"ORDER BY ?label\n" + 
+			"LIMIT 20";
+	
+	public static String select_query_1_with_named_graphs = "PREFIX bsbm-inst: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/>\n" + 
+			"PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
+			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
+			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
+			"\n" + 
+			"SELECT DISTINCT ?product ?label\n" + 
+			"WHERE { GRAPH <http://named/graph/query1> {\n" + 
+			" ?product rdfs:label ?label .\n" + 
+			" ?product a %s .\n" + 
+			" ?product bsbm:productFeature %s . \n" + 
+			" ?product bsbm:productFeature %s . \n" + 
+			"?product bsbm:productPropertyNumeric1 ?value1 . \n" + 
+			"	FILTER (?value1 > %s) \n" + 
+			"	}}\n" + 
 			"ORDER BY ?label\n" + 
 			"LIMIT 20";
 ;	

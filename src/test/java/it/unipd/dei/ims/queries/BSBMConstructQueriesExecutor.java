@@ -17,7 +17,7 @@ import org.eclipse.rdf4j.repository.RepositoryConnection;
 
 import it.unipd.dei.ims.credittordf.utils.ConnectionHandler;
 import it.unipd.dei.ims.credittordf.utils.TripleStoreHandler;
-import it.unipd.dei.ims.data.BSBMQueries;
+import it.unipd.dei.ims.data.BSBMQuery1;
 import it.unipd.dei.ims.data.MyPaths;
 import it.unipd.dei.ims.data.RDB;
 
@@ -59,7 +59,7 @@ public class BSBMConstructQueriesExecutor {
 	 * */
 	public void executeQuery1() throws SQLException {
 		// get the query
-		String query = BSBMQueries.parameter_query_1;
+		String query = BSBMQuery1.parameter_query_1;
 
 		//prepare the query inserting the desired values
 		query = String.format(query, "bsbm-inst:ProductType3", "bsbm-inst:ProductFeature44", "bsbm-inst:ProductFeature54",
@@ -98,7 +98,7 @@ public class BSBMConstructQueriesExecutor {
 	 * */
 	public void performQuery1withParameters(String param1, String param2, String param3, String param4, int times) throws SQLException {
 		// get the query
-		String query = BSBMQueries.parameter_query_1;
+		String query = BSBMQuery1.parameter_query_1;
 
 		//prepare the query inserting the desired values
 		query = String.format(query, param1, param2, param3,
@@ -140,7 +140,7 @@ public class BSBMConstructQueriesExecutor {
 	 * */
 	public void performQuery1ManyTimes(String values_path, String times_path) {
 		// SPARQL construct query
-		String query = BSBMQueries.parameter_query_1;
+		String query = BSBMQuery1.parameter_query_1;
 
 		// open the support files
 		Path valuesPath = Paths.get(values_path);
@@ -162,7 +162,7 @@ public class BSBMConstructQueriesExecutor {
 				String param1 = values[0];
 				String param2 = values[1];
 				String param3 = values[2];
-				String param4 = BSBMQueries.parameter_query_1; // this value is fixed for all queries
+				String param4 = BSBMQuery1.parameter_query_1; // this value is fixed for all queries
 
 				// execute the query many times
 				try {

@@ -11,7 +11,7 @@ import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
 import org.eclipse.rdf4j.sail.nativerdf.NativeStore;
 
-import it.unipd.dei.ims.data.BSBMQueries;
+import it.unipd.dei.ims.data.BSBMQuery1;
 import it.unipd.dei.ims.data.MyPaths;
 
 /** Performs a CONSTRUCT query on an RDF triplestore saved on disk */
@@ -33,7 +33,7 @@ public class PerformConstructQuery {
 
 			// a simple query
 //			String queryString = BSBMQueries.construct_test;
-			String queryString = BSBMQueries.construct_query_1;
+			String queryString = BSBMQuery1.construct_query_1;
 
 
 			// execute the query

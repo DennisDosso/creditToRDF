@@ -2,6 +2,7 @@ package it.unipd.dei.ims.database;
 
 import static org.eclipse.rdf4j.model.util.Values.iri;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,11 +10,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 import org.eclipse.rdf4j.model.util.ModelBuilder;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
 
@@ -38,7 +42,7 @@ public class ExtractTriplesFromRDBAndBuildTripleStore {
 	/** Query to select triples in the relational database that have credit bigger than 0 
 	 * */
 	private String SELECT_CREDITED_TRIPLES = "select t.subject , t.predicate , t.\"object\" \n" + 
-			"from triplestore t \n" + 
+			"from %s.triplestore t \n" + 
 			"where credit > ?";
 	
 	
@@ -62,6 +66,12 @@ public class ExtractTriplesFromRDBAndBuildTripleStore {
 			// open connection to triplestore
 			pMap = PropertiesUtils.getSinglePropertyFileMap("properties/paths.properties");
 			String reduced_index_path = pMap.get("reduced.index.path");
+			// delete files in the directory first
+			try {
+				FileUtils.cleanDirectory(new File(reduced_index_path));
+			} catch (IOException e) {
+				//we do nothing, not a big deal if the directory does not exists, it will be created then
+			}
 			this.repo = TripleStoreHandler.openRepositoryAndConnection(reduced_index_path);
 			
 		} catch (IOException e) {
@@ -75,13 +85,11 @@ public class ExtractTriplesFromRDBAndBuildTripleStore {
 	
 	public void close() {
 		TripleStoreHandler.closeRepositoryAndConnextion();
-
 		try {
 			ConnectionHandler.closeConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	/**Given the connection to the relational database of the object invoking this method,
@@ -95,7 +103,8 @@ public class ExtractTriplesFromRDBAndBuildTripleStore {
 	public void buildTripleStoreFromCreditedTriples(double threshold) {
 		try {
 			// asks to the relational db all the triples with a certain quantity of credit
-			PreparedStatement stmt = this.connection.prepareStatement(this.SELECT_CREDITED_TRIPLES);
+			String qu = String.format(this.SELECT_CREDITED_TRIPLES, RDB.schema);
+			PreparedStatement stmt = this.connection.prepareStatement(qu);
 			stmt.setDouble(1, threshold);
 			ResultSet r = stmt.executeQuery();
 			
@@ -103,6 +112,7 @@ public class ExtractTriplesFromRDBAndBuildTripleStore {
 			ModelBuilder builder = new ModelBuilder().setNamespace("q1", "http://bsbm.query1.it/");
 			Model model;
 			int counter = 0;
+			ValueFactory vf = SimpleValueFactory.getInstance();
 			
 			while (r.next()) {
 				// take all the triples
@@ -116,11 +126,14 @@ public class ExtractTriplesFromRDBAndBuildTripleStore {
 					builder.subject(sub).add(pred, o);
 				} else { // in case it is a literal
 					if(NumberUtils.isInteger(obj)) {
-						//in case the value is an integer literal
+						//in this case, it is an integer
 						builder.subject(sub).add(pred, Integer.parseInt(obj));
+					} else if(NumberUtils.isBSBMDate(obj)) {
+						// in this case, it is a data
+						builder.subject(sub).add(pred, vf.createLiteral(obj, XSD.DATETIME));
 					} else {
-						// in case it is a standard string
-						builder.subject(sub).add(pred, obj);						
+						// in case it is a standard string, add it with an english tag
+						builder.subject(sub).add(pred, vf.createLiteral(obj, "en"));	
 					} 
 				}
 				
@@ -141,6 +154,8 @@ public class ExtractTriplesFromRDBAndBuildTripleStore {
 			
 			this.repo.commit();
 			
+			r.close();
+			
 		} catch (SQLException e) {
 			System.out.println("Error producing the select query");
 			e.printStackTrace();
@@ -155,6 +170,7 @@ public class ExtractTriplesFromRDBAndBuildTripleStore {
 		execution.buildTripleStoreFromCreditedTriples(0);
 		
 		execution.close();
+		System.out.println("done");
 	}
 
 }

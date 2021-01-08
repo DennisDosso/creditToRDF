@@ -13,6 +13,8 @@ public class RDB {
 	public static String user = "postgres";
 	public static String database = "bsbm100k";
 	public static String password = "Ulisse92";
+	/** schema of the database that we are using (so you can switch between different triple stores and dimensions of the table). Default at public*/
+	public static String schema = "public";
 	
 	public static String produceJdbcString() {
 		return "jdbc:postgresql://" + RDB.host + ":" + RDB.port + "/" + RDB.database + "?user=" + RDB.user + "&password=" + RDB.password; 
@@ -27,5 +29,6 @@ public class RDB {
 		user= map.get("user");
 		database = map.get("database");
 		password = map.get("password");
+		schema = map.get("schema");
 	}
 }

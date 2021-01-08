@@ -33,7 +33,6 @@ public class FromTripleStoreToRDB {
 
 	public static void main(String[] args) throws SQLException {
 		//open the triplestore
-		// open already existing repository
 		String path = MyPaths.index_path;
 
 
@@ -42,8 +41,8 @@ public class FromTripleStoreToRDB {
 		db.init();
 
 		// open connection to relational database
-		String jdbcString = "jdbc:postgresql://" + RDB.host + ":" + RDB.port + "/" + RDB.database + "?user=" + RDB.user + "&password=" + RDB.password; 
-		Connection cc = ConnectionHandler.createConnection(jdbcString);
+		RDB.setup(); // read the values from property file 
+		Connection cc = ConnectionHandler.createConnection(RDB.produceJdbcString());
 		cc.setAutoCommit(false);
 
 
@@ -56,7 +55,8 @@ public class FromTripleStoreToRDB {
 			TupleQuery query = conn.prepareTupleQuery(queryString);
 			
 			//prepare the query to insert a triple
-			PreparedStatement stmt = cc.prepareStatement(RDBQueries.insert_triple);
+			String q = String.format(RDBQueries.insert_triple, RDB.schema);
+			PreparedStatement stmt = cc.prepareStatement(q);
 			
 			int counter = 0;
 			System.out.print("Number of tuples inserted so far: ");
@@ -83,7 +83,6 @@ public class FromTripleStoreToRDB {
 					stmt.addBatch();
 					if(counter % 1000 == 0) {
 						int[] res = stmt.executeBatch();
-//						System.out.println("inserted " + res.length + " tuples");
 						cc.commit();
 						if(counter % 10000 == 0) {
 							System.out.print(counter + ", ");
