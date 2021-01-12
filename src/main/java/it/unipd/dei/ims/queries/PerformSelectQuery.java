@@ -21,7 +21,7 @@ public class PerformSelectQuery {
 		// open already existing repository
 		new MyPaths();
 		String path = MyPaths.querying_index;
-		//		path = MyPaths.reduced_index_path;
+//		path = MyPaths.reduced_index_path;
 
 
 		File dataDir = new File(path);
@@ -58,8 +58,8 @@ public class PerformSelectQuery {
 			//					"LIMIT 1000";
 
 			// COUNT query
-			queryString = "SELECT (COUNT(*) as ?triple_count) WHERE { GRAPH <http://named/graph/query8> {?s ?p ?o} } LIMIT 1000";
-			//			queryString = "SELECT (COUNT(*) as ?triple_count) WHERE {?s ?p ?o}  LIMIT 1000";
+//						queryString = "SELECT (COUNT(*) as ?triple_count) WHERE { GRAPH <http://named/graph/query10> {?s ?p ?o} } LIMIT 1000";
+			queryString = "SELECT (COUNT(*) as ?triple_count) WHERE {?s ?p ?o}  LIMIT 1000";
 
 			//			queryString = "SELECT * WHERE "
 			////					+ "{ GRAPH <http://example/bookStore> "
@@ -68,49 +68,49 @@ public class PerformSelectQuery {
 			//					;
 
 			//query number 8
-//			queryString = "PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
-//					"PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" + 
-//					"PREFIX rev: <http://purl.org/stuff/rev#>\n" + 
-//					"PREFIX foaf: <http://xmlns.com/foaf/0.1/>"
-//					+ "SELECT ?text \n" + 
-//					"WHERE { \n" + 
-//					"	?review bsbm:reviewFor ?ProductXYZ .\n" + 
-//					"	?review dc:title ?title .\n" + 
-//					"	?review rev:text ?text .\n" + 
-//					"	FILTER langMatches( lang(?text), \"EN\" ) \n" + 
-//					"	?review bsbm:reviewDate ?reviewDate .\n" + 
-//					"	?review rev:reviewer ?reviewer .\n" + 
-//					"	?reviewer foaf:name ?reviewerName .\n" + 
-//					"	OPTIONAL { ?review bsbm:rating1 ?rating1 . }\n" + 
-//					"	OPTIONAL { ?review bsbm:rating2 ?rating2 . }\n" + 
-//					"	OPTIONAL { ?review bsbm:rating3 ?rating3 . }\n" + 
-//					"	OPTIONAL { ?review bsbm:rating4 ?rating4 . }\n" + 
-//					"}\n" + 
-//					"ORDER BY DESC(?reviewDate)\n" + 
-//					"LIMIT 20"
-//					;
-//
-//			queryString = "PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
-//					"PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" + 
-//					"PREFIX rev: <http://purl.org/stuff/rev#>\n" + 
-//					"PREFIX foaf: <http://xmlns.com/foaf/0.1/>"
-//					+ "SELECT ?title ?text ?reviewDate ?reviewer ?reviewerName ?rating1 ?rating2 ?rating3 ?rating4 \n" + 
-//					"WHERE { GRAPH <http://named/graph/query8> {\n" + 
-//					"	?review bsbm:reviewFor ?ProductXYZ .\n" + 
-//					"	?review dc:title ?title .\n" + 
-//					"	?review rev:text ?text .\n" + 
-//					"	FILTER langMatches( lang(?text), \"EN\" ) \n" + 
-//					"	?review bsbm:reviewDate ?reviewDate .\n" + 
-//					"	?review rev:reviewer ?reviewer .\n" + 
-//					"	?reviewer foaf:name ?reviewerName .\n" + 
-//					"	OPTIONAL { ?review bsbm:rating1 ?rating1 . }\n" + 
-//					"	OPTIONAL { ?review bsbm:rating2 ?rating2 . }\n" + 
-//					"	OPTIONAL { ?review bsbm:rating3 ?rating3 . }\n" + 
-//					"	OPTIONAL { ?review bsbm:rating4 ?rating4 . }\n" + 
-//					"}}\n" + 
-//					"ORDER BY DESC(?reviewDate)\n" + 
-//					"LIMIT 20"
-//					;
+			//			queryString = "PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
+			//					"PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" + 
+			//					"PREFIX rev: <http://purl.org/stuff/rev#>\n" + 
+			//					"PREFIX foaf: <http://xmlns.com/foaf/0.1/>"
+			//					+ "SELECT ?text \n" + 
+			//					"WHERE { \n" + 
+			//					"	?review bsbm:reviewFor ?ProductXYZ .\n" + 
+			//					"	?review dc:title ?title .\n" + 
+			//					"	?review rev:text ?text .\n" + 
+			//					"	FILTER langMatches( lang(?text), \"EN\" ) \n" + 
+			//					"	?review bsbm:reviewDate ?reviewDate .\n" + 
+			//					"	?review rev:reviewer ?reviewer .\n" + 
+			//					"	?reviewer foaf:name ?reviewerName .\n" + 
+			//					"	OPTIONAL { ?review bsbm:rating1 ?rating1 . }\n" + 
+			//					"	OPTIONAL { ?review bsbm:rating2 ?rating2 . }\n" + 
+			//					"	OPTIONAL { ?review bsbm:rating3 ?rating3 . }\n" + 
+			//					"	OPTIONAL { ?review bsbm:rating4 ?rating4 . }\n" + 
+			//					"}\n" + 
+			//					"ORDER BY DESC(?reviewDate)\n" + 
+			//					"LIMIT 20"
+			//					;
+			//
+			//			queryString = "PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
+			//					"PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" + 
+			//					"PREFIX rev: <http://purl.org/stuff/rev#>\n" + 
+			//					"PREFIX foaf: <http://xmlns.com/foaf/0.1/>"
+			//					+ "SELECT ?title ?text ?reviewDate ?reviewer ?reviewerName ?rating1 ?rating2 ?rating3 ?rating4 \n" + 
+			//					"WHERE { GRAPH <http://named/graph/query8> {\n" + 
+			//					"	?review bsbm:reviewFor ?ProductXYZ .\n" + 
+			//					"	?review dc:title ?title .\n" + 
+			//					"	?review rev:text ?text .\n" + 
+			//					"	FILTER langMatches( lang(?text), \"EN\" ) \n" + 
+			//					"	?review bsbm:reviewDate ?reviewDate .\n" + 
+			//					"	?review rev:reviewer ?reviewer .\n" + 
+			//					"	?reviewer foaf:name ?reviewerName .\n" + 
+			//					"	OPTIONAL { ?review bsbm:rating1 ?rating1 . }\n" + 
+			//					"	OPTIONAL { ?review bsbm:rating2 ?rating2 . }\n" + 
+			//					"	OPTIONAL { ?review bsbm:rating3 ?rating3 . }\n" + 
+			//					"	OPTIONAL { ?review bsbm:rating4 ?rating4 . }\n" + 
+			//					"}}\n" + 
+			//					"ORDER BY DESC(?reviewDate)\n" + 
+			//					"LIMIT 20"
+			//					;
 
 
 			// execute the query

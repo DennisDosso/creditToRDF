@@ -7,6 +7,8 @@ import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
 import org.eclipse.rdf4j.sail.nativerdf.NativeStore;
 
+import it.unipd.dei.ims.data.MyValues;
+
 public class TripleStoreHandler {
 
 	/** Triple store repository */
@@ -20,7 +22,7 @@ public class TripleStoreHandler {
 	 * @param path path of the repository*/
 	public static void initRepository(String path) {
 		File dataDir = new File(path);
-		repository = new SailRepository(new NativeStore(dataDir));
+		repository = new SailRepository(new NativeStore(dataDir, MyValues.indexString));
 		repository.init();
 		initialized = true;
 	}
@@ -50,8 +52,9 @@ public class TripleStoreHandler {
 	}
 	
 	public static RepositoryConnection openRepositoryAndConnection(String path) {
+		MyValues.setup();
 		File dataDir = new File(path);
-		repository = new SailRepository(new NativeStore(dataDir));
+		repository = new SailRepository(new NativeStore(dataDir, MyValues.indexString));
 		repository.init();
 		connection = repository.getConnection();
 		initialized = true;

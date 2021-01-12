@@ -17,16 +17,19 @@ public class MyValues {
 	
 	public static int creditThreshold = 0;
 	
+	/** String containing the specifications for the indexes that we want to use for the RDF triplestore
+	 * Default is "spoc,posc" */
+	public static String indexString = "spoc,posc";
+	
 	public static boolean areWeDoingTheWarmUp, areWeInterrogatingTheWholeTripleStore, areWeInterrogatingTheWholeNamedTripleStore, areWeInterrogatingTheReducedTripleStore;
 	
 	/** Classes of queries we are going to use */
 	public enum QueryClass {
 		ONE, 
-		TWO,
-		THREE,
-		FOUR,
 		FIVE,
-		EIGHT;
+		SEVEN,
+		EIGHT,
+		TEN;
 	}
 
 	/** Class of queries we are using. Change between ONE, TWO, THREE etc. */
@@ -56,8 +59,14 @@ public class MyValues {
 		String class_ = map.get("class");
 		if(class_.equals("1"))
 			QUERYCLASS = QueryClass.ONE;
+		if(class_.equals("5"))
+			QUERYCLASS = QueryClass.FIVE;
+		if(class_.equals("7"))
+			QUERYCLASS = QueryClass.SEVEN;
 		if(class_.contentEquals("8"))
 			QUERYCLASS = QueryClass.EIGHT;
+		if(class_.equals("10"))
+			QUERYCLASS = QueryClass.TEN;
 
 		how_many_queries = Integer.parseInt(map.get("how_many_queries"));
 		max_times_per_one_query = Integer.parseInt(map.get("max_times_per_one_query"));
@@ -69,5 +78,6 @@ public class MyValues {
 		areWeInterrogatingTheWholeNamedTripleStore= Boolean.parseBoolean(map.get("are.we.interrogating.the.whole.named.triplestore"));
 		areWeInterrogatingTheReducedTripleStore = Boolean.parseBoolean(map.get("are.we.interrogating.the.reduced.triplestore"));
 		execute_a_query_this_many_times = Integer.parseInt(map.get("execute.a.query.this.many.times"));
+		indexString = map.get("index.string");
 	}
 }

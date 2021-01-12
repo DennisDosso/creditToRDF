@@ -1,0 +1,6 @@
+Query 3 cannot be used, since it contains a NEGATION (it is not SPJ)
+Query 4 cannot be used, since it contains a UNION (or/or operator, it introduces the possibility of alternatives)
+
+Since we consider SPJ queries, we only considers queries that contain operations ot the type: selection (with filter),
+projection (after the SELECT operator), and join (the dots). The filter does not need to contain the ! operator (negation).
+

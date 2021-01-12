@@ -12,6 +12,7 @@ import org.eclipse.rdf4j.rio.RDFFormat;
 import org.eclipse.rdf4j.sail.nativerdf.NativeStore;
 
 import it.unipd.dei.ims.data.MyPaths;
+import it.unipd.dei.ims.data.MyValues;
 
 /** Reads one RDF file in input, and saves it in a triple store
  * using rdf4j
@@ -27,7 +28,9 @@ public class FromTurtleToTripleStore {
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		// read the paths from the properties
-		new MyPaths();
+		MyPaths.setup();
+		MyValues.setup();
+		
 		// path of the text file containing the triples in turtle format
 		filename = MyPaths.text_rdf_file;
 		
@@ -35,7 +38,9 @@ public class FromTurtleToTripleStore {
 		// open repository where I save the RDF file - we use the implementation that uses the native on disk repository implementation
 		// everything is done on secondary memory. Maybe we can try something on primary memory sometimes
 		File dataDir = new File(MyPaths.index_path);
-		Repository db = new SailRepository(new NativeStore(dataDir));
+		String indexes = MyValues.indexString; // the indexes
+		
+		Repository db = new SailRepository(new NativeStore(dataDir, indexes));
 		db.init();
 		
 		try (RepositoryConnection conn = db.getConnection()) {

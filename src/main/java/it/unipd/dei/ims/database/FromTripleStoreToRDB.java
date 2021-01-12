@@ -15,6 +15,7 @@ import org.eclipse.rdf4j.sail.nativerdf.NativeStore;
 
 import it.unipd.dei.ims.credittordf.utils.ConnectionHandler;
 import it.unipd.dei.ims.data.MyPaths;
+import it.unipd.dei.ims.data.MyValues;
 import it.unipd.dei.ims.data.Queries;
 import it.unipd.dei.ims.data.RDB;
 import it.unipd.dei.ims.data.RDBQueries;
@@ -33,11 +34,13 @@ public class FromTripleStoreToRDB {
 
 	public static void main(String[] args) throws SQLException {
 		//open the triplestore
+		MyPaths.setup();
 		String path = MyPaths.index_path;
+		MyValues.setup();
 
 
 		File dataDir = new File(path);
-		Repository db = new SailRepository(new NativeStore(dataDir));
+		Repository db = new SailRepository(new NativeStore(dataDir, MyValues.indexString));
 		db.init();
 
 		// open connection to relational database

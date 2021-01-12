@@ -32,6 +32,8 @@ public class MyPaths {
 
 	/** file where the triples composing the database are present */
 	public static String text_rdf_file;
+	
+	public static String queryTimeFile;
 
 	public MyPaths() {
 		Map<String, String> map = PropertiesUtils.getPropertyMap("properties/paths.properties");
