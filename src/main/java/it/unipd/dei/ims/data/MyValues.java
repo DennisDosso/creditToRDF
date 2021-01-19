@@ -15,11 +15,18 @@ public class MyValues {
 
 	public static String namedGraph;
 	
+	/** Threshold used for credit. Default at 0*/
 	public static int creditThreshold = 0;
 	
 	/** String containing the specifications for the indexes that we want to use for the RDF triplestore
 	 * Default is "spoc,posc" */
 	public static String indexString = "spoc,posc";
+	
+	/** How many queries we execute queries to distribute credit */
+	public static int queryNumberCredit = 100;
+	
+	/** Number of queries we execute to measure hits on cache*/
+	public static int queryNumberHit = 100;
 	
 	public static boolean areWeDoingTheWarmUp, areWeInterrogatingTheWholeTripleStore, areWeInterrogatingTheWholeNamedTripleStore, areWeInterrogatingTheReducedTripleStore;
 	
@@ -79,5 +86,7 @@ public class MyValues {
 		areWeInterrogatingTheReducedTripleStore = Boolean.parseBoolean(map.get("are.we.interrogating.the.reduced.triplestore"));
 		execute_a_query_this_many_times = Integer.parseInt(map.get("execute.a.query.this.many.times"));
 		indexString = map.get("index.string");
+		queryNumberCredit = Integer.parseInt(map.get("query.number.credit"));
+		queryNumberHit = Integer.parseInt(map.get("query.number.hit"));
 	}
 }

@@ -44,7 +44,10 @@ nohup java -Xms4000m -Xmx32000m -cp creditToRdf-1.0.jar:lib/* it/unipd/dei/ims/d
 
 
 
-###STEP 2 - this is done few times, you can probably skip to 3
+###STEP 2 
+<b>Create Triple Store in RDB</b> 
+(this is done few times, you can probably skip to 3)
+
 Then you need to move the triples in a relational triple store. The database has only one table (or should it have 3 tables?), each table has the values subject, predicate and object, and a column for the credit. 
 Properties: 
 
@@ -83,6 +86,7 @@ The class is *BSBMCreditDistributor*.
 parameters to set:
 
 in paths.properties
+
 1) index_path: the paths of the triple store where we ask the query
 
 2) values_path: path of a txt file with the values that make up the query - this file needs to be created using 
@@ -92,6 +96,13 @@ GraphDB, by putting a SPARQL query in a smart way to obtain a csv file with the 
 
 in values.properties
 4) class: the class of queries we are dealing with. For now we are using class 1, 5, and 8
+
+in rdb.properties
+All the necessary properties to connect to a database, in particular the schema
+
+<code>
+java -cp creditToRdf-1.0.jar:lib/* it/unipd/dei/ims/credit/distribution/BSBMCreditDistributor
+</code>
 
 
 ### STEP 4
@@ -113,6 +124,10 @@ values.properties
 
 4) named.graph: the name of the named graph that we are giving to our triples
 
+<code>
+java -cp creditToRdf-1.0.jar:lib/* it/unipd/dei/ims/database/ExtractTriplesFromRDBAndNameThemInATriplestore
+</code>
+
 
 4.b
 ExtractTriplesFromRDBAndBuildTripleStore
@@ -130,6 +145,10 @@ values.properties
 3) credit.threshold: the threshold to use when extracting the triples. It is the minimum quantity of credit required to the tuples (value must be > of the threshold). Default is 0
 
 4) named.graph: the name of the named graph that we are giving to our triples
+
+<code>
+java -cp creditToRdf-1.0.jar:lib/* it/unipd/dei/ims/database/ExtractTriplesFromRDBAndBuildTripleStore
+</code>
 
 
 STEP 5

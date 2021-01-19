@@ -32,6 +32,7 @@ public class Example01BuildModel {
 
 		// second statement: Picasso's first name is "Pablo".
 		model.add(picasso, FOAF.FIRST_NAME, literal("Pablo"));
+		model.add(picasso, FOAF.FIRST_NAME, literal("Pablo"));
 
 		// to see what's in our model, let's just print it to the screen
 		for (Statement st : model) {

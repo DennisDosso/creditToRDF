@@ -34,6 +34,8 @@ public class MyPaths {
 	public static String text_rdf_file;
 	
 	public static String queryTimeFile;
+	
+	
 
 	public MyPaths() {
 		Map<String, String> map = PropertiesUtils.getPropertyMap("properties/paths.properties");
@@ -57,5 +59,6 @@ public class MyPaths {
 		times_file_path_normal_distribution = map.get("times_file_path_normal_distribution");
 		querying_index = map.get("querying.index");
 		text_rdf_file = map.get("text.rdf.file");
+		queryTimeFile = map.get("query.time.file");
 	}
 }
