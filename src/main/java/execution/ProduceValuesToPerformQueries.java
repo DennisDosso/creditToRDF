@@ -124,7 +124,7 @@ public class ProduceValuesToPerformQueries {
 			" FILTER (?date > \"2008-02-10T00:00:00\"^^xsd:dateTime )\n" + // I fixed the date
 			"}\n" + 
 			"ORDER BY xsd:double(str(?price))\n" + 
-			"LIMIT 10";
+			"LIMIT 1000";
 
 	public void printValuesForQueries(MyValues.QueryClass class_, String outputFile, String tripleStorePath) throws IOException {
 		RepositoryConnection rc = TripleStoreHandler.openRepositoryAndConnection(tripleStorePath);

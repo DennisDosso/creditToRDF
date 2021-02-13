@@ -42,9 +42,9 @@ public class CacheExtractor {
 
 	private Connection connection;
 	/** in-memory graph */
-	private Model graph;
+	public Model graph;
 	/** in-memory repository connection to the RDF graph*/
-	private RepositoryConnection rConnection; 
+	public RepositoryConnection rConnection; 
 
 
 	/** Query to select triples in the relational database that have credit bigger than 0 

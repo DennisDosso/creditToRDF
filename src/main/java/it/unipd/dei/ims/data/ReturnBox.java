@@ -9,5 +9,7 @@ public class ReturnBox {
 	
 	public long nanoTime;
 	
+	public int size;
+	
 	public boolean foundSomething = false;
 }

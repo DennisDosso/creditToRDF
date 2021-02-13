@@ -27,6 +27,8 @@ public class FromTurtleToTripleStore {
 	
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException {
+		System.out.println("importing file in a triplestore...");
+		
 		// read the paths from the properties
 		MyPaths.setup();
 		MyValues.setup();

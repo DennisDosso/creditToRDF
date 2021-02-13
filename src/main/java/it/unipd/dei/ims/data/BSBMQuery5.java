@@ -21,14 +21,14 @@ public class BSBMQuery5 {
 			"	FILTER (?simProperty2 < (?origProperty2 + 170) && ?simProperty2 > (?origProperty2 - 170))\n" + 
 			"}\n" + 
 			"ORDER BY ?productLabel\n" + 
-			"LIMIT 5";// %s used 4 tumes
+			"LIMIT 5";// %s used 4 times
 	
 	public static String select_named = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
 			"PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
 			"\n" + 
 			"SELECT DISTINCT ?product ?productLabel\n" + 
-			"WHERE { GRAPH  <http://named/graph/query5> {\n" + 
+			"WHERE { GRAPH  <http://namedgraph/> {\n" + 
 			"	?product rdfs:label ?productLabel .\n" + 
 			" FILTER (%s != ?product)\n" + // product (a second product different from the first one)
 			"	%s bsbm:productFeature ?prodFeature .\n" + // product
@@ -70,6 +70,5 @@ public class BSBMQuery5 {
 			"	?product bsbm:productPropertyNumeric2 ?simProperty2 .\n" + 
 			"	FILTER (?simProperty2 < (?origProperty2 + 170) && ?simProperty2 > (?origProperty2 - 170))\n" + 
 			"}\n" + 
-			"ORDER BY ?productLabel\n" + 
-			""; 
+			"ORDER BY ?productLabel\n"; 
 }

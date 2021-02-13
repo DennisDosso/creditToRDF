@@ -26,7 +26,7 @@ public class BSBMQuery3 {
 			"PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
 			"PREFIX bsbm-inst: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/>\n" + 
 			"SELECT  distinct ?type ?feature1 (bsbm-inst:ProductFeature1 as ?feature2)\n" + 
-			"WHERE { GRAPH <http://named/graph/query3> {\n" + 
+			"WHERE { GRAPH <http://namedgraph/> {\n" + 
 			" ?product rdfs:label ?label .\n" + 
 			" ?product a %s .\n" + 
 			"	?product bsbm:productFeature %s .\n" + 

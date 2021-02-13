@@ -1,4 +1,4 @@
-package execution;
+package it.unipd.dei.ims.database;
 
 import java.io.File;
 import java.sql.Connection;
@@ -23,8 +23,13 @@ import it.unipd.dei.ims.data.RDBQueries;
 /** 
  * New Step 2
  * 
+ * Insert the triple store in a relational table. 
+ * This class is no more used in the pipeline since we used a "smart" distribution of credit, that only uses triples that 
+ * received some credit and inserts them in the relational table. Thus, it is no more necessary to have the whole database in the triple store.
+ * This class was needed since I changed a little bit the structure of the triple store
+ * 
  * */
-public class FromTripleStoreToRDB {
+public class FromTripleStoreToRDB2 {
 
 	public static void main(String[] args) throws SQLException {
 		// open the triplestore

@@ -1,5 +1,9 @@
 package it.unipd.dei.ims.data;
 
+/** NB: due to the nature of this query, we limited the number of returned triples in the construct,
+ * so to limit the execution time
+ * 
+ * TODO crea il controllo della presenza delle triple nel triple-store*/
 public class BSBMQuery7 {
 
 	public static String select = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
@@ -12,7 +16,7 @@ public class BSBMQuery7 {
 			" ?reviewer ?revName ?rating1 ?rating2\n" + 
 			"WHERE {\n" + 
 			"    %s rdfs:label ?productLabel .\n" + // first parameter
-			"    OPTIONAL {" +
+//			"    OPTIONAL {" +
 			"        ?offer bsbm:product %s .\n" + // third parameter 
 			"        ?offer bsbm:price ?price .\n" + 
 			"        ?offer bsbm:vendor ?vendor .\n" + 
@@ -21,7 +25,7 @@ public class BSBMQuery7 {
 			"        ?offer dc:publisher ?vendor . \n" + 
 			"        ?offer bsbm:validTo ?date .\n" + 
 			"        FILTER (?date > \"2008-03-01\"^^xsd:dateTime)\n" +
-			"    }" +
+//			"    }" +
 			"    OPTIONAL {\n" + 
 			"	?review bsbm:reviewFor %s .\n" + // fourth parameter 
 			"	?review rev:reviewer ?reviewer .\n" + 
@@ -29,7 +33,7 @@ public class BSBMQuery7 {
 			"	?review dc:title ?revTitle .\n" + 
 			" OPTIONAL { ?review bsbm:rating1 ?rating1 . }\n" + 
 			"        OPTIONAL { ?review bsbm:rating2 ?rating2 . }}\n" + 
-			"}\n";
+			"} LIMIT 20\n";
 	
 	public static String select_named = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
 			"PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
@@ -39,9 +43,9 @@ public class BSBMQuery7 {
 			"PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n" + 
 			"select distinct ?productLabel ?offer ?price ?vendor ?vendorTitle ?review ?revTitle \n" + 
 			" ?reviewer ?revName ?rating1 ?rating2\n" + 
-			"WHERE { GRAPH <http://named/graph/query7> {\n" + 
+			"WHERE { GRAPH <http://namedgraph/> {\n" + 
 			"    %s rdfs:label ?productLabel .\n" + // first parameter
-			"    OPTIONAL {" +
+//			"    OPTIONAL {" +
 			"        ?offer bsbm:product %s .\n" + // third parameter 
 			"        ?offer bsbm:price ?price .\n" + 
 			"        ?offer bsbm:vendor ?vendor .\n" + 
@@ -50,7 +54,7 @@ public class BSBMQuery7 {
 			"        ?offer dc:publisher ?vendor . \n" + 
 			"        ?offer bsbm:validTo ?date .\n" + 
 			"        FILTER (?date > \"2008-03-01\"^^xsd:dateTime)\n" +
-			"    }" +
+//			"    }" +
 			"    OPTIONAL {\n" + 
 			"	?review bsbm:reviewFor %s .\n" + // fourth parameter 
 			"	?review rev:reviewer ?reviewer .\n" + 
@@ -58,7 +62,8 @@ public class BSBMQuery7 {
 			"	?review dc:title ?revTitle .\n" + 
 			" OPTIONAL { ?review bsbm:rating1 ?rating1 . }\n" + 
 			"        OPTIONAL { ?review bsbm:rating2 ?rating2 . }}\n" + 
-			"}}\n";
+			"}}"
+			+ "LIMIT 20\n";
 	
 	
 	
@@ -85,7 +90,7 @@ public class BSBMQuery7 {
 			"	?review bsbm:rating2 ?rating2 .}\n" + 
 			"where {\n" + 
 			"    %s rdfs:label ?productLabel .\n" + // product 
-			"    OPTIONAL {\n" + 
+//			"    OPTIONAL {\n" + 
 			"    ?offer bsbm:product %s .\n" + //product 
 			"    ?offer bsbm:price ?price .\n" + 
 			"	?offer bsbm:vendor ?vendor .\n" + 
@@ -94,7 +99,7 @@ public class BSBMQuery7 {
 			"    ?offer dc:publisher ?vendor . \n" + 
 			" 	?offer bsbm:validTo ?date .\n" + 
 			"    FILTER (?date > \"2008-03-01\"^^xsd:dateTime )\n" + 
-			"}\n" + 
+//			"}\n" + 
 			"    OPTIONAL {\n" + 
 			"	?review bsbm:reviewFor %s .\n" + // product 
 			"	?review rev:reviewer ?reviewer .\n" + 
@@ -103,5 +108,5 @@ public class BSBMQuery7 {
 			" OPTIONAL { ?review bsbm:rating1 ?rating1 . }\n" + 
 			" OPTIONAL { ?review bsbm:rating2 ?rating2 . } \n" + 
 			" }\n" + 
-			"}";
+			"} LIMIT 2000";// a little tweak to limit the time
 }

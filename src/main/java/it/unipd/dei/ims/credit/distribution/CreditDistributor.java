@@ -1,4 +1,4 @@
-package execution;
+package it.unipd.dei.ims.credit.distribution;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,7 +15,6 @@ import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.query.GraphQuery;
 import org.eclipse.rdf4j.query.GraphQueryResult;
 
-import it.unipd.dei.ims.credit.distribution.BSBMCreditDistributor;
 import it.unipd.dei.ims.credittordf.utils.ConnectionHandler;
 import it.unipd.dei.ims.credittordf.utils.TripleStoreHandler;
 import it.unipd.dei.ims.data.BSBMQuery1;
@@ -27,6 +26,11 @@ import it.unipd.dei.ims.data.RDB;
 /**
  * 
  * New Step 3
+ * <p>
+ * This class distributes the credit in the relational database (the triple store).
+ * I decided to deprecate this class since I preferred to develop a new class that is not limited
+ * to give credit, but to insert in the relational database the triples that receive credit. 
+ * This database represent the set of "credited" queries
  * 
  * */
 public class CreditDistributor {

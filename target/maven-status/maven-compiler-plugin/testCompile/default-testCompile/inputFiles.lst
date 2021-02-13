@@ -1,10 +1,14 @@
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/it/unipd/dei/ims/utils/test/TestRegex.java
+/Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/test/database/CacheExtractorTest.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/rdf4j/examples/from/the/website/Example02BuildModel.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/rdf4j/examples/from/the/website/Example03LiteralDatatypes.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/it/unipd/dei/ims/queries/BSBMConstructQueriesExecutor.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/it/unipd/dei/ims/queries/PerformSameQueryOnTwoRepositoriesAndTakeTimes.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/rdf4j/examples/from/the/website/Example14AddRDFToDatabase.java
+/Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/it/unipd/dei/ims/queries/TestAsk.java
+/Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/test/jena/TestResoner.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/rdf4j/examples/from/the/website/Example04LanguageTags.java
+/Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/it/unipd/dei/ims/utils/test/TestPareto.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/rdf4j/examples/from/the/website/Example06WriteRdfXml.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/rdf4j/examples/from/the/website/Example01BuildModel.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/it/unipd/dei/ims/queries/UpdateTest.java

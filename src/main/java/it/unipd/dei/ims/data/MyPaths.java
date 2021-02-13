@@ -35,6 +35,15 @@ public class MyPaths {
 	
 	public static String queryTimeFile;
 	
+	/** main directory where the values used to build queries are store */
+	public static String queryValuesDirectory;
+	
+	/** Files where to write the values that will make up a set of executed queries */
+	public static String queryValuesFile;
+	
+	public static String overheadTimes, wholeDbTimes, namedDbTimes, cacheTimes, 
+	updateCacheTimes, updateNamedTimes;
+	
 	
 
 	public MyPaths() {
@@ -60,5 +69,15 @@ public class MyPaths {
 		querying_index = map.get("querying.index");
 		text_rdf_file = map.get("text.rdf.file");
 		queryTimeFile = map.get("query.time.file");
+		queryValuesDirectory = map.get("query.values.directory");
+		queryValuesFile = map.get("query.values.file");
+		
+		overheadTimes = map.get("overhead.times");
+		wholeDbTimes = map.get("whole.db.times");
+		namedDbTimes = map.get("named.db.times");
+		cacheTimes = map.get("cache.times");
+		
+		updateCacheTimes = map.get("update.cache.times");
+		updateNamedTimes = map.get("update.named.times");
 	}
 }

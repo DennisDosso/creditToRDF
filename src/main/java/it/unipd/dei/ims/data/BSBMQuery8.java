@@ -33,7 +33,7 @@ public class BSBMQuery8 {
 			"PREFIX rev: <http://purl.org/stuff/rev#>\n" + 
 			"PREFIX foaf: <http://xmlns.com/foaf/0.1/>"
 			+ "SELECT ?title ?text ?reviewDate ?reviewer ?reviewerName ?rating1 ?rating2 ?rating3 ?rating4 \n" + 
-			"WHERE { GRAPH <http://named/graph/query8> {\n" + 
+			"WHERE { GRAPH <http://namedgraph/> {\n" + 
 			"	?review bsbm:reviewFor %s .\n" + 
 			"	?review dc:title ?title .\n" + 
 			"	?review rev:text ?text .\n" + 
@@ -50,6 +50,7 @@ public class BSBMQuery8 {
 			"LIMIT 20"
 			;
 	
+	// TODO serve verificare che le triple siano effettivamente nel grafo
 	public static String parametrixed_construct_query = "PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
 			"PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" + 
 			"PREFIX rev: <http://purl.org/stuff/rev#>\n" + 

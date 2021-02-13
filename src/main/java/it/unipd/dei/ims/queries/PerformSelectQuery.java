@@ -61,22 +61,23 @@ public class PerformSelectQuery {
 //						queryString = "SELECT (COUNT(*) as ?triple_count) WHERE { GRAPH <http://named/graph/query10> {?s ?p ?o} } LIMIT 1000";
 			queryString = "SELECT (COUNT(*) as ?triple_count) WHERE {?s ?p ?o}  LIMIT 1000";
 			
-			queryString = "PREFIX bsbm-inst: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/>\n" + 
-					"PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
-					"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
-					"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
-					"\n" + 
-					"SELECT DISTINCT ?product ?label\n" + 
-					"WHERE { \n" + 
-					" ?product rdfs:label ?label .\n" + 
-					" ?product a <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductType2> .\n" + 
-//					" ?product bsbm:productFeature <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature36> . \n" + 
-//					" ?product bsbm:productFeature <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature408> . \n" + 
-//					"?product bsbm:productPropertyNumeric1 ?value1 . \n" + 
-//					"	FILTER (?value1 > 300) \n" + 
-					"	}\n" + 
-					"ORDER BY ?label\n" + 
-					"LIMIT 20";
+			
+//			queryString = "PREFIX bsbm-inst: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/>\n" + 
+//					"PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
+//					"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
+//					"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
+//					"\n" + 
+//					"SELECT DISTINCT ?product ?label\n" + 
+//					"WHERE { \n" + 
+//					" ?product rdfs:label ?label .\n" + 
+//					" ?product a <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductType2> .\n" + 
+////					" ?product bsbm:productFeature <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature36> . \n" + 
+////					" ?product bsbm:productFeature <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature408> . \n" + 
+////					"?product bsbm:productPropertyNumeric1 ?value1 . \n" + 
+////					"	FILTER (?value1 > 300) \n" + 
+//					"	}\n" + 
+//					"ORDER BY ?label\n" + 
+//					"LIMIT 20";
 
 			//			queryString = "SELECT * WHERE "
 			////					+ "{ GRAPH <http://example/bookStore> "

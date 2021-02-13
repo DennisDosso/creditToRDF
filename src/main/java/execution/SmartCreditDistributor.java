@@ -15,6 +15,7 @@ import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.query.GraphQuery;
 import org.eclipse.rdf4j.query.GraphQueryResult;
 
+import it.unipd.dei.ims.credit.distribution.CreditDistributor;
 import it.unipd.dei.ims.credittordf.utils.ConnectionHandler;
 import it.unipd.dei.ims.credittordf.utils.TripleStoreHandler;
 import it.unipd.dei.ims.data.BSBMQuery1;
@@ -28,7 +29,7 @@ import it.unipd.dei.ims.data.RDB;
 
 /**
  * 
- * Step 3 - this class is the lastimplementation of credit distribution. It only uses tuples that are necessary, building them on the fly and adding them in the DB
+ * Step 3 - this class is the last implementation of credit distribution. It only uses tuples that are necessary, building them on the fly and adding them in the DB
  * Thus, we do not need to keep a whole table for the DB with billions of triples.
  * 
  * 
@@ -63,6 +64,9 @@ public class SmartCreditDistributor extends CreditDistributor {
 
 
 	/** Used to randomly generate a certain amount of queries and distribute the number of hits with them
+	 * 
+	 * @param number_of_executed_queries How many qieries you want to execute
+	 * 
 	 * @throws SQLException 
 	 * */
 	public void updateHitsInTheRDBFofClass(MyValues.QueryClass class_, String values_path, int number_of_executed_queries) throws SQLException {
