@@ -1,5 +1,11 @@
 package it.unipd.dei.ims.data;
 
+/** Note that we put limits both on the select and construct queries, also in the other classes of this type.
+ * We did this because if we do not put a limit in the select, the execution time becames too long. 
+ * We also need to put  alimit in the construct query for the same reason. Obviously, 
+ * this second limit has to be larger, indicatively equal to <number of triples of an answer> * value of LIMIT 
+ * in the corresponding select query. This is necessary in order to capture the whole graph that produces the output of the
+ * select query. */
 public class BSBMQuery1 {
 	
 	//initializes all the values
@@ -24,9 +30,9 @@ public class BSBMQuery1 {
 			"        bsbm:productPropertyNumeric1 ?value1 .\n" + 
 			"    FILTER (?value1 > 300) .\n" + 
 			"	}\n" + 
-			"ORDER BY ?label\n";			;
+			"ORDER BY ?label\n";			
 	
-	public static String parameter_query_1 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
+	public static String construct = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
 			"PREFIX bsbm-inst: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/>\n" + 
 			"PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
 			"CONSTRUCT {?product rdfs:label ?label ;\n" + 
@@ -42,12 +48,11 @@ public class BSBMQuery1 {
 			"        bsbm:productPropertyNumeric1 ?value1 .\n" + 
 			"    FILTER (?value1 > %s) .\n" + 
 			"	}\n" + 
-			"ORDER BY ?label\n"; 
-//			"LIMIT 20"; // remove the limit of triples, since that limit does not correlate to the limit in the select
-	// if you leave the limit here it is an error: you reduce the total number of triples returned, thus
-	// you do not build the whole subgraph that creates the answer
+//			"ORDER BY ?label\n" +
+			"LIMIT 100";  
 	
-	public static String select_query_1 = "PREFIX bsbm-inst: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/>\n" + 
+	
+	public static String select = "PREFIX bsbm-inst: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/>\n" + 
 			"PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
 			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
@@ -61,10 +66,10 @@ public class BSBMQuery1 {
 			"?product bsbm:productPropertyNumeric1 ?value1 . \n" + 
 			"	FILTER (?value1 > %s) \n" + 
 			"	}\n" + 
-			"ORDER BY ?label\n" + 
-			"LIMIT 20";
+//			"ORDER BY ?label\n" + 
+			"LIMIT 5";
 	
-	public static String select_query_1_with_named_graphs = "PREFIX bsbm-inst: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/>\n" + 
+	public static String select_named = "PREFIX bsbm-inst: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/>\n" + 
 			"PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
 			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
@@ -78,8 +83,8 @@ public class BSBMQuery1 {
 			"?product bsbm:productPropertyNumeric1 ?value1 . \n" + 
 			"	FILTER (?value1 > %s) \n" + 
 			"	}}\n" + 
-			"ORDER BY ?label\n" + 
-			"LIMIT 20";
+//			"ORDER BY ?label\n" + 
+			"LIMIT 5";
 ;	
 	/** value to put as last parameter in the FILTER condition of parameter_query_1*/
 	public static String value_query_1 = "300";

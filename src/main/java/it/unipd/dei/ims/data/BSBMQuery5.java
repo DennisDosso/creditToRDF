@@ -20,8 +20,8 @@ public class BSBMQuery5 {
 			"	?product bsbm:productPropertyNumeric2 ?simProperty2 .\n" + 
 			"	FILTER (?simProperty2 < (?origProperty2 + 170) && ?simProperty2 > (?origProperty2 - 170))\n" + 
 			"}\n" + 
-			"ORDER BY ?productLabel\n" + 
-			"LIMIT 5";// %s used 4 times
+//			"ORDER BY ?productLabel\n" + 
+			"LIMIT 5";
 	
 	public static String select_named = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
@@ -40,7 +40,7 @@ public class BSBMQuery5 {
 			"	?product bsbm:productPropertyNumeric2 ?simProperty2 .\n" + 
 			"	FILTER (?simProperty2 < (?origProperty2 + 170) && ?simProperty2 > (?origProperty2 - 170))\n" + 
 			"}}\n" + 
-			"ORDER BY ?productLabel\n" + 
+//			"ORDER BY ?productLabel\n" + 
 			"LIMIT 5";
 	
 	/** the same parameter, the product id, repeated 7 times */
@@ -70,5 +70,6 @@ public class BSBMQuery5 {
 			"	?product bsbm:productPropertyNumeric2 ?simProperty2 .\n" + 
 			"	FILTER (?simProperty2 < (?origProperty2 + 170) && ?simProperty2 > (?origProperty2 - 170))\n" + 
 			"}\n" + 
-			"ORDER BY ?productLabel\n"; 
+//			"ORDER BY ?productLabel\n" +
+			"LIMIT 100"; 
 }

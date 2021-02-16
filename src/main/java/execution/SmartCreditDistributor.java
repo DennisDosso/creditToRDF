@@ -164,7 +164,7 @@ public class SmartCreditDistributor extends CreditDistributor {
 			String param3 = params[2];
 			String param4 = BSBMQuery1.value_query_1; // this value is fixed for all queries
 	
-			query = BSBMQuery1.parameter_query_1;
+			query = BSBMQuery1.select;
 			query = String.format(query, "<" + param1 + ">", "<" + param2 + ">", "<" + param3 + ">",
 					"<" + param1 + ">", "<" + param2+ ">", "<" + param3 + ">", param4);
 		} else if (class_ == MyValues.QueryClass.FIVE) {

@@ -249,7 +249,7 @@ public class CacheExtractorTest {
 		String param4 = param[3];
 
 		// get the construct query 
-		String query = BSBMQuery1.select_query_1;
+		String query = BSBMQuery1.select;
 
 		//prepare the query inserting the desired values
 		query = String.format(query, "<" + param1 + ">", "<" + param2 + ">", "<" + param3 + ">", param4);

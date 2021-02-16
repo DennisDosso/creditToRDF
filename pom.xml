@@ -69,6 +69,12 @@
 				</configuration>
 			</plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.2.0</version>
+			</plugin>
+
 
 			<!-- javadoc plugin: output in the javadoc folder -->
 			<plugin>
@@ -113,6 +119,19 @@
 			</plugin>
 
 		</plugins>
+
+		<!-- things I added and may be removed -->
+
+		<resources>
+			<!-- Copy property files -->
+			<resource>
+				<targetPath>${basedir}/target/properties</targetPath>
+				<directory>${basedir}/properties</directory>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
 
 

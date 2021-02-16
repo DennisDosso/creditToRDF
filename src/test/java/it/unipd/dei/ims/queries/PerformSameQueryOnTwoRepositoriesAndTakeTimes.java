@@ -42,7 +42,7 @@ public class PerformSameQueryOnTwoRepositoriesAndTakeTimes {
 		RepositoryConnection repo = TripleStoreHandler.openRepositoryAndConnection(repositorypath);
 
 		// prepare the SPARQL query
-		String query = BSBMQuery1.select_query_1;
+		String query = BSBMQuery1.select;
 
 		// read the values. Each set of values is a query, thus one execution
 		try(BufferedReader reader = Files.newBufferedReader(Paths.get(queryValuesPath))) {
@@ -170,7 +170,7 @@ public class PerformSameQueryOnTwoRepositoriesAndTakeTimes {
 		RepositoryConnection repo = TripleStoreHandler.openRepositoryAndConnection(repositorypath);
 
 		// prepare the SPARQL query
-		String query = BSBMQuery1.select_query_1_with_named_graphs;
+		String query = BSBMQuery1.select_named;
 
 		// read the values. Each set of values is a query, thus one execution
 		try(BufferedReader reader = Files.newBufferedReader(Paths.get(queryValuesPath))) {

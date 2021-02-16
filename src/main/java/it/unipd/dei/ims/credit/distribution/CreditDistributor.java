@@ -163,7 +163,7 @@ public class CreditDistributor {
 	 * It also  distributes the credit on the relational database.
 	 * */
 	public void performQuery1withParameters(String param1, String param2, String param3, String param4) throws SQLException {
-		String query = BSBMQuery1.parameter_query_1;
+		String query = BSBMQuery1.select;
 
 		//prepare the query inserting the desired values
 		query = String.format(query, "<" + param1 + ">", "<" + param2 + ">", "<" + param3 + ">",

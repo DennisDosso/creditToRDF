@@ -18,6 +18,15 @@ import it.unipd.dei.ims.data.MyValues;
 /** A class that contains methods to produce the data to, in turn, be able to create queries.
  * 
  * Step 0.1. Necessary to have values to build queries
+ * <p>
+ * NB the limits are necessary due to the fact that, otherwise, when applied to big databases, these queries require a too big execution time. 
+ * This may result in days just to build the random queries. Therefore, we limit the number of possible different queries that
+ * we produce.<br>
+ * Always remember, however, that the number of queries at your disposal needs to be bigger than the number that you use as denominator
+ * to compute the standard deviation of the normal distribution we are using. 
+ * <p>
+ * Also, we removed the ORDER BY clause from the queries that were used since this clause requires many computations in-RAM, 
+ * that in the case of bigger databases may halt the execution, and cause out of memory exceptions.  
  * */
 public class ProduceValuesToPerformQueries {
 	
@@ -35,8 +44,36 @@ public class ProduceValuesToPerformQueries {
 			"?product bsbm:productPropertyNumeric1 ?value1 . \n" + 
 			"	FILTER (?value1 > 300) \n" + 
 			"	}\n" + 
-			"ORDER BY ?label\n" + 
-			"LIMIT 10000";
+//			"ORDER BY ?label\n" + // the order by operation, in a large DB, breaks the query 
+			"LIMIT 100";
+	
+	public static String queryClass2="PREFIX bsbm-inst: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/>\n" + 
+			"PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
+			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
+			"PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" + 
+			"\n" + 
+			"SELECT ?p1 \n" + 
+			"WHERE {\n" + 
+			" ?p1 rdfs:label ?label .\n" + 
+			"	?p1 rdfs:comment ?comment .\n" + 
+			"	?p1 bsbm:producer ?p .\n" + 
+			"	?p rdfs:label ?producer .\n" + 
+			" ?p1 dc:publisher ?p . \n" + 
+			"	?p1 bsbm:productFeature ?f .\n" + 
+			"	?f rdfs:label ?productFeature .\n" + 
+			"	?p1 bsbm:productPropertyTextual1 ?propertyTextual1 .\n" + 
+			"	?p1 bsbm:productPropertyTextual2 ?propertyTextual2 .\n" + 
+			" ?p1 bsbm:productPropertyTextual3 ?propertyTextual3 .\n" + 
+			"	?p1 bsbm:productPropertyNumeric1 ?propertyNumeric1 .\n" + 
+			"	?p1 bsbm:productPropertyNumeric2 ?propertyNumeric2 .\n" + 
+			"	OPTIONAL { ?p1 bsbm:productPropertyTextual4 ?propertyTextual4 }\n" + 
+			" OPTIONAL { ?p1 bsbm:productPropertyTextual5 ?propertyTextual5 }\n" + 
+			" OPTIONAL { ?p1 bsbm:productPropertyNumeric4 ?propertyNumeric4 }\n" + 
+			"} LIMIT 100";
+	
+	// class 3 was not used because it contains a negation
+	
+	// class 4 was not used because it contains a union operator, intended as "either one of two patterns"
 	
 	public static String queryClass5 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
@@ -45,7 +82,7 @@ public class ProduceValuesToPerformQueries {
 			"SELECT DISTINCT ?p\n" + 
 			"WHERE { \n" + 
 			"	?product rdfs:label ?productLabel .\n" + 
-			" FILTER (?p != ?product)\n" + // first parameter: prpduct
+			" FILTER (?p != ?product)\n" + // first parameter: product
 			"	?p bsbm:productFeature ?prodFeature .\n" + // product
 			"	?product bsbm:productFeature ?prodFeature .\n" + 
 			"	?p bsbm:productPropertyNumeric1 ?origProperty1 .\n" + //product 
@@ -55,9 +92,21 @@ public class ProduceValuesToPerformQueries {
 			"	?product bsbm:productPropertyNumeric2 ?simProperty2 .\n" + 
 			"	FILTER (?simProperty2 < (?origProperty2 + 170) && ?simProperty2 > (?origProperty2 - 170))\n" + 
 			"}\n" + 
-			"ORDER BY ?productLabel\n" + 
-			"LIMIT 10000";
+//			"ORDER BY ?productLabel\n" + 
+			"LIMIT 100";
 	
+	public static String queryClass6 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
+			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
+			"PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
+			"\n" + 
+			"SELECT DISTINCT ?label\n" + 
+			"WHERE {\n" + 
+			"	?product rdfs:label ?label .\n" + 
+			" ?product rdf:type bsbm:Product .\n" + 
+			"} LIMIT 100";
+	
+	// TODO si potrebbe considerare di porre come vincolo qui anche su vendorTitle, per restringere ancor di 
+	// più la query
 	public static String queryClass7 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
 			"PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
 			"PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" + 
@@ -84,7 +133,7 @@ public class ProduceValuesToPerformQueries {
 			"	?review dc:title ?revTitle .\n" + 
 			" OPTIONAL { ?review bsbm:rating1 ?rating1 . }\n" + 
 			"        OPTIONAL { ?review bsbm:rating2 ?rating2 . }}\n" + 
-			"} LIMIT 10000\n";
+			"} LIMIT 100\n";
 	
 	public static String queryClass8 = "PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
 			"PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" + 
@@ -104,8 +153,11 @@ public class ProduceValuesToPerformQueries {
 			"	OPTIONAL { ?review bsbm:rating3 ?rating3 . }\n" + 
 			"	OPTIONAL { ?review bsbm:rating4 ?rating4 . }\n" + 
 			"}\n" + 
-			"ORDER BY DESC(?reviewDate)\n" + 
-			"LIMIT 10000";
+//			"ORDER BY DESC(?reviewDate)\n" + 
+			"LIMIT 100";
+	
+	// class 9 was not used because it is of type DESCRIBE
+	
 	
 	public static String queryClass10 = "PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
 			"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" + 
@@ -123,8 +175,8 @@ public class ProduceValuesToPerformQueries {
 			" ?offer bsbm:validTo ?date .\n" + 
 			" FILTER (?date > \"2008-02-10T00:00:00\"^^xsd:dateTime )\n" + // I fixed the date
 			"}\n" + 
-			"ORDER BY xsd:double(str(?price))\n" + 
-			"LIMIT 1000";
+//			"ORDER BY xsd:double(str(?price))\n" + 
+			"LIMIT 100";
 
 	public void printValuesForQueries(MyValues.QueryClass class_, String outputFile, String tripleStorePath) throws IOException {
 		RepositoryConnection rc = TripleStoreHandler.openRepositoryAndConnection(tripleStorePath);

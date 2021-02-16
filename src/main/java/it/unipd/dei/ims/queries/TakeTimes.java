@@ -89,7 +89,7 @@ public class TakeTimes {
 		String query = null;
 		if (using_named) {
 			if (class_ == MyValues.QueryClass.ONE) {
-				query = BSBMQuery1.select_query_1_with_named_graphs;
+				query = BSBMQuery1.select_named;
 			} else if (class_ == MyValues.QueryClass.FIVE) {
 				query = BSBMQuery5.select_named;
 			} else if (class_ == MyValues.QueryClass.SEVEN) {
@@ -101,7 +101,7 @@ public class TakeTimes {
 			}
 		} else {
 			if (class_ == MyValues.QueryClass.ONE) {
-				query = BSBMQuery1.select_query_1;
+				query = BSBMQuery1.select;
 			} else if (class_ == MyValues.QueryClass.FIVE) {
 				query = BSBMQuery5.select;
 			} else if (class_ == MyValues.QueryClass.SEVEN) {
@@ -247,9 +247,9 @@ public class TakeTimes {
 		// prepare the SPARQL query
 		String query;
 		if (using_named) {
-			query = BSBMQuery1.select_query_1_with_named_graphs;
+			query = BSBMQuery1.select_named;
 		} else {
-			query = BSBMQuery1.select_query_1;
+			query = BSBMQuery1.select;
 		}
 
 		// read the values. Each set of values is a query, thus one execution

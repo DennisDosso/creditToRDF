@@ -33,7 +33,7 @@ public class BSBMQuery7 {
 			"	?review dc:title ?revTitle .\n" + 
 			" OPTIONAL { ?review bsbm:rating1 ?rating1 . }\n" + 
 			"        OPTIONAL { ?review bsbm:rating2 ?rating2 . }}\n" + 
-			"} LIMIT 20\n";
+			"} LIMIT 2\n";
 	
 	public static String select_named = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
 			"PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
@@ -63,7 +63,7 @@ public class BSBMQuery7 {
 			" OPTIONAL { ?review bsbm:rating1 ?rating1 . }\n" + 
 			"        OPTIONAL { ?review bsbm:rating2 ?rating2 . }}\n" + 
 			"}}"
-			+ "LIMIT 20\n";
+			+ "LIMIT 2\n";
 	
 	
 	
@@ -108,5 +108,5 @@ public class BSBMQuery7 {
 			" OPTIONAL { ?review bsbm:rating1 ?rating1 . }\n" + 
 			" OPTIONAL { ?review bsbm:rating2 ?rating2 . } \n" + 
 			" }\n" + 
-			"} LIMIT 2000";// a little tweak to limit the time
+			"} LIMIT 50";// a little tweak to limit the time
 }

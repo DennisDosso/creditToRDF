@@ -18,7 +18,7 @@ public class BSBMQuery10 {
 			" ?offer bsbm:validTo ?date .\n" + 
 			" FILTER (?date > \"2008-02-10T00:00:00\"^^xsd:dateTime )\n" + // I fixed the date
 			"}\n" + 
-			"ORDER BY xsd:double(str(?price))\n" + 
+//			"ORDER BY xsd:double(str(?price))\n" + 
 			"LIMIT 10";
 	
 	public static String select_named = "PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
@@ -37,7 +37,7 @@ public class BSBMQuery10 {
 			" ?offer bsbm:validTo ?date .\n" + 
 			" FILTER (?date > \"2008-02-10T00:00:00\"^^xsd:dateTime )\n" + // I fixed the date
 			"}}\n" + 
-			"ORDER BY xsd:double(str(?price))\n" + 
+//			"ORDER BY xsd:double(str(?price))\n" + 
 			"LIMIT 10";
 	
 	public static String construct = "PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
@@ -63,5 +63,6 @@ public class BSBMQuery10 {
 			" ?offer bsbm:validTo ?date .\n" + 
 			" FILTER (?date >= \"2008-02-10T00:00:00\"^^xsd:dateTime )\n" + 
 			"}\n" + 
-			"ORDER BY xsd:double(str(?price))\n";
+//			"ORDER BY xsd:double(str(?price))\n";
+			"LIMIT 100";
 }

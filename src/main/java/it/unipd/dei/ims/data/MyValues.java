@@ -46,7 +46,9 @@ public class MyValues {
 	/** Classes of queries we are going to use */
 	public enum QueryClass {
 		ONE, 
+		TWO,
 		FIVE,
+		SIX,
 		SEVEN,
 		EIGHT,
 		TEN;
@@ -154,7 +156,7 @@ public class MyValues {
 		areWeInterrogatingTheCache = Boolean.parseBoolean(map.get("are.we.interrogating.the.cache"));
 
 		execute_a_query_this_many_times = Integer.parseInt(map.get("execute.a.query.this.many.times"));
-		indexString = map.get("index.string");
+		indexString = map.get("indexes.string");
 		queryNumberCredit = Integer.parseInt(map.get("query.number.credit"));
 		queryNumberHit = Integer.parseInt(map.get("query.number.hit"));
 		standardDeviationRatio = Integer.parseInt(map.get("standard.deviation.ratio"));
@@ -173,8 +175,12 @@ public class MyValues {
 		if(c.equals("ONE")) {
 			return QueryClass.ONE;
 		}
+		else if(c.equals("TWO"))
+			return QueryClass.TWO;
 		else if(c.equals("FIVE"))
 			return QueryClass.FIVE;
+		else if(c.equals("SIX"))
+			return QueryClass.SIX;
 		else if(c.equals("SEVEN"))
 			return QueryClass.SEVEN;
 		else if(c.equals("EIGHT"))

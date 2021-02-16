@@ -51,8 +51,12 @@ public class BuildAndPrintQueries extends ProduceValuesToPerformQueries {
 		TupleQuery query = null;
 		if(query_class == MyValues.QueryClass.ONE) {
 			query = rc.prepareTupleQuery(queryClass1);			
+		} else if (query_class == MyValues.QueryClass.TWO) {
+			query = rc.prepareTupleQuery(queryClass2);
 		} else if (query_class == MyValues.QueryClass.FIVE) {
 			query = rc.prepareTupleQuery(queryClass5);
+		} else if (query_class == MyValues.QueryClass.SIX) {
+			query = rc.prepareTupleQuery(queryClass6);
 		} else if (query_class == MyValues.QueryClass.SEVEN) {
 			query = rc.prepareTupleQuery(queryClass7);
 		} else if (query_class == MyValues.QueryClass.EIGHT) {
@@ -74,9 +78,17 @@ public class BuildAndPrintQueries extends ProduceValuesToPerformQueries {
 					String param3 = solution.getValue("pf2").toString();
 					String[] parameters = {param1, param2, param3, "ONE"};
 					valuesList.add(parameters);
+				} else if (query_class == MyValues.QueryClass.TWO) {
+					String param1 = solution.getValue("p1").toString();
+					String[] parameters = {param1, "TWO"};
+					valuesList.add(parameters);
 				} else if (query_class == MyValues.QueryClass.FIVE) {
 					String param1 = solution.getValue("p").toString();
 					String[] parameters = {param1, "FIVE"};
+					valuesList.add(parameters);
+				} else if (query_class == MyValues.QueryClass.SIX) {
+					String param1 = solution.getValue("label").toString();
+					String[] parameters = {param1, "SIX"};
 					valuesList.add(parameters);
 				} else if (query_class == MyValues.QueryClass.SEVEN) {
 					String param1 =solution.getValue("p").toString();
@@ -101,7 +113,8 @@ public class BuildAndPrintQueries extends ProduceValuesToPerformQueries {
 		// now we build and print the queries
 
 		// get a normal distribution to choose the queries to print
-		NormalDistribution distribution = new NormalDistribution(valuesList.size()/2, valuesList.size()/MyValues.standardDeviationRatio);
+		double stdv = Math.max(1, (double) valuesList.size()/MyValues.standardDeviationRatio);
+		NormalDistribution distribution = new NormalDistribution(valuesList.size()/2, stdv);
 
 		// open the writer in append
 		FileWriter w = new FileWriter(MyPaths.queryValuesFile, true);
@@ -132,6 +145,7 @@ public class BuildAndPrintQueries extends ProduceValuesToPerformQueries {
 		// flush and close
 		pw.flush();
 		pw.close();
+		System.out.println("printed one class of queries");
 	}
 
 	/** Given a csv string that contains unique values of classes to be created, e.g. ONE,TWO,FIVE
@@ -140,6 +154,7 @@ public class BuildAndPrintQueries extends ProduceValuesToPerformQueries {
 	 * @throws IOException 
 	 *  */
 	public void writeTheseManyQueriesTakingThemRandomlyFromThisListOfClasses(int number_of_queries, String list_of_classes) throws IOException {
+		System.out.println("Printing mixed queries");
 		String[] classes = list_of_classes.split(",");
 		// each class will be equally represented
 		int times_one_class_is_built = (int) number_of_queries / list_of_classes.length();
@@ -156,8 +171,12 @@ public class BuildAndPrintQueries extends ProduceValuesToPerformQueries {
 			TupleQuery query = null;
 			if(query_class == MyValues.QueryClass.ONE) {
 				query = rc.prepareTupleQuery(queryClass1);			
+			} else if (query_class == MyValues.QueryClass.TWO) {
+				query = rc.prepareTupleQuery(queryClass2);
 			} else if (query_class == MyValues.QueryClass.FIVE) {
 				query = rc.prepareTupleQuery(queryClass5);
+			} else if (query_class == MyValues.QueryClass.SIX) {
+				query = rc.prepareTupleQuery(queryClass6);
 			} else if (query_class == MyValues.QueryClass.SEVEN) {
 				query = rc.prepareTupleQuery(queryClass7);
 			} else if (query_class == MyValues.QueryClass.EIGHT) {
@@ -179,10 +198,18 @@ public class BuildAndPrintQueries extends ProduceValuesToPerformQueries {
 						String param3 = solution.getValue("pf2").toString();
 						String[] parameters = {param1, param2, param3, "ONE"};
 						classList.add(parameters);
+					} else if (query_class == MyValues.QueryClass.TWO) {
+						String param1 = solution.getValue("p1").toString();
+						String[] parameters = {param1, "TWO"};
+						valuesList.add(parameters);
 					} else if (query_class == MyValues.QueryClass.FIVE) {
 						String param1 = solution.getValue("p").toString();
 						String[] parameters = {param1, "FIVE"};
-						classList.add(parameters);
+						valuesList.add(parameters);
+					} else if (query_class == MyValues.QueryClass.SIX) {
+						String param1 = solution.getValue("label").toString();
+						String[] parameters = {param1, "SIX"};
+						valuesList.add(parameters);
 					} else if (query_class == MyValues.QueryClass.SEVEN) {
 						String param1 =solution.getValue("p").toString();
 						String param2 = solution.getValue("c").toString();
@@ -201,10 +228,13 @@ public class BuildAndPrintQueries extends ProduceValuesToPerformQueries {
 
 				// shuffle a little bit
 				Collections.shuffle(classList);
+				int share = Math.min(times_one_class_is_built, classList.size());
 				// add this class to the values
-				valuesList.addAll(classList.subList(0, times_one_class_is_built));
+				valuesList.addAll(classList.subList(0, share));
 			}
 		}// scan over all classes 
+		
+		System.out.println("finished asking queries, now printing them");
 
 		// shuffle all of them 
 		Collections.shuffle(valuesList);
@@ -250,13 +280,20 @@ public class BuildAndPrintQueries extends ProduceValuesToPerformQueries {
 	 * */
 	public void writeQueriesFollowingThePlan() throws IOException {
 		if(MyValues.queryPlan == MyValues.QueryPlan.UNIFORM) {// when we want to print a series of queries in block. Each block is made by queries of the same class
+			System.out.println("following the UNIFORM plan");
+			
 			// take a string that describes the desiderd plan to write queries
 			String[] plan = MyValues.printingPlan.split(",");
 			for( String sec : plan) {
-				if(sec.equals("ONE"))
+				if(sec.equals("ONE")) {
 					this.buildTheseManyQueriesForThisClass(MyValues.how_many_queries, MyValues.QueryClass.ONE);
-				else if (sec.equals("FIVE")) {
+					
+				} else if (sec.equals("TWO")) {
+					this.buildTheseManyQueriesForThisClass(MyValues.how_many_queries, MyValues.QueryClass.TWO);
+				} else if (sec.equals("FIVE")) {
 					this.buildTheseManyQueriesForThisClass(MyValues.how_many_queries, MyValues.QueryClass.FIVE);
+				} else if (sec.equals("SIX")) {
+					this.buildTheseManyQueriesForThisClass(MyValues.how_many_queries, MyValues.QueryClass.SIX);
 				} else if (sec.equals("SEVEN")) {
 					this.buildTheseManyQueriesForThisClass(MyValues.how_many_queries, MyValues.QueryClass.SEVEN);
 				} else if (sec.equals("EIGHT")) {

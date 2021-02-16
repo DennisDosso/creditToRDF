@@ -24,8 +24,8 @@ public class BSBMQuery8 {
 			"	OPTIONAL { ?review bsbm:rating3 ?rating3 . }\n" + 
 			"	OPTIONAL { ?review bsbm:rating4 ?rating4 . }\n" + 
 			"}\n" + 
-			"ORDER BY DESC(?reviewDate)\n" + 
-			"LIMIT 20"
+//			"ORDER BY DESC(?reviewDate)\n" + 
+			"LIMIT 5"
 			;
 	
 	public static String select_query_with_named_graphs = "PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
@@ -46,11 +46,10 @@ public class BSBMQuery8 {
 			"	OPTIONAL { ?review bsbm:rating3 ?rating3 . }\n" + 
 			"	OPTIONAL { ?review bsbm:rating4 ?rating4 . }\n" + 
 			"}}\n" + 
-			"ORDER BY DESC(?reviewDate)\n" + 
-			"LIMIT 20"
+//			"ORDER BY DESC(?reviewDate)\n" + 
+			"LIMIT 5"
 			;
 	
-	// TODO serve verificare che le triple siano effettivamente nel grafo
 	public static String parametrixed_construct_query = "PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
 			"PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" + 
 			"PREFIX rev: <http://purl.org/stuff/rev#>\n" + 
@@ -80,5 +79,6 @@ public class BSBMQuery8 {
 			"	OPTIONAL { ?review bsbm:rating3 ?rating3 . }\n" + 
 			"	OPTIONAL { ?review bsbm:rating4 ?rating4 . }\n" + 
 			"}\n" + 
-			"ORDER BY DESC(?reviewDate)";
+//			"ORDER BY DESC(?reviewDate)";
+			"LIMIT 100";
 }

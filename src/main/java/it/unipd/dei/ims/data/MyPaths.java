@@ -44,7 +44,8 @@ public class MyPaths {
 	public static String overheadTimes, wholeDbTimes, namedDbTimes, cacheTimes, 
 	updateCacheTimes, updateNamedTimes;
 	
-	
+	/** Where to save the files produced to build a whole RDF graph */
+	public static String fragmentsOutputDirectory;
 
 	public MyPaths() {
 		Map<String, String> map = PropertiesUtils.getPropertyMap("properties/paths.properties");
@@ -79,5 +80,7 @@ public class MyPaths {
 		
 		updateCacheTimes = map.get("update.cache.times");
 		updateNamedTimes = map.get("update.named.times");
+		
+		fragmentsOutputDirectory = map.get("fragments.output.directory");
 	}
 }

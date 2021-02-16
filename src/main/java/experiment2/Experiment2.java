@@ -9,11 +9,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.annotation.Experimental;
+
 import experiment1.Experiment1;
 import it.unipd.dei.ims.credittordf.utils.ConnectionHandler;
 import it.unipd.dei.ims.data.MyPaths;
 import it.unipd.dei.ims.data.MyValues;
 import it.unipd.dei.ims.data.RDB;
+import it.unipd.dei.ims.data.ReturnBox;
 
 
 /** In this second experiment we implement a sort of cooldown function, based on time. 
@@ -24,6 +27,9 @@ import it.unipd.dei.ims.data.RDB;
  * only the last epochs in the computation of the distributed credit. 
  * <p>
  * We call this strategy TIME-AWARE.
+ * <p>
+ * The strategy NON-TIME-AWARE is simply the one of {@link Experiment1}, where you simply interrogate the cache
+ * and use the same threshold used here.
  * */
 
 public class Experiment2 extends Experiment1 {
@@ -47,8 +53,11 @@ public class Experiment2 extends Experiment1 {
 		// flag to keep thrack of the type of query we are answering right now
 		MyValues.QueryClass query_class = null;
 
+		int cacheHit = 0, cacheMiss = 0;
+		
 		// time used to perform the query
 		List<Long> interrogationTimes = new ArrayList<Long>();
+		List<Long> cacheTimes = new ArrayList<Long>();
 
 		// get the plan file and read it
 		Path p = Paths.get(MyPaths.queryValuesFile);
@@ -67,27 +76,44 @@ public class Experiment2 extends Experiment1 {
 					// do nothing, useless line
 				} else {
 					if(  epochTimer % MyValues.epochLength == 0 && epochTimer != 0 ) { 
-						// an epoch has passed
-						// TODO fai quello che devi fare in base al cambiamento di un'epoca
+						// an epoch has passed - update the number of epochs that we are keeping track of (one exists, one enters)
 						this.updateEpochsHandler();
 						this.assignCreditToDatabase();
 						//update the cache!
+						ReturnBox rb = this.cacheHandler.updateCacheUsingThreshold(MyValues.creditThreshold);
+						// also, start a new epoch
+						this.epochsHandler.startNewEpoch();
+						
+						System.out.println("one epoch has passed, cache size: " + rb.size + 
+								" cache hits: " + cacheHit + 
+								" cache miss: " + cacheMiss);
 					}
+					// add the query to the epoch handler
+					this.epochsHandler.addQueryToCurrentEpoch(values);
+					
+					//get the class of this query
+					query_class = this.assignClass(values[values.length - 1]);
+					
+					// query the cache and the DB, if necessary
+					ReturnBox box = this.queryTheCache(query_class, values, this.repoConnection);
+					Long time = box.nanoTime;
+					if(!box.foundSomething) { 
+						// cache miss
+						box = this.queryTheTripleStore(query_class, false, values);
+						time += box.nanoTime;
+						cacheMiss ++;
+					} else {
+						// cache hit
+						cacheHit ++;
+					}
+					cacheTimes.add(time);
 				}
 				
-				//get the class of this query
-				query_class = this.assignClass(values[values.length - 1]);
-				// update hits on the database
-				// distribute the credit  - this may require some time due to the operations on the support RDB and the check for the LINEAGE
-				if(MyValues.areWeDistributingCredit) {
-					// these two lineas are a little strange, but they are necessary because of how I built assignHitsWithOneQuery. 
-					List<String[]> v = new ArrayList<String[]>();
-					v.add(values);
-
-					long overheadTime = this.assignHitsWithOneQuery(query_class, v, 0);
-
-				}
-			}
+				
+			} // end of the queries
+			
+			this.printOneArrayOfTimes(cacheTimes, "cache");
+			System.out.println("cache hits: " + cacheHit + ", cache miss: " + cacheMiss);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -114,6 +140,7 @@ public class Experiment2 extends Experiment1 {
 				MyValues.QueryClass query_class = this.assignClass(query[query.length - 1]);
 				List<String[]> v = new ArrayList<String[]>();
 				v.add(query);
+				// add the hits to the database based on the query
 				this.assignHitsWithOneQuery(query_class, v, 0);
 			}
 		}
@@ -134,7 +161,14 @@ public class Experiment2 extends Experiment1 {
 	}
 
 	public static void main(String[] args) {
-
+		try {
+			Experiment2 execution = new Experiment2();
+			execution.executeTheQueryPlan();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			e.getNextException().printStackTrace();
+		}
+		
 	}
 
 }

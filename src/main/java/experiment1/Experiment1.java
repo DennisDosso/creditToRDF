@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,7 +37,9 @@ import it.unipd.dei.ims.credittordf.utils.ConnectionHandler;
 import it.unipd.dei.ims.credittordf.utils.TripleStoreHandler;
 import it.unipd.dei.ims.data.BSBMQuery1;
 import it.unipd.dei.ims.data.BSBMQuery10;
+import it.unipd.dei.ims.data.BSBMQuery2;
 import it.unipd.dei.ims.data.BSBMQuery5;
+import it.unipd.dei.ims.data.BSBMQuery6;
 import it.unipd.dei.ims.data.BSBMQuery7;
 import it.unipd.dei.ims.data.BSBMQuery8;
 import it.unipd.dei.ims.data.MyPaths;
@@ -69,9 +73,9 @@ public class Experiment1 {
 			"set credit = credit + ln(hits + 1)\n" + 
 			"where hits > 0";
 
-	private RepositoryConnection repoConnection;
+	protected RepositoryConnection repoConnection;
 
-	private CacheHandler cacheHandler;
+	protected CacheHandler cacheHandler;
 
 	/** Query to select triples in the relational database that have credit bigger than 0 
 	 * */
@@ -99,6 +103,9 @@ public class Experiment1 {
 	/** Used to update the RDB with hits in a quick way*/
 	private Map<String, Integer> triplesToUpdate, triplesToInsert;
 
+	/** A map containing the lineage of queries already produced */
+	private Map<String, List<String[]>> lineageMap;
+
 	/** Sets up the values.properties, rdb.properties, paths.properties and the connection to the RDB
 	 * @throws SQLException */
 	public Experiment1() throws SQLException {
@@ -115,6 +122,8 @@ public class Experiment1 {
 		triplesToUpdate = new HashMap<String, Integer>();
 		triplesToInsert = new HashMap<String, Integer>();
 
+		this.lineageMap = new HashMap<String, List<String[]>>();
+
 		ConnectionHandler.createConnection(RDB.produceJdbcString());
 		ConnectionHandler.getConnection().setAutoCommit(false);
 	}
@@ -126,6 +135,7 @@ public class Experiment1 {
 	 * 
 	 * */
 	public void executeTheQueryPlan() throws SQLException {
+		System.out.println("starting the query plan...");
 		MyValues.QueryClass query_class = null;
 
 		int cacheHit = 0, cacheMiss = 0;
@@ -158,7 +168,7 @@ public class Experiment1 {
 				if(values[0].equals("epoch")) {
 					//change of query class, do nothing
 					try {
-						System.out.println("Chance of class: " + values[1]);						
+						System.out.println("Change of class: " + values[1]);						
 					} catch(Exception e) {
 						// I do not want a stupid index exception in case I change the format of the csv file to ruin my execution
 					}
@@ -180,12 +190,15 @@ public class Experiment1 {
 						if(values.length == 2 && values[0].equals("epoch"))
 							System.out.println("\nchange of class!!\n");
 
-					}					
+					}	
+					// TODO debug, to be removed
+					if(epochTimer % 20 == 0)
+						System.out.println("processed " + epochTimer + " queries");
 
 					// now we process the query
 
 					//get the class of this query
-					query_class = this.assignClass(values[values.length - 1]);
+					query_class  = MyValues.convertToQueryClass(values[values.length - 1]);
 
 					// distribute the credit  - this may require some time due to the operations on the support RDB and the check for the LINEAGE
 					if(MyValues.areWeDistributingCredit) {
@@ -266,7 +279,7 @@ public class Experiment1 {
 		System.out.println("cache hits: " + cacheHit + ", cache miss: " + cacheMiss);
 	}
 
-	private void printOneArrayOfTimes(List<Long> times, String what) {
+	protected void printOneArrayOfTimes(List<Long> times, String what) {
 		Path pa = null;
 
 		// we take the right path, based on 'what' we are doing, where to write the times
@@ -295,7 +308,7 @@ public class Experiment1 {
 		}
 	}
 
-	private ReturnBox queryTheCache(MyValues.QueryClass query_class, String[] values, RepositoryConnection repoConnection) {
+	protected ReturnBox queryTheCache(MyValues.QueryClass query_class, String[] values, RepositoryConnection repoConnection) {
 		String query = this.decideTheQuery(query_class, false, values);
 
 		ReturnBox box = new ReturnBox();
@@ -318,15 +331,19 @@ public class Experiment1 {
 		return box;
 	}
 
-	/** Convenience method used to decide the desiderd query depending on the situation */
+	/** Convenience method used to decide the select query depending on the situation */
 	private String decideTheQuery(MyValues.QueryClass query_class, boolean using_named_graph, String[] values) {
 		String query = "", named_query = "", whole_query = "";
 
 		// decide which named query based on the class
 		if (query_class == MyValues.QueryClass.ONE) {
-			named_query = BSBMQuery1.select_query_1_with_named_graphs;
+			named_query = BSBMQuery1.select_named;
+		} else if (query_class == MyValues.QueryClass.TWO) {
+			named_query = BSBMQuery2.select_named;
 		} else if (query_class == MyValues.QueryClass.FIVE) {
 			named_query = BSBMQuery5.select_named;
+		} else if (query_class == MyValues.QueryClass.SIX) {
+			named_query = BSBMQuery6.select_named;
 		} else if (query_class == MyValues.QueryClass.SEVEN) {
 			named_query = BSBMQuery7.select_named;
 		} else if (query_class == MyValues.QueryClass.EIGHT) {
@@ -337,9 +354,13 @@ public class Experiment1 {
 
 		// decide whole query based on the class
 		if (query_class == MyValues.QueryClass.ONE) {
-			whole_query = BSBMQuery1.select_query_1;
+			whole_query = BSBMQuery1.select;
+		} else if (query_class == MyValues.QueryClass.TWO) {
+			whole_query = BSBMQuery2.select;
 		} else if (query_class == MyValues.QueryClass.FIVE) {
 			whole_query = BSBMQuery5.select;
+		} else if (query_class == MyValues.QueryClass.SIX) {
+			whole_query = BSBMQuery6.select;
 		} else if (query_class == MyValues.QueryClass.SEVEN) {
 			whole_query = BSBMQuery7.select;
 		} else if (query_class == MyValues.QueryClass.EIGHT) {
@@ -361,10 +382,22 @@ public class Experiment1 {
 			String param3 = values[2];
 			String param4 = BSBMQuery1.value_query_1; 
 			query = String.format(query, "<" + param1 + ">", "<" + param2 + ">", "<" + param3 + ">", param4);
+		} else if (query_class == MyValues.QueryClass.TWO) {
+			String param1 = values[0];
+			query = String.format(query, 
+					"<" + param1 + ">", "<" + param1 + ">", "<" + param1 + ">",
+					"<" + param1 + ">", "<" + param1 + ">", "<" + param1 + ">",
+					"<" + param1 + ">", "<" + param1 + ">", "<" + param1 + ">",
+					"<" + param1 + ">", "<" + param1 + ">", "<" + param1 + ">",
+					"<" + param1 + ">");
 		} else if (query_class == MyValues.QueryClass.FIVE) {
 			String param1 = values[0];
 			query = String.format(query, "<" + param1 + ">", "<" + param1 + ">", "<" + param1 + ">",
 					"<" + param1 + ">");
+		} else if (query_class == MyValues.QueryClass.SIX) {
+			String param1 = values[0];
+			query = String.format(query,
+					param1 );
 		} else if (query_class == MyValues.QueryClass.SEVEN) {
 			String param1 = values[0];
 			String param2 = values[1];
@@ -381,7 +414,7 @@ public class Experiment1 {
 		return query;
 	}
 
-	private ReturnBox queryTheTripleStore(MyValues.QueryClass query_class, boolean using_named_graph, String[] values) {
+	protected ReturnBox queryTheTripleStore(MyValues.QueryClass query_class, boolean using_named_graph, String[] values) {
 		// prepare the SPARQL query
 		// three queries: the first query we execute, the query to the named graph, the query to the whole database
 		String query = this.decideTheQuery(query_class, using_named_graph, values);
@@ -393,7 +426,7 @@ public class Experiment1 {
 		long query_start_time = System.nanoTime();
 		TupleQuery tupleQuery = TripleStoreHandler.getRepositoryConnection().prepareTupleQuery(query);
 		TupleQueryResult result = tupleQuery.evaluate();
-		if(result.hasNext()) {
+		if(result.hasNext()) {// potentially time consuming operation
 			result.next();
 			box.foundSomething = true;
 		} else {
@@ -519,41 +552,7 @@ public class Experiment1 {
 		long startTime = System.nanoTime();
 
 		// FIRST: perform a CONSTRUCT to get the lineage
-		String query = null;
-
-		// deal with the parameters depending on the class, prepare the construct query
-		if(query_class == MyValues.QueryClass.ONE) {
-			String param1 = valuesList.get(queryNum)[0];
-			String param2 = valuesList.get(queryNum)[1];
-			String param3 = valuesList.get(queryNum)[2];
-			String param4 = BSBMQuery1.value_query_1;
-
-			query = BSBMQuery1.parameter_query_1;
-			query = String.format(query, "<" + param1 + ">", "<" + param2 + ">", "<" + param3 + ">",
-					"<" + param1 + ">", "<" + param2+ ">", "<" + param3 + ">", param4);
-		} else if (query_class == MyValues.QueryClass.FIVE) {
-			String param1 = valuesList.get(queryNum)[0];
-			query = BSBMQuery5.construct;
-			query = String.format(query, "<" + param1 + ">", "<" + param1 + ">", 
-					"<" + param1 + ">", "<" + param1 + ">",
-					"<" + param1 + ">", "<" + param1 + ">", "<" + param1 + ">");
-		} else if (query_class == MyValues.QueryClass.SEVEN) {
-			String param1 = valuesList.get(queryNum)[0];
-			String param2 = valuesList.get(queryNum)[1];
-			query = BSBMQuery7.construct;
-			query = String.format(query, "<" + param1 + ">", "<" + param1 + ">", 
-					"<" + param2 + ">", "<" + param1 + ">", 
-					"<" + param1 + ">", "<" + param1 + ">", 
-					"<" + param2 + ">", "<" + param1 + ">");
-		} else if (query_class == MyValues.QueryClass.EIGHT) {
-			String param1 = valuesList.get(queryNum)[0];
-			query = BSBMQuery8.parametrixed_construct_query;
-			query = String.format(query, "<" + param1 + ">", "<" + param1 + ">"); 
-		} else if (query_class == MyValues.QueryClass.TEN) {
-			String param1 = valuesList.get(queryNum)[0];
-			query = BSBMQuery10.construct;
-			query = String.format(query, "<" + param1 + ">", "<" + param1 + ">");
-		}
+		String query = this.buildConstructQuery(query_class, valuesList, queryNum);
 
 		// here we prepare two jdbc statements, one to insert a new triple and one to update an already present triple in the support RDB
 		String q = String.format(this.updateHits, RDB.schema);// set the right schema to the SQL query
@@ -578,8 +577,8 @@ public class Experiment1 {
 				// check if that triple is already present in the RDB, and decide if we need to insert or update it 
 				if(this.checkTriplePresence(st)) { // TODO si potrebbe migliorare questo metodo aggiungendo mappe in RAM per rendere il tutto più veloce, soprattutto nell'inserimento
 					// the triple is already present in the RDB
-//					this.dealWithAlreadySeenTriple(st);
-					
+					//					this.dealWithAlreadySeenTriple(st);
+
 					update_stmt.setInt(1, 1);
 					update_stmt.setString(2, st.getSubject().stringValue());
 					update_stmt.setString(3, st.getPredicate().stringValue());
@@ -615,6 +614,176 @@ public class Experiment1 {
 
 	}
 
+	/** A method that is used to add hits to the support relational database. 
+	 * This method uses a support in-memory HashMap, so to avoid to repeadly ask to the triplestore
+	 * for the lineage of a query, an operation that may cost several seconds depending on its size. 
+	 * @throws SQLException 
+	 * */
+	protected long assignHitsWithOneQueryMoreEfficiently(MyValues.QueryClass query_class, List<String[]> valuesList, int queryNum) throws SQLException  {
+		long startTime = System.nanoTime();
+
+		// FIRST: pdefine the construct query
+		String query = this.buildConstructQuery(query_class, valuesList, queryNum);
+
+		// here we prepare two jdbc statements, one to insert a new triple and one to update an already present triple in the support RDB
+		String q = String.format(this.updateHits, RDB.schema);// set the right schema to the SQL query
+		PreparedStatement update_stmt = ConnectionHandler.getConnection().prepareStatement(q);
+
+		String insert_q = String.format(this.INSERT_TRIPLE, RDB.schema);
+		PreparedStatement insert_stmt = ConnectionHandler.getConnection().prepareStatement(insert_q);
+
+		List<String[]> lineage = this.getTheLineageOfThisQuery(query);
+
+		for(String[] triple: lineage) {
+			// for each triple in the lineage
+			if(this.checkTriplePresence(triple)) { // if it is already in the RDB
+				update_stmt.setInt(1, 1);
+				update_stmt.setString(2, triple[0]);
+				update_stmt.setString(3, triple[1]);
+				update_stmt.setString(4, triple[2]);
+
+				update_stmt.addBatch();
+			} else {
+				// we need to insert it into the RDB
+				insert_stmt.setString(1, triple[0]);
+				insert_stmt.setString(2, triple[1]);
+				insert_stmt.setString(3, triple[2]);
+
+				insert_stmt.executeUpdate();
+				ConnectionHandler.getConnection().commit();
+			}
+		} // covered the lineage
+		update_stmt.executeBatch();
+		ConnectionHandler.getConnection().commit();
+		
+		//stop timer
+				long totalTime = System.nanoTime() - startTime;
+				return totalTime;
+
+	}
+
+	protected boolean checkTriplePresence(String[] triple) throws SQLException {
+		String subject = triple[0];
+		String predicate = triple[1];
+		String object = triple[2];
+
+		// this is really the first time we see this triple, thus it is necessary to ask to the relational DB
+		String check_query = String.format(this.CHECK_TRIPLE_PRESENCE, RDB.schema);
+		PreparedStatement check_stmt = ConnectionHandler.getConnection().prepareStatement(check_query);
+		check_stmt.setString(1, subject);
+		check_stmt.setString(2, predicate);
+		check_stmt.setString(3, object);
+
+		ResultSet check_rs = check_stmt.executeQuery();
+		if(check_rs.next())
+			return true;
+		else
+			return false;
+	}
+
+	/** tihis method first looks in RAM to see if we already computed the lineage of this query.
+	 * If not, it computes it and inserts it in an HASH MAP. Then it returns the lineage. 
+	 * <br>
+	 * This method, if left unchecked, may become inefficient when we have a huge number of different
+	 * queries with big lineages. Therefore, one optimization in this method
+	 * could be to implement strategies to deal with the lineages that are kept in memory. 
+	 * That is, this, in itself, is a form of caching used to help another form of caching. 
+	 * */
+	protected List<String[]> getTheLineageOfThisQuery(String query) {
+		String queryHash = "";
+		// convert the long query into a more manageable hash string
+		try {
+			MessageDigest mDigest = MessageDigest.getInstance("SHA-256");
+			mDigest.update(query.getBytes());
+			queryHash = new String(mDigest.digest());
+
+		} catch (NoSuchAlgorithmException e) {
+			System.err.println("No such algorithm as SHA-256 here");
+			e.printStackTrace();
+		}
+
+		// now check if the query was already answered in the past
+		List<String[]> lineage = this.lineageMap.get(queryHash);
+
+		if(lineage != null)
+			return lineage;
+
+		//else, it is a new query, and we need to compute it
+		lineage = new ArrayList<String[]>();
+		// get the LINEAGE
+		GraphQuery graphQuery = TripleStoreHandler.getRepositoryConnection().prepareGraphQuery(query);
+
+		try (GraphQueryResult result = graphQuery.evaluate()) {
+			for (Statement st: result) {
+				if(MyValues.constructCheck) { // need to perform a check on the triples 
+					boolean presence = this.checkTriplePresenceInTriplestore(st);
+					if(!presence) // the triple is not present in the triplestore, thus there is no need to deal with it
+						continue;
+				}
+
+				String[] lin = new String[] {st.getSubject().stringValue(), st.getPredicate().stringValue(), st.getObject().toString()};
+				lineage.add(lin);
+			}
+		}
+		return lineage;
+	}
+
+	/** Method used to build the construct query used to compute the Lineage */
+	private String buildConstructQuery(MyValues.QueryClass query_class, List<String[]> valuesList, int queryNum) {
+		String query = "";
+		// deal with the parameters depending on the class, prepare the construct query
+		if(query_class == MyValues.QueryClass.ONE) {
+			String param1 = valuesList.get(queryNum)[0];
+			String param2 = valuesList.get(queryNum)[1];
+			String param3 = valuesList.get(queryNum)[2];
+			String param4 = BSBMQuery1.value_query_1;
+
+			query = BSBMQuery1.construct;
+			query = String.format(query, "<" + param1 + ">", "<" + param2 + ">", "<" + param3 + ">",
+					"<" + param1 + ">", "<" + param2+ ">", "<" + param3 + ">", param4);
+		} else if (query_class == MyValues.QueryClass.TWO) {
+			String param1 = valuesList.get(queryNum)[0];
+			query = BSBMQuery2.construct;
+			query = String.format(query,
+					"<" + param1 + ">", "<" + param1 + ">", "<" + param1 + ">", "<" + param1 + ">", 
+					"<" + param1 + ">", "<" + param1 + ">", "<" + param1 + ">", "<" + param1 + ">", 
+					"<" + param1 + ">", "<" + param1 + ">", "<" + param1 + ">", "<" + param1 + ">", 
+					"<" + param1 + ">", "<" + param1 + ">", "<" + param1 + ">", "<" + param1 + ">",
+					"<" + param1 + ">", "<" + param1 + ">", "<" + param1 + ">", "<" + param1 + ">",
+					"<" + param1 + ">", "<" + param1 + ">", "<" + param1 + ">", "<" + param1 + ">",
+					"<" + param1 + ">", "<" + param1 + ">");
+		} else if (query_class == MyValues.QueryClass.FIVE) {
+			String param1 = valuesList.get(queryNum)[0];
+			query = BSBMQuery5.construct;
+			query = String.format(query, "<" + param1 + ">", "<" + param1 + ">", 
+					"<" + param1 + ">", "<" + param1 + ">",
+					"<" + param1 + ">", "<" + param1 + ">", "<" + param1 + ">");
+		} else if (query_class == MyValues.QueryClass.SIX) {
+			String param1 = valuesList.get(queryNum)[0];
+			query = BSBMQuery6.construct;
+			query = String.format(query, 
+					param1 , param1 );
+		} else if (query_class == MyValues.QueryClass.SEVEN) {
+			String param1 = valuesList.get(queryNum)[0];
+			String param2 = valuesList.get(queryNum)[1];
+			query = BSBMQuery7.construct;
+			query = String.format(query, "<" + param1 + ">", "<" + param1 + ">", 
+					"<" + param2 + ">", "<" + param1 + ">", 
+					"<" + param1 + ">", "<" + param1 + ">", 
+					"<" + param2 + ">", "<" + param1 + ">");
+		} else if (query_class == MyValues.QueryClass.EIGHT) {
+			String param1 = valuesList.get(queryNum)[0];
+			query = BSBMQuery8.parametrixed_construct_query;
+			query = String.format(query, "<" + param1 + ">", "<" + param1 + ">"); 
+		} else if (query_class == MyValues.QueryClass.TEN) {
+			String param1 = valuesList.get(queryNum)[0];
+			query = BSBMQuery10.construct;
+			query = String.format(query, "<" + param1 + ">", "<" + param1 + ">");
+		}
+
+		return query;
+	}
+
 	private void dealWithNewTriple(Statement st) {
 		// build the key
 		String subject = st.getSubject().stringValue();
@@ -642,7 +811,7 @@ public class Experiment1 {
 		String predicate = st.getPredicate().stringValue();
 		String object = st.getObject().toString();
 		String key = subject+ "," + predicate + "," + object;
-		
+
 		Integer hits = this.triplesToUpdate.get(key);
 		if(hits != null) {
 			// update
@@ -652,8 +821,8 @@ public class Experiment1 {
 			// this is the first time we see it locally - this should be impossible, since before it should have passed from triplesToInsert
 			this.triplesToUpdate.put(key, 1);
 		}
-		
-		
+
+
 	}
 
 	private void insertNewTriples() throws SQLException {
@@ -679,23 +848,23 @@ public class Experiment1 {
 		st.executeBatch();
 		ConnectionHandler.getConnection().commit();
 	}
-	
+
 	private void updateAlreadySeenTriples() throws SQLException {
 		PreparedStatement st = ConnectionHandler.getConnection().prepareStatement(INSERT_TRIPLE_WITH_HITS);
-		
+
 		for(Entry<String, Integer> entry : this.triplesToUpdate.entrySet()) {
 			String[] values = entry.getKey().split(",");
-			
+
 			st.setInt(1, entry.getValue());
-			
+
 			st.setString(2, values[0]);
 			st.setString(3, values[1]);
 			st.setString(4, values[2]);
-			
+
 			st.addBatch();
 			this.triplesToUpdate.put(entry.getKey(), 0); // "unload" the hits
 		}
-		
+
 		st.executeBatch();
 		ConnectionHandler.getConnection().commit();
 	}
@@ -890,6 +1059,7 @@ public class Experiment1 {
 			e.printStackTrace();
 		}
 		// all ok
+		System.out.println("truncated the triplestore");
 	}
 
 
