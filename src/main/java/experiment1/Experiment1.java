@@ -32,6 +32,9 @@ import org.eclipse.rdf4j.query.UpdateExecutionException;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
 
+import bigqueries.BSBMQuery10Big;
+import bigqueries.BSBMQuery7Big;
+import bigqueries.BSBMQuery8Big;
 import it.unipd.dei.ims.credittordf.utils.CacheHandler;
 import it.unipd.dei.ims.credittordf.utils.ConnectionHandler;
 import it.unipd.dei.ims.credittordf.utils.TripleStoreHandler;
@@ -176,41 +179,54 @@ public class Experiment1 {
 				{
 					if(  epochTimer % MyValues.epochLength == 0 && epochTimer != 0 ) { // new epoch - need to update some things
 						// in this special case one epoch has passed or we changed query class
+						
+						try {
+							
+							ReturnBox box = new ReturnBox();
+							if(MyValues.areWeDistributingCredit) {
+								// XXX update method
+								box = this.oneYearHasPassed(MyValues.coolDownStrategy);
+								
+								System.out.println("one epoch has passed, cache size: " + box.size + " cache hits: " + cacheHit);
+							}
+							
+							// take note of the time required to update cache/named graph
+							if(MyValues.areWeInterrogatingTheCache)
+								updateCacheTimes.add(box.nanoTime);
+							if(MyValues.areWeInterrogatingTheWholeNamedTripleStore)
+								updateNamedGraphTimes.add(box.nanoTime);
+						} catch (NullPointerException e) {
+							e.printStackTrace();
+						}
 
-						ReturnBox box = this.oneYearHasPassed(MyValues.coolDownStrategy);
 
-						// take note of the time required to update cache/named graph
-						if(MyValues.areWeInterrogatingTheCache)
-							updateCacheTimes.add(box.nanoTime);
-						if(MyValues.areWeInterrogatingTheWholeNamedTripleStore)
-							updateNamedGraphTimes.add(box.nanoTime);
-
-
-						System.out.println("one epoch has passed, cache size: " + box.size + " cache hits: " + cacheHit);
-						if(values.length == 2 && values[0].equals("epoch"))
-							System.out.println("\nchange of class!!\n");
 
 					}	
 					// TODO debug, to be removed
-					if(epochTimer % 20 == 0)
-						System.out.println("processed " + epochTimer + " queries");
+//					if(epochTimer % 20 == 0)
+//						System.out.println("processed " + epochTimer + " queries");
 
 					// now we process the query
 
-					//get the class of this query
+					// decide which query this is gonna be
 					query_class  = MyValues.convertToQueryClass(values[values.length - 1]);
 
+					
+					// ----- credit distribution process ----- //
 					// distribute the credit  - this may require some time due to the operations on the support RDB and the check for the LINEAGE
 					if(MyValues.areWeDistributingCredit) {
 						// these two lineas are a little strange, but they are necessary because of how I built assignHitsWithOneQuery. 
 						List<String[]> v = new ArrayList<String[]>();
 						v.add(values);
 
-						long overheadTime = this.assignHitsWithOneQuery(query_class, v, 0);
+						// this method has been optimized with a cache to reduce the number of construct queries to the database 
+						long overheadTime = this.assignHitsWithOneQueryMoreEfficiently(query_class, v, 0);
 
 						// take note of the time required to distribute the credit
 						updateRDBTimes.add(overheadTime);
 					}
+					
+					// ----- querying process ----- //
 
 					// query the whole database
 					if(MyValues.areWeInterrogatingTheWholeTripleStore) {
@@ -248,7 +264,6 @@ public class Experiment1 {
 						}
 						cacheTimes.add(time);
 					}
-
 					epochTimer++; // one line read, proceed
 				}
 			}
@@ -295,6 +310,8 @@ public class Experiment1 {
 			pa = Paths.get(MyPaths.updateCacheTimes);
 		else if (what.equals("update_named"))
 			pa = Paths.get(MyPaths.updateNamedTimes);
+		else if (what.equals("update_epochs"))
+			pa = Paths.get(MyPaths.updateEpochsTime);
 
 
 		try(BufferedWriter writer = Files.newBufferedWriter(pa)) {
@@ -346,10 +363,16 @@ public class Experiment1 {
 			named_query = BSBMQuery6.select_named;
 		} else if (query_class == MyValues.QueryClass.SEVEN) {
 			named_query = BSBMQuery7.select_named;
+		} else if (query_class == MyValues.QueryClass.SEVENB) {
+			named_query = BSBMQuery7Big.select_named;
 		} else if (query_class == MyValues.QueryClass.EIGHT) {
 			named_query = BSBMQuery8.select_query_with_named_graphs;
+		} else if (query_class == MyValues.QueryClass.EIGHTB) {
+			named_query = BSBMQuery8Big.select_query_with_named_graphs;
 		} else if (query_class == MyValues.QueryClass.TEN) {
 			named_query = BSBMQuery10.select_named;
+		} else if (query_class == MyValues.QueryClass.TENB) {
+			named_query = BSBMQuery10Big.select_named;
 		}
 
 		// decide whole query based on the class
@@ -363,10 +386,16 @@ public class Experiment1 {
 			whole_query = BSBMQuery6.select;
 		} else if (query_class == MyValues.QueryClass.SEVEN) {
 			whole_query = BSBMQuery7.select;
+		} else if (query_class == MyValues.QueryClass.SEVENB) {
+			whole_query = BSBMQuery7Big.select;
 		} else if (query_class == MyValues.QueryClass.EIGHT) {
 			whole_query = BSBMQuery8.select_query;
+		} else if (query_class == MyValues.QueryClass.EIGHTB) {
+			whole_query = BSBMQuery8Big.select_query;
 		} else if (query_class == MyValues.QueryClass.TEN) {
 			whole_query = BSBMQuery10.select;
+		} else if (query_class == MyValues.QueryClass.TENB) {
+			whole_query = BSBMQuery10Big.select;
 		}
 
 		if(using_named_graph)
@@ -403,12 +432,22 @@ public class Experiment1 {
 			String param2 = values[1];
 			query = String.format(query, "<" + param1 + ">", "<" + param1 + ">", "<" + param2 + ">",
 					"<" + param1 + ">");
+		} else if (query_class == MyValues.QueryClass.SEVENB) {
+			String param1 = values[0];
+			String param2 = values[1];
+			query = String.format(query, "<" + param1 + ">", "<" + param1 + ">");
 		} else if (query_class == MyValues.QueryClass.EIGHT) {
+			String param1 = values[0];
+			query = String.format(query, "<" + param1 + ">");
+		} else if (query_class == MyValues.QueryClass.EIGHTB) {
 			String param1 = values[0];
 			query = String.format(query, "<" + param1 + ">");
 		} else if (query_class == MyValues.QueryClass.TEN) {
 			String param1 = values[0];
 			query = String.format(query, "<" + param1 + ">", "<" + param1 + ">");
+		} else if (query_class == MyValues.QueryClass.TENB) {
+			String param1 = values[0];
+			query = String.format(query, "<" + param1 + ">");
 		}
 
 		return query;
@@ -543,8 +582,9 @@ public class Experiment1 {
 	 * As of now, this method sometimes requires a lot of time, in particular
 	 * when we have SPARQL queries that encompass a very big lineage. 
 	 * Apart from some minor improvements for efficiency, that I a currently too lazy to do but may be nice in the future, 
-	 * I do not think there is a lot that can be done here.
-	 * 
+	 * <p>
+	 * A more efficient method has been implemented in {@link assignHitsWithOneQueryMoreEfficiently}, but
+	 * it uses a local cache and it has a different set of limits.
 	 * 
 	 * @return the required time to assign hits with this query */
 	protected long assignHitsWithOneQuery(MyValues.QueryClass query_class, List<String[]> valuesList, int queryNum) throws SQLException {
@@ -622,7 +662,7 @@ public class Experiment1 {
 	protected long assignHitsWithOneQueryMoreEfficiently(MyValues.QueryClass query_class, List<String[]> valuesList, int queryNum) throws SQLException  {
 		long startTime = System.nanoTime();
 
-		// FIRST: pdefine the construct query
+		// FIRST: define the construct query
 		String query = this.buildConstructQuery(query_class, valuesList, queryNum);
 
 		// here we prepare two jdbc statements, one to insert a new triple and one to update an already present triple in the support RDB
@@ -652,13 +692,13 @@ public class Experiment1 {
 				insert_stmt.executeUpdate();
 				ConnectionHandler.getConnection().commit();
 			}
-		} // covered the lineage
+		} // covered the whole lineage
 		update_stmt.executeBatch();
 		ConnectionHandler.getConnection().commit();
 		
 		//stop timer
-				long totalTime = System.nanoTime() - startTime;
-				return totalTime;
+		long totalTime = System.nanoTime() - startTime;
+		return totalTime;
 
 	}
 
@@ -681,7 +721,7 @@ public class Experiment1 {
 			return false;
 	}
 
-	/** tihis method first looks in RAM to see if we already computed the lineage of this query.
+	/** this method first looks in RAM to see if we already computed the lineage of this query.
 	 * If not, it computes it and inserts it in an HASH MAP. Then it returns the lineage. 
 	 * <br>
 	 * This method, if left unchecked, may become inefficient when we have a huge number of different
@@ -717,14 +757,17 @@ public class Experiment1 {
 			for (Statement st: result) {
 				if(MyValues.constructCheck) { // need to perform a check on the triples 
 					boolean presence = this.checkTriplePresenceInTriplestore(st);
-					if(!presence) // the triple is not present in the triplestore, thus there is no need to deal with it
+					if(!presence) // the triple is not present in the triplestore, it was erroneously created in the CONSTRUCT, thus there is no need to deal with it
 						continue;
 				}
-
+				//build the new lineage string
 				String[] lin = new String[] {st.getSubject().stringValue(), st.getPredicate().stringValue(), st.getObject().toString()};
+				// add it to the lineage set
 				lineage.add(lin);
 			}
 		}
+		
+		this.lineageMap.put(queryHash, lineage);
 		return lineage;
 	}
 
@@ -771,13 +814,27 @@ public class Experiment1 {
 					"<" + param2 + ">", "<" + param1 + ">", 
 					"<" + param1 + ">", "<" + param1 + ">", 
 					"<" + param2 + ">", "<" + param1 + ">");
+		} else if (query_class == MyValues.QueryClass.SEVENB) {
+			String param1 = valuesList.get(queryNum)[0];
+			String param2 = valuesList.get(queryNum)[1];
+			query = BSBMQuery7Big.construct;
+			query = String.format(query, "<" + param1 + ">", "<" + param1 + ">", 
+					"<" + param1 + ">", "<" + param1 + ">"); 
 		} else if (query_class == MyValues.QueryClass.EIGHT) {
 			String param1 = valuesList.get(queryNum)[0];
 			query = BSBMQuery8.parametrixed_construct_query;
 			query = String.format(query, "<" + param1 + ">", "<" + param1 + ">"); 
+		} else if (query_class == MyValues.QueryClass.EIGHTB) {
+			String param1 = valuesList.get(queryNum)[0];
+			query = BSBMQuery8Big.construct;
+			query = String.format(query, "<" + param1 + ">", "<" + param1 + ">"); 
 		} else if (query_class == MyValues.QueryClass.TEN) {
 			String param1 = valuesList.get(queryNum)[0];
 			query = BSBMQuery10.construct;
+			query = String.format(query, "<" + param1 + ">", "<" + param1 + ">");
+		} else if (query_class == MyValues.QueryClass.TENB) {
+			String param1 = valuesList.get(queryNum)[0];
+			query = BSBMQuery10Big.construct;
 			query = String.format(query, "<" + param1 + ">", "<" + param1 + ">");
 		}
 
@@ -1074,6 +1131,7 @@ public class Experiment1 {
 		execution.executeTheQueryPlan();
 
 		execution.close();
+		System.out.println("done");
 
 	}
 

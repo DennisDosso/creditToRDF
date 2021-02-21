@@ -25,6 +25,8 @@ public class EpochsHandler {
 		// set the number of kept epochs
 		this.epochsNumber = eN;
 		this.epochs = new ArrayList<List<String[]>>();
+		this.currentEpoch = new ArrayList<String[]>();
+		this.epochs.add(currentEpoch);
 	}
 	
 	public void startNewEpoch() {

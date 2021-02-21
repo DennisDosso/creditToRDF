@@ -105,8 +105,6 @@ public class ProduceValuesToPerformQueries {
 			" ?product rdf:type bsbm:Product .\n" + 
 			"} LIMIT 100";
 	
-	// TODO si potrebbe considerare di porre come vincolo qui anche su vendorTitle, per restringere ancor di 
-	// più la query
 	public static String queryClass7 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
 			"PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
 			"PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" + 
@@ -135,6 +133,21 @@ public class ProduceValuesToPerformQueries {
 			"        OPTIONAL { ?review bsbm:rating2 ?rating2 . }}\n" + 
 			"} LIMIT 100\n";
 	
+	public static String queryClass7Big = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
+			"PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
+			"PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" + 
+			"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" + 
+			"PREFIX rev: <http://purl.org/stuff/rev#>\n" + 
+			"PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n" + 
+			"select distinct ?p \n" + 
+			"WHERE {\n" + 
+			"    ?p rdfs:label ?productLabel .\n" + // first parameter
+			"        ?offer bsbm:product ?p .\n" + // second parameter 
+			"        ?offer bsbm:price ?price .\n" + 
+			"        ?offer bsbm:vendor ?vendor .\n" + 
+			"        ?offer dc:publisher ?vendor . \n" + 
+			"} LIMIT 100\n";
+	
 	public static String queryClass8 = "PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
 			"PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" + 
 			"PREFIX rev: <http://purl.org/stuff/rev#>\n" + 
@@ -154,6 +167,20 @@ public class ProduceValuesToPerformQueries {
 			"	OPTIONAL { ?review bsbm:rating4 ?rating4 . }\n" + 
 			"}\n" + 
 //			"ORDER BY DESC(?reviewDate)\n" + 
+			"LIMIT 100";
+	
+	public static String queryClass8Big = "PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
+			"PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" + 
+			"PREFIX rev: <http://purl.org/stuff/rev#>\n" + 
+			"PREFIX foaf: <http://xmlns.com/foaf/0.1/>"
+			+ "SELECT ?p \n" + 
+			"WHERE { \n" + 
+			"	?review bsbm:reviewFor ?p .\n" + //param 
+			"	?review dc:title ?title .\n" + 
+			"	?review rev:text ?text ." +
+			"	FILTER langMatches( lang(?text), \"EN\" ) \n" + 
+			"	?review rev:reviewer ?reviewer .\n" + // to be removed, if it requires too much time 
+			"}\n" + 
 			"LIMIT 100";
 	
 	// class 9 was not used because it is of type DESCRIBE
@@ -176,6 +203,22 @@ public class ProduceValuesToPerformQueries {
 			" FILTER (?date > \"2008-02-10T00:00:00\"^^xsd:dateTime )\n" + // I fixed the date
 			"}\n" + 
 //			"ORDER BY xsd:double(str(?price))\n" + 
+			"LIMIT 100";
+	
+	public static String queryClass10Big = "PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
+			"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" + 
+			"PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" + 
+			"\n" + 
+			"SELECT DISTINCT ?p\n" + 
+			"WHERE {\n" + 
+			"	?offer bsbm:product ?p .\n" + // param 
+			"	?offer bsbm:vendor ?vendor .\n" + 
+			"	?offer bsbm:deliveryDays ?deliveryDays .\n" + 
+			"	FILTER (?deliveryDays <= 3)\n" + 
+			" ?offer bsbm:validTo ?date .\n" + 
+			" FILTER (?date > \"2008-02-10T00:00:00\"^^xsd:dateTime )\n" + 
+			"?offer bsbm:price ?price .  " +
+			"}\n" + 
 			"LIMIT 100";
 
 	public void printValuesForQueries(MyValues.QueryClass class_, String outputFile, String tripleStorePath) throws IOException {

@@ -17,6 +17,7 @@ import execution.ProduceValuesToPerformQueries;
 import it.unipd.dei.ims.credittordf.utils.TripleStoreHandler;
 import it.unipd.dei.ims.data.MyPaths;
 import it.unipd.dei.ims.data.MyValues;
+import it.unipd.dei.ims.data.MyValues.QueryClass;
 
 /** builds a series of queries, in CONSTRUCT and SELECT 
  * 
@@ -63,6 +64,12 @@ public class BuildAndPrintQueries extends ProduceValuesToPerformQueries {
 			query = rc.prepareTupleQuery(queryClass8);
 		} else if (query_class == MyValues.QueryClass.TEN) {
 			query = rc.prepareTupleQuery(queryClass10);
+		} else if (query_class == MyValues.QueryClass.SEVENB) {
+			query = rc.prepareTupleQuery(queryClass7Big);
+		} else if (query_class == MyValues.QueryClass.EIGHTB) {
+			query = rc.prepareTupleQuery(queryClass8Big);
+		} else if (query_class == MyValues.QueryClass.TENB) {
+			query = rc.prepareTupleQuery(queryClass10Big);
 		}
 
 		// this list will contain the parameters to perform the queries
@@ -102,6 +109,18 @@ public class BuildAndPrintQueries extends ProduceValuesToPerformQueries {
 				} else if (query_class == MyValues.QueryClass.TEN) {
 					String param1 = solution.getValue("p").toString();
 					String[] parameters = {param1, "TEN"};
+					valuesList.add(parameters);
+				} else if (query_class == MyValues.QueryClass.SEVENB) {
+					String param1 =solution.getValue("p").toString();
+					String[] parameters = {param1, "SEVENB"};
+					valuesList.add(parameters);
+				} else if (query_class == MyValues.QueryClass.EIGHTB) {
+					String param1 = solution.getValue("p").toString();
+					String[] parameters = {param1, "EIGHTB"};
+					valuesList.add(parameters);
+				} else if (query_class == MyValues.QueryClass.TENB) {
+					String param1 = solution.getValue("p").toString();
+					String[] parameters = {param1, "TENB"};
 					valuesList.add(parameters);
 				}
 
@@ -183,6 +202,12 @@ public class BuildAndPrintQueries extends ProduceValuesToPerformQueries {
 				query = rc.prepareTupleQuery(queryClass8);
 			} else if (query_class == MyValues.QueryClass.TEN) {
 				query = rc.prepareTupleQuery(queryClass10);
+			} else if (query_class == MyValues.QueryClass.SEVENB) {
+				query = rc.prepareTupleQuery(queryClass7Big);
+			} else if (query_class == MyValues.QueryClass.EIGHTB) {
+				query = rc.prepareTupleQuery(queryClass8Big);
+			} else if (query_class == MyValues.QueryClass.TENB) {
+				query = rc.prepareTupleQuery(queryClass10Big);
 			}
 
 			// execute the query and get the parameters
@@ -222,6 +247,18 @@ public class BuildAndPrintQueries extends ProduceValuesToPerformQueries {
 					} else if (query_class == MyValues.QueryClass.TEN) {
 						String param1 = solution.getValue("p").toString();
 						String[] parameters = {param1, "TEN"};
+						classList.add(parameters);
+					} else if (query_class == MyValues.QueryClass.SEVENB) {
+						String param1 =solution.getValue("p").toString();
+						String[] parameters = {param1, "SEVENB"};
+						classList.add(parameters);
+					} else if (query_class == MyValues.QueryClass.EIGHTB) {
+						String param1 = solution.getValue("p").toString();
+						String[] parameters = {param1, "EIGHTB"};
+						classList.add(parameters);
+					} else if (query_class == MyValues.QueryClass.TENB) {
+						String param1 = solution.getValue("p").toString();
+						String[] parameters = {param1, "TENB"};
 						classList.add(parameters);
 					}
 				}// end scan over 1 class of queries
@@ -285,22 +322,26 @@ public class BuildAndPrintQueries extends ProduceValuesToPerformQueries {
 			// take a string that describes the desiderd plan to write queries
 			String[] plan = MyValues.printingPlan.split(",");
 			for( String sec : plan) {
-				if(sec.equals("ONE")) {
-					this.buildTheseManyQueriesForThisClass(MyValues.how_many_queries, MyValues.QueryClass.ONE);
-					
-				} else if (sec.equals("TWO")) {
-					this.buildTheseManyQueriesForThisClass(MyValues.how_many_queries, MyValues.QueryClass.TWO);
-				} else if (sec.equals("FIVE")) {
-					this.buildTheseManyQueriesForThisClass(MyValues.how_many_queries, MyValues.QueryClass.FIVE);
-				} else if (sec.equals("SIX")) {
-					this.buildTheseManyQueriesForThisClass(MyValues.how_many_queries, MyValues.QueryClass.SIX);
-				} else if (sec.equals("SEVEN")) {
-					this.buildTheseManyQueriesForThisClass(MyValues.how_many_queries, MyValues.QueryClass.SEVEN);
-				} else if (sec.equals("EIGHT")) {
-					this.buildTheseManyQueriesForThisClass(MyValues.how_many_queries, MyValues.QueryClass.EIGHT);
-				} else if (sec.equals("TEN")) {
-					this.buildTheseManyQueriesForThisClass(MyValues.how_many_queries, MyValues.QueryClass.TEN);
-				}
+				
+				QueryClass p = MyValues.convertToQueryClass(sec);
+				this.buildTheseManyQueriesForThisClass(MyValues.how_many_queries, p);
+//				
+//				if(sec.equals("ONE")) {
+//					this.buildTheseManyQueriesForThisClass(MyValues.how_many_queries, MyValues.QueryClass.ONE);
+//					
+//				} else if (sec.equals("TWO")) {
+//					this.buildTheseManyQueriesForThisClass(MyValues.how_many_queries, MyValues.QueryClass.TWO);
+//				} else if (sec.equals("FIVE")) {
+//					this.buildTheseManyQueriesForThisClass(MyValues.how_many_queries, MyValues.QueryClass.FIVE);
+//				} else if (sec.equals("SIX")) {
+//					this.buildTheseManyQueriesForThisClass(MyValues.how_many_queries, MyValues.QueryClass.SIX);
+//				} else if (sec.equals("SEVEN")) {
+//					this.buildTheseManyQueriesForThisClass(MyValues.how_many_queries, MyValues.QueryClass.SEVEN);
+//				} else if (sec.equals("EIGHT")) {
+//					this.buildTheseManyQueriesForThisClass(MyValues.how_many_queries, MyValues.QueryClass.EIGHT);
+//				} else if (sec.equals("TEN")) {
+//					this.buildTheseManyQueriesForThisClass(MyValues.how_many_queries, MyValues.QueryClass.TEN);
+//				}
 			}			
 		} else if (MyValues.queryPlan == MyValues.QueryPlan.MIXED) { // in the case we want a list of queries that are of mixed classes
 			this.writeTheseManyQueriesTakingThemRandomlyFromThisListOfClasses(MyValues.how_many_queries, MyValues.printingPlan);

@@ -41,6 +41,7 @@ public class AskATupleQuery {
 		
 		try (RepositoryConnection conn = db.getConnection()) {
 			String queryString = MyQueries.tupleQuery;
+			System.out.println("Asking query\n " + queryString);
 			
 			TupleQuery query = conn.prepareTupleQuery(queryString);
 

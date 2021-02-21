@@ -42,7 +42,7 @@ public class MyPaths {
 	public static String queryValuesFile;
 	
 	public static String overheadTimes, wholeDbTimes, namedDbTimes, cacheTimes, 
-	updateCacheTimes, updateNamedTimes;
+	updateCacheTimes, updateNamedTimes, updateEpochsTime;
 	
 	/** Where to save the files produced to build a whole RDF graph */
 	public static String fragmentsOutputDirectory;
@@ -80,6 +80,8 @@ public class MyPaths {
 		
 		updateCacheTimes = map.get("update.cache.times");
 		updateNamedTimes = map.get("update.named.times");
+		
+		updateEpochsTime = map.get("update.epochs.times");
 		
 		fragmentsOutputDirectory = map.get("fragments.output.directory");
 	}

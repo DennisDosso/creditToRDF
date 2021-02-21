@@ -66,5 +66,5 @@ public class BSBMQuery3 {
 			" FILTER (!bound(?testVar)) \n" + 
 			"}\n" + 
 			"ORDER BY ?label\n" + 
-			"LIMIT 10000";
+			"LIMIT 100";
 }

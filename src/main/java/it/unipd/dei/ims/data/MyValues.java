@@ -50,8 +50,11 @@ public class MyValues {
 		FIVE,
 		SIX,
 		SEVEN,
+		SEVENB,
 		EIGHT,
-		TEN;
+		EIGHTB,
+		TEN,
+		TENB;
 	}
 
 	/** Class of queries we are using. Change between ONE, TWO, THREE etc. */
@@ -183,10 +186,16 @@ public class MyValues {
 			return QueryClass.SIX;
 		else if(c.equals("SEVEN"))
 			return QueryClass.SEVEN;
+		else if(c.equals("SEVENB"))
+			return QueryClass.SEVENB;
 		else if(c.equals("EIGHT"))
 			return QueryClass.EIGHT;
+		else if(c.equals("EIGHTB"))
+			return QueryClass.EIGHTB;
 		else if(c.equals("TEN"))
 			return QueryClass.TEN;
+		else if(c.equals("TENB"))
+			return QueryClass.TENB;
 		
 		return null;
 		

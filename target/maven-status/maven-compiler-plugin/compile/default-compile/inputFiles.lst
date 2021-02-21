@@ -3,6 +3,7 @@
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/data/MyPaths.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/data/MyValues.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/data/BSBMQuery2.java
+/Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/bigqueries/BSBMQuery10Big.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/execution/CacheExtractor.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/experiment2/EpochsHandler.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/credittordf/utils/ConnectionHandler.java
@@ -37,6 +38,8 @@
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/data/BSBMQuery3.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/data/BSBMQuery6.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/data/RDB.java
+/Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/bigqueries/BSBMQuery7Big.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/database/FromTripleStoreToRDB.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/queries/TakeTimes.java
+/Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/bigqueries/BSBMQuery8Big.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/database/ExtractTriplesFromRDBAndNameThemInATriplestore.java

@@ -132,6 +132,7 @@ Class: *Experiment1*
 - NONE: no strategy for cooldown, thus there is only a threshold
 – TIME: strategy based on time
 – FUNCTION: strategy based on a cooldown function
+(actually, this choice does not mean anything, since I created 3 classes for the 3 choices. Experiment1 covers the first choice)
 
 * credit.threshold: when using NONE, it is the constant threshold used to build the cache/named graph
 
@@ -185,3 +186,39 @@ nohup java -Xms4000m -Xmx32000m -cp creditToRdf-1.0.jar:lib/* experiment1/Experi
 </code>
 
 
+## Step 5: Experiment2
+
+In this experiment, class *experiment2.Experiment2*, we test the time-based cooldown strategy.
+
+Properties to set:
+
+##### values.properties
+
+* credit.threshold: when using NONE, it is the constant threshold used to build the cache/named graph (suggestion: keep it to 0)
+
+* construct.check (suggestion: leave it to true)
+
+* how.many.epochs: how many epochs the time-out strategy exploits (e.g. 2, 5, 10)
+
+* are.we.interrogating.the.cache
+* are.we.interrogating.the.whole.triplestore
+<br>
+These last two should be one true and the other false for when you want to query using the cache or only the database,
+to get an idea of the times required. 
+
+
+
+##### paths.properties
+* querying.index: the path of the index triple store on disk that we are using. 
+
+
+* query.values.files: path of the file where the query plan is written (use the mixed one)
+
+* cache.times: times required interrogating the cache, once per query
+* whole.db.times: times to query the whole DB, without any optimization. Done once per query.
+
+
+
+<code>
+java -cp creditToRdf-1.0.jar:lib/* experiment2/Experiment2
+</code> 

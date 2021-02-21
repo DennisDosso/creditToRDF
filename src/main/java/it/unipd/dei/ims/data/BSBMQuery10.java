@@ -19,7 +19,7 @@ public class BSBMQuery10 {
 			" FILTER (?date > \"2008-02-10T00:00:00\"^^xsd:dateTime )\n" + // I fixed the date
 			"}\n" + 
 //			"ORDER BY xsd:double(str(?price))\n" + 
-			"LIMIT 10";
+			"LIMIT 5";
 	
 	public static String select_named = "PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
 			"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" + 
@@ -38,7 +38,7 @@ public class BSBMQuery10 {
 			" FILTER (?date > \"2008-02-10T00:00:00\"^^xsd:dateTime )\n" + // I fixed the date
 			"}}\n" + 
 //			"ORDER BY xsd:double(str(?price))\n" + 
-			"LIMIT 10";
+			"LIMIT 5";
 	
 	public static String construct = "PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
 			"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" + 
