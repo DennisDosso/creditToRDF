@@ -45,6 +45,7 @@ public class MyValues {
 
 	/** Classes of queries we are going to use */
 	public enum QueryClass {
+		// BSBM queries
 		ONE, 
 		TWO,
 		FIVE,
@@ -54,7 +55,20 @@ public class MyValues {
 		EIGHT,
 		EIGHTB,
 		TEN,
-		TENB;
+		TENB,
+		// DisGeNet Queries
+		DGNQUERY1,
+		DGNQUERY2,
+		DGNQUERY3,
+		DGNQUERY4,
+		DGNQUERY5,
+		DGNQUERY6,
+		DGNQUERY7,
+		DGNQUERY8,
+		DGNQUERY9,
+		DGNQUERY10,
+		DGNQUERY11,
+		DGNQUERY12;
 	}
 
 	/** Class of queries we are using. Change between ONE, TWO, THREE etc. */
@@ -88,9 +102,14 @@ public class MyValues {
 	/** Set this to true if it is necessary to check that the triples produced
 	 * by the construct queries are or not present in the original triplestore */
 	public static boolean constructCheck;
-	
+
+	/** The length of an epoch in number of queries. After an epoch, the cache is updated. 
+	 * */
 	public static int epochLength;
 
+	/** The length of a year. The years are the units used in the TIME based method
+	 * */
+	public static int yearLength;
 
 
 	/** Used to dictate how many times one query needs to be repeated
@@ -115,16 +134,8 @@ public class MyValues {
 		Map<String, String> map = PropertiesUtils.getPropertyMap("properties/values.properties");
 
 		String class_ = map.get("class");
-		if(class_.equals("1"))
-			QUERYCLASS = QueryClass.ONE;
-		if(class_.equals("5"))
-			QUERYCLASS = QueryClass.FIVE;
-		if(class_.equals("7"))
-			QUERYCLASS = QueryClass.SEVEN;
-		if(class_.contentEquals("8"))
-			QUERYCLASS = QueryClass.EIGHT;
-		if(class_.equals("10"))
-			QUERYCLASS = QueryClass.TEN;
+		
+		QUERYCLASS = convertToQueryClass(class_);
 
 		String cds = map.get("cool.down.strategy");
 		if(cds.equals("NONE"))
@@ -172,8 +183,13 @@ public class MyValues {
 		constructCheck = Boolean.parseBoolean(map.get("construct.check"));
 		
 		epochLength = Integer.parseInt(map.get("epoch.length"));
+		
+		yearLength = Integer.parseInt(map.get("year.length"));
 	}
 
+	/** Method used to convert one string representing a query class in the corresponding
+	 * QueryClass values
+	 * */
 	public static QueryClass convertToQueryClass(String c) {
 		if(c.equals("ONE")) {
 			return QueryClass.ONE;
@@ -196,6 +212,30 @@ public class MyValues {
 			return QueryClass.TEN;
 		else if(c.equals("TENB"))
 			return QueryClass.TENB;
+		else if(c.equals("DGNQUERY1"))
+			return QueryClass.DGNQUERY1;
+		else if(c.equals("DGNQUERY2"))
+			return QueryClass.DGNQUERY2;
+		else if(c.equals("DGNQUERY3"))
+			return QueryClass.DGNQUERY3;
+		else if(c.equals("DGNQUERY4"))
+			return QueryClass.DGNQUERY4;
+		else if(c.equals("DGNQUERY5"))
+			return QueryClass.DGNQUERY5;
+		else if(c.equals("DGNQUERY6"))
+			return QueryClass.DGNQUERY6;
+		else if(c.equals("DGNQUERY7"))
+			return QueryClass.DGNQUERY7;
+		else if(c.equals("DGNQUERY8"))
+			return QueryClass.DGNQUERY8;
+		else if(c.equals("DGNQUERY9"))
+			return QueryClass.DGNQUERY9;
+		else if(c.equals("DGNQUERY10"))
+			return QueryClass.DGNQUERY10;
+		else if(c.equals("DGNQUERY11"))
+			return QueryClass.DGNQUERY11;
+		else if(c.equals("DGNQUERY12"))
+			return QueryClass.DGNQUERY12;
 		
 		return null;
 		

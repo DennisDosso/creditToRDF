@@ -79,20 +79,30 @@ public class Experiment2 extends Experiment1 {
 				if(values[0].equals("epoch")) {
 					// do nothing, useless line
 				} else {
+					
+					if(epochTimer % MyValues.yearLength == 0 && epochTimer != 0) {
+						//start a new epoch
+						this.epochsHandler.startNewEpoch();
+						// update the set of epochs 
+						this.updateEpochsHandler();
+						System.out.println("One year has passed, epochs size: " + (epochsHandler.getEpochs().size() ) + 
+								" cache hits: " + cacheHit + 
+								" cache miss: " + cacheMiss);
+					}
+					
 					if(  epochTimer % MyValues.epochLength == 0 && epochTimer != 0 ) { 
+
 						
 						if(MyValues.areWeInterrogatingTheCache) {
+							
+							
 							long start = System.nanoTime();
 							// an epoch has passed - update the number of epochs that we are keeping track of (one exists, one enters)
-							this.updateEpochsHandler();
 							
 							this.assignCreditToDatabase();
 							
 							//update the cache!
 							ReturnBox rb = this.cacheHandler.updateCacheUsingThreshold(MyValues.creditThreshold);
-							
-							// also, start a new epoch
-							this.epochsHandler.startNewEpoch();
 							
 							long elapsed = System.nanoTime() - start;
 							overheadTimes.add(elapsed);
@@ -103,7 +113,7 @@ public class Experiment2 extends Experiment1 {
 						}
 					}
 					
-					// add the query to the epoch handlers
+					// add the current query to the current epoch
 					this.epochsHandler.addQueryToCurrentEpoch(values);
 					
 					//get the class of this query

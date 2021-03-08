@@ -43,7 +43,7 @@ public class BSBMQuery7 {
 			"PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n" + 
 			"select distinct ?productLabel ?offer ?price ?vendor ?vendorTitle ?review ?revTitle \n" + 
 			" ?reviewer ?revName ?rating1 ?rating2\n" + 
-			"WHERE { GRAPH <http://namedgraph/> {\n" + 
+			"WHERE { GRAPH %here {\n" + 
 			"    %s rdfs:label ?productLabel .\n" + // first parameter
 //			"    OPTIONAL {" +
 			"        ?offer bsbm:product %s .\n" + // third parameter 

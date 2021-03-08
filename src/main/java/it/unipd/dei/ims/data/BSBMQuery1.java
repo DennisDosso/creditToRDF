@@ -75,7 +75,7 @@ public class BSBMQuery1 {
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
 			"\n" + 
 			"SELECT DISTINCT ?product ?label\n" + 
-			"WHERE { GRAPH <http://namedgraph/> {\n" + 
+			"WHERE { GRAPH %here {\n" + 
 			" ?product rdfs:label ?label .\n" + 
 			" ?product a %s .\n" + 
 			" ?product bsbm:productFeature %s . \n" + 

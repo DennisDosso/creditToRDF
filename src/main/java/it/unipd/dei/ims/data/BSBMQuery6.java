@@ -17,7 +17,7 @@ public class BSBMQuery6 {
 			"PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
 			"\n" + 
 			"SELECT ?product \n" + 
-			"WHERE { GRAPH <http://namedgraph/> {\n" + 
+			"WHERE { GRAPH %here {\n" + 
 			"	?product rdfs:label %s .\n" + 
 			" ?product rdf:type bsbm:Product .\n" + 
 			"}}"

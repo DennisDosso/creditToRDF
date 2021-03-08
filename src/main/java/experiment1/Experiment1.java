@@ -2,6 +2,7 @@ package experiment1;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -73,7 +74,7 @@ public class Experiment1 {
 	private  String CHECK_TRIPLE_PRESENCE = "SELECT subject FROM %s.triplestore where subject = ? AND predicate = ? AND object = ?";
 
 	private final String updateWithCredit = "update %s.triplestore\n" + 
-			"set credit = credit + ln(hits + 1)\n" + 
+			"set credit = ln(hits + 1)\n" + 
 			"where hits > 0";
 
 	protected RepositoryConnection repoConnection;
@@ -187,7 +188,9 @@ public class Experiment1 {
 								// XXX update method
 								box = this.oneYearHasPassed(MyValues.coolDownStrategy);
 								
-								System.out.println("one epoch has passed, cache size: " + box.size + " cache hits: " + cacheHit);
+								System.out.println("one epoch has passed, cache size: " + box.size + 
+										" cache hits: " + cacheHit +
+										" cache miss: " + cacheMiss);
 							}
 							
 							// take note of the time required to update cache/named graph
@@ -312,6 +315,17 @@ public class Experiment1 {
 			pa = Paths.get(MyPaths.updateNamedTimes);
 		else if (what.equals("update_epochs"))
 			pa = Paths.get(MyPaths.updateEpochsTime);
+		
+		// create the damn directory if it does not exists
+		File f = pa.toAbsolutePath().toFile();
+		File parent = f.getParentFile();
+		if(!parent.exists()) {
+			try {
+				Files.createDirectory(Paths.get(parent.toString()));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 
 
 		try(BufferedWriter writer = Files.newBufferedWriter(pa)) {
@@ -398,8 +412,9 @@ public class Experiment1 {
 			whole_query = BSBMQuery10Big.select;
 		}
 
-		if(using_named_graph)
-			query = named_query;
+		if(using_named_graph) {
+			query = named_query.replaceAll("%here", "<" +MyValues.namedGraph + ">");			
+		}
 		else
 			query = whole_query;
 
@@ -1086,6 +1101,7 @@ public class Experiment1 {
 
 		// first, select the tuples with hits > 0
 		try {
+
 			String updateString = String.format(this.updateWithCredit, RDB.schema);
 			PreparedStatement ps = cc.prepareStatement(updateString);
 			ps.executeUpdate();

@@ -77,6 +77,24 @@ Code for this case:
 java -cp creditToRdf-1.0.jar:lib/* experiment1.ImportDatabaseInTripleStoreUsingManyFiles
 </code> 
 
+## STEP 2/ter: importing a database like DisGeNet, where you have many files
+After this, we can now import the fragments, using the class *ImportDatabaseTripleStoreUsingManyFiles*. This class iterates through the many smaller files to build the bigger index.
+
+In this case, the necessary properties to set are the following:
+
+##### paths.properties
+* fragments.output.directory: where we take the fragments
+* index_path: where to save the big index
+
+##### values.properties
+* indexes.string: string describing the indexes we will use for the triple store. E.g. spoc,psoc,cspo. It needs to stay the same throughout the execution. For a big database, I would only use spoc,cspo
+
+Code for this case:
+
+<code>
+java -cp creditToRdf-1.0.jar:lib/* experiment1.ImportDatabaseInTripleStoreUsingManyFiles
+</code> 
+
 
 ## STEP 3: create values for queries 
 
@@ -101,7 +119,7 @@ Alternatively, it contains the class of queries that we use when we print them r
 
 
 * standard.deviation.ratio: the number with which we produce a standard deviation of the normal distribution. The higher this number, the more concentrated will be the normal distribution around the mean.
-I usually go with 6.
+I usually go with 18 (in my experiment I then started trying 12 and 6).
 
 
 ##### paths.properties
@@ -139,6 +157,8 @@ Class: *Experiment1*
 * named.graph: url of the named graph used as index for our queries
 
 * construct.check: set it to true if you want the algorithm to check for the presence of triples returned by the CONSTRUCT queries in the original whole database. This is necessary when using queries with OPTIONAL in them, since the CONSTRUCT may build triples that are not present in the original database
+
+* epoch.length: the number of queries considered as one epoch. After each epoch (aka "year"), the cache/named graph is refreshed. 
 
 
 * are.we.distributing.credit
@@ -200,6 +220,10 @@ Properties to set:
 
 * how.many.epochs: how many epochs the time-out strategy exploits (e.g. 2, 5, 10)
 
+* year.length: the length of one year in queries. Set maybe to 100?
+
+* epoch.length: the length of an epoch. (e.g. 20, 25, 50, 100)
+
 * are.we.interrogating.the.cache
 * are.we.interrogating.the.whole.triplestore
 <br>
@@ -220,5 +244,5 @@ to get an idea of the times required.
 
 
 <code>
-java -cp creditToRdf-1.0.jar:lib/* experiment2/Experiment2
+nohup java -cp creditToRdf-1.0.jar:lib/* experiment2/Experiment2
 </code> 

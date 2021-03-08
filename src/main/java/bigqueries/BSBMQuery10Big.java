@@ -21,7 +21,7 @@ public class BSBMQuery10Big {
 			+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>  "
 			+ "PREFIX dc: <http://purl.org/dc/elements/1.1/> "
 			+ "SELECT DISTINCT ?offer ?price "
-			+ "WHERE { GRAPH <http://namedgraph/> {"
+			+ "WHERE { GRAPH %here {"
 			+ "?offer bsbm:product %s ." // 1
 			+ "?offer bsbm:vendor ?vendor . "
 			+ "?offer bsbm:deliveryDays ?deliveryDays . "

@@ -29,6 +29,8 @@ public class MyPaths {
 	/** Path for an index that you are querying
 	 * */
 	public static String querying_index = "/Users/dennisdosso/MEGAsync/Ricerca/progetti_di_ricerca/CreditToRDF/bsbm100k";
+	
+	public static String queryInputFile;
 
 	/** file where the triples composing the database are present */
 	public static String text_rdf_file;
@@ -84,5 +86,7 @@ public class MyPaths {
 		updateEpochsTime = map.get("update.epochs.times");
 		
 		fragmentsOutputDirectory = map.get("fragments.output.directory");
+		
+		queryInputFile = map.get("query.input.file");
 	}
 }

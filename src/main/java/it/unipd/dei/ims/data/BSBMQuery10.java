@@ -26,7 +26,7 @@ public class BSBMQuery10 {
 			"PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" + 
 			"\n" + 
 			"SELECT DISTINCT ?offer ?price\n" + 
-			"WHERE { GRAPH <http://namedgraph/> {\n" + 
+			"WHERE { GRAPH %here {\n" + 
 			"	?offer bsbm:product %s .\n" + 
 			"	?offer bsbm:vendor ?vendor .\n" + 
 			" ?offer dc:publisher ?vendor .\n" + 

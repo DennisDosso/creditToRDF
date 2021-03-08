@@ -35,7 +35,7 @@ public class BSBMQuery2 {
 			"\n" + 
 			"SELECT ?label ?comment ?producer ?productFeature ?propertyTextual1 ?propertyTextual2 ?propertyTextual3\n" + 
 			" ?propertyNumeric1 ?propertyNumeric2 ?propertyTextual4 ?propertyTextual5 ?propertyNumeric4 \n" + 
-			"WHERE { GRAPH  <http://namedgraph/> {\n" + 
+			"WHERE { GRAPH  %here {\n" + 
 			" %s rdfs:label ?label .\n" + 
 			"	%s rdfs:comment ?comment .\n" + 
 			"	%s bsbm:producer ?p .\n" + 

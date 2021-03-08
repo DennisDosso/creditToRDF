@@ -28,7 +28,7 @@ public class BSBMQuery7Big extends BSBMQuery7 {
 			+ "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "
 			+ "select distinct "
 			+ "?productLabel ?offer ?price ?vendor ?vendorTitle ?review ?revTitle  ?reviewer ?revName ?rating1 ?rating2 "
-			+ "WHERE { GRAPH <http://namedgraph/> {"
+			+ "WHERE { GRAPH %here {"
 			+ "%s rdfs:label ?productLabel . "
 			+ "?offer bsbm:product %s . "
 			+ "?offer bsbm:price ?price . "

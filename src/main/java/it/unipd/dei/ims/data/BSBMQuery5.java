@@ -28,7 +28,7 @@ public class BSBMQuery5 {
 			"PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>\n" + 
 			"\n" + 
 			"SELECT DISTINCT ?product ?productLabel\n" + 
-			"WHERE { GRAPH  <http://namedgraph/> {\n" + 
+			"WHERE { GRAPH  %here {\n" + 
 			"	?product rdfs:label ?productLabel .\n" + 
 			" FILTER (%s != ?product)\n" + // product (a second product different from the first one)
 			"	%s bsbm:productFeature ?prodFeature .\n" + // product

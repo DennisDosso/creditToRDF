@@ -33,7 +33,7 @@ public class BSBMQuery8 {
 			"PREFIX rev: <http://purl.org/stuff/rev#>\n" + 
 			"PREFIX foaf: <http://xmlns.com/foaf/0.1/>"
 			+ "SELECT ?title ?text ?reviewDate ?reviewer ?reviewerName ?rating1 ?rating2 ?rating3 ?rating4 \n" + 
-			"WHERE { GRAPH <http://namedgraph/> {\n" + 
+			"WHERE { GRAPH %here {\n" + 
 			"	?review bsbm:reviewFor %s .\n" + 
 			"	?review dc:title ?title .\n" + 
 			"	?review rev:text ?text .\n" + 
