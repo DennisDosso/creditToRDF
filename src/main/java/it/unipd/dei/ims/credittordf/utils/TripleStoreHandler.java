@@ -59,6 +59,10 @@ public class TripleStoreHandler {
 		return connection;
 	}
 	
+	public static void setConnection(RepositoryConnection c) {
+		connection = c;
+	}
+	
 	public static RepositoryConnection openRepositoryAndConnection(String path) {
 		if(connection!=null)
 			return connection;

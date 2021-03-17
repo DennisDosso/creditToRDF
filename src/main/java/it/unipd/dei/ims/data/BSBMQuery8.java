@@ -80,5 +80,5 @@ public class BSBMQuery8 {
 			"	OPTIONAL { ?review bsbm:rating4 ?rating4 . }\n" + 
 			"}\n" + 
 //			"ORDER BY DESC(?reviewDate)";
-			"LIMIT 100";
+			"LIMIT 200";
 }

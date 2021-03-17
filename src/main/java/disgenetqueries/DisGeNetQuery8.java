@@ -12,8 +12,7 @@ public class DisGeNetQuery8 {
 			+ "?disease dcterms:title ?diseaseName . "
 			+ "?disease2 dcterms:title ?diseaseName2 . "
 			+ "FILTER (?disease != ?disease2) "
-			+ "FILTER (%s != ?gda2) " // 2
-			+ "FILTER regex(?disease2, \"umls/id\") } "
+			+ "FILTER (%s != ?gda2) }" // 2
 			+ "LIMIT 10";
 	
 	public static String select_named = DisGeNetQuery1.prefixes +
@@ -25,8 +24,7 @@ public class DisGeNetQuery8 {
 			+ "?disease2 dcterms:title ?diseaseName2 . "
 			+ "FILTER (?disease != ?disease2) "
 			+ "FILTER (%s != ?gda2) " // 2
-			+ "FILTER regex(?disease2, \"umls/id\") } "
-			+ "}"
+			+ "}}"
 			+ "LIMIT 10";
 	
 	public static String construct = DisGeNetQuery1.prefixes +
@@ -42,8 +40,9 @@ public class DisGeNetQuery8 {
 			+ "?disease dcterms:title ?diseaseName . "
 			+ "?disease2 dcterms:title ?diseaseName2 . "
 			+ "FILTER (?disease != ?disease2) "
-			+ "FILTER (%s != ?gda2) " //3
-			+ "FILTER regex(?disease2, \"umls/id\") } "
-			+ "LIMIT 100";
+			+ "FILTER (%s != ?gda2) " // 3
+			+ "}" 
+			+ "LIMIT 300";
+
 
 }

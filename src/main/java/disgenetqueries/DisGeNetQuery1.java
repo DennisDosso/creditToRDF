@@ -21,7 +21,7 @@ public class DisGeNetQuery1 {
 			"PREFIX prov: <http://http://http://www.w3.org/ns/prov#>\n" + 
 			"PREFIX pav: <http://http://http://purl.org/pav/>\n" + 
 			"PREFIX obo: <http://purl.obolibrary.org/obo/>\n" + 
-			"PREFIX dto: <http://diseasetargetontology.org/dto/> ";
+			"PREFIX dto: <http://diseasetargetontology.org/dto/> \n";
 
 	public static String select = 
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
@@ -40,11 +40,7 @@ public class DisGeNetQuery1 {
 			+ "FILTER(?type=sio:SIO_001122) } "
 			+ "LIMIT 20";
 	
-	public static String select_named = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-			+ "PREFIX sio: <http://semanticscience.org/resource/> "
-			+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-			+ "PREFIX dcterms: <http://purl.org/dc/terms/> "
-			+ "PREFIX void: <http://rdfs.org/ns/void#> "
+	public static String select_named = prefixes 
 			+ "SELECT * "
 			+ "WHERE { GRAPH %here {"
 			+ "%s rdf:type ?type; " // 1
@@ -76,6 +72,7 @@ public class DisGeNetQuery1 {
 			+ "dcterms:title ?title ;"
 			+ " dcterms:identifier ?id ; "
 			+ "void:inDataset ?voidSubset. "
-			+ "FILTER(?type=sio:SIO_001122) } "
-			+ "LIMIT 200";
+			+ "FILTER(?type=sio:SIO_001122) } ";
+	
+	
 }

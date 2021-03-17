@@ -97,7 +97,6 @@ public class Experiment2 extends Experiment1 {
 							
 							
 							long start = System.nanoTime();
-							// an epoch has passed - update the number of epochs that we are keeping track of (one exists, one enters)
 							
 							this.assignCreditToDatabase();
 							

@@ -110,6 +110,8 @@ public class Experiment1 {
 	/** A map containing the lineage of queries already produced */
 	private Map<String, List<String[]>> lineageMap;
 
+	private Map<String, Boolean> queryCanBeAnsweredMap;
+
 	/** Sets up the values.properties, rdb.properties, paths.properties and the connection to the RDB
 	 * @throws SQLException */
 	public Experiment1() throws SQLException {
@@ -125,6 +127,7 @@ public class Experiment1 {
 		presenceOfTriplesMap = new HashMap<String, Boolean>();
 		triplesToUpdate = new HashMap<String, Integer>();
 		triplesToInsert = new HashMap<String, Integer>();
+		queryCanBeAnsweredMap = new HashMap<String, Boolean>();
 
 		this.lineageMap = new HashMap<String, List<String[]>>();
 
@@ -180,19 +183,19 @@ public class Experiment1 {
 				{
 					if(  epochTimer % MyValues.epochLength == 0 && epochTimer != 0 ) { // new epoch - need to update some things
 						// in this special case one epoch has passed or we changed query class
-						
+
 						try {
-							
+
 							ReturnBox box = new ReturnBox();
 							if(MyValues.areWeDistributingCredit) {
 								// XXX update method
 								box = this.oneYearHasPassed(MyValues.coolDownStrategy);
-								
+
 								System.out.println("one epoch has passed, cache size: " + box.size + 
 										" cache hits: " + cacheHit +
 										" cache miss: " + cacheMiss);
 							}
-							
+
 							// take note of the time required to update cache/named graph
 							if(MyValues.areWeInterrogatingTheCache)
 								updateCacheTimes.add(box.nanoTime);
@@ -206,15 +209,15 @@ public class Experiment1 {
 
 					}	
 					// TODO debug, to be removed
-//					if(epochTimer % 20 == 0)
-//						System.out.println("processed " + epochTimer + " queries");
+					//					if(epochTimer % 20 == 0)
+					//						System.out.println("processed " + epochTimer + " queries");
 
 					// now we process the query
 
 					// decide which query this is gonna be
 					query_class  = MyValues.convertToQueryClass(values[values.length - 1]);
 
-					
+
 					// ----- credit distribution process ----- //
 					// distribute the credit  - this may require some time due to the operations on the support RDB and the check for the LINEAGE
 					if(MyValues.areWeDistributingCredit) {
@@ -228,13 +231,17 @@ public class Experiment1 {
 						// take note of the time required to distribute the credit
 						updateRDBTimes.add(overheadTime);
 					}
-					
+
 					// ----- querying process ----- //
+					
+					long tripleStoreTime = 0;
 
 					// query the whole database
 					if(MyValues.areWeInterrogatingTheWholeTripleStore) {
 						ReturnBox box = this.queryTheTripleStore(query_class, false, values);
 						wholeDbTimes.add(box.nanoTime);
+						tripleStoreTime = box.nanoTime;
+						//						System.out.println("Answered this query in " + box.nanoTime);
 					}
 
 					// query the named graph
@@ -242,8 +249,12 @@ public class Experiment1 {
 						ReturnBox box = this.queryTheTripleStore(query_class, true, values);
 						long time = box.nanoTime;
 						if(!box.foundSomething) { // cache miss
-							box = this.queryTheTripleStore(query_class, false, values);
-							time += box.nanoTime;
+							if(tripleStoreTime!=0) {
+								time += tripleStoreTime;
+							} else {
+								box = this.queryTheTripleStore(query_class, false, values);						
+								time += box.nanoTime;
+							}
 							cacheMiss ++;
 						} else {
 							// cache hit
@@ -258,8 +269,12 @@ public class Experiment1 {
 						Long time = box.nanoTime;
 						if(!box.foundSomething) { 
 							// cache miss
-							box = this.queryTheTripleStore(query_class, false, values);
-							time += box.nanoTime;
+							if(tripleStoreTime!=0) {
+								time += tripleStoreTime;
+							} else {
+								box = this.queryTheTripleStore(query_class, false, values);						
+								time += box.nanoTime;
+							}
 							cacheMiss ++;
 						} else {
 							// cache hit
@@ -315,7 +330,7 @@ public class Experiment1 {
 			pa = Paths.get(MyPaths.updateNamedTimes);
 		else if (what.equals("update_epochs"))
 			pa = Paths.get(MyPaths.updateEpochsTime);
-		
+
 		// create the damn directory if it does not exists
 		File f = pa.toAbsolutePath().toFile();
 		File parent = f.getParentFile();
@@ -346,6 +361,29 @@ public class Experiment1 {
 
 		// prepare to execute the query and take the time
 		long query_start_time = System.nanoTime();
+
+		// check if we already know that the query can be answered
+		MessageDigest mDigest;
+		String queryHash = null; 
+
+		try {
+			mDigest = MessageDigest.getInstance("SHA-256");
+			mDigest.update(query.getBytes());
+			queryHash = new String(mDigest.digest());
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+
+		if(this.queryCanBeAnsweredMap.get(queryHash) != null &&
+				!this.queryCanBeAnsweredMap.get(queryHash)) {
+			// the query cannot be answered
+			long time = System.nanoTime() - query_start_time;
+			box.foundSomething = true; // in any case, this is a hit
+			box.nanoTime = time;
+			return box;
+		}
+
+
 		TupleQuery tupleQuery = repoConnection.prepareTupleQuery(query);
 		TupleQueryResult result = tupleQuery.evaluate();
 		if(result.hasNext()) {
@@ -478,6 +516,28 @@ public class Experiment1 {
 
 		// prepare to execute the query and take the time
 		long query_start_time = System.nanoTime();
+
+		// check if we already know that the query can be answered
+		MessageDigest mDigest;
+		String queryHash = null; 
+
+		try {
+			mDigest = MessageDigest.getInstance("SHA-256");
+			mDigest.update(query.getBytes());
+			queryHash = new String(mDigest.digest());
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+
+		if(this.queryCanBeAnsweredMap.get(queryHash) != null &&
+				!this.queryCanBeAnsweredMap.get(queryHash)) {
+			// the query cannot be answered
+			long time = System.nanoTime() - query_start_time;
+			box.foundSomething = true; // this is in any case a hit, since we used a cache
+			box.nanoTime = time;
+			return box;
+		}			
+
 		TupleQuery tupleQuery = TripleStoreHandler.getRepositoryConnection().prepareTupleQuery(query);
 		TupleQueryResult result = tupleQuery.evaluate();
 		if(result.hasNext()) {// potentially time consuming operation
@@ -689,6 +749,25 @@ public class Experiment1 {
 
 		List<String[]> lineage = this.getTheLineageOfThisQuery(query);
 
+		MessageDigest mDigest;
+		String queryHash = null; 
+
+		try {
+			mDigest = MessageDigest.getInstance("SHA-256");
+			mDigest.update(query.getBytes());
+			queryHash = new String(mDigest.digest());
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+
+		if(this.queryCanBeAnsweredMap.get(queryHash) != null &&
+				!this.queryCanBeAnsweredMap.get(queryHash)) {
+			// the query cannot be answered
+			long time = System.nanoTime() - startTime;
+			return time;
+		}
+
+
 		for(String[] triple: lineage) {
 			// for each triple in the lineage
 			if(this.checkTriplePresence(triple)) { // if it is already in the RDB
@@ -710,7 +789,7 @@ public class Experiment1 {
 		} // covered the whole lineage
 		update_stmt.executeBatch();
 		ConnectionHandler.getConnection().commit();
-		
+
 		//stop timer
 		long totalTime = System.nanoTime() - startTime;
 		return totalTime;
@@ -757,13 +836,24 @@ public class Experiment1 {
 			e.printStackTrace();
 		}
 
+
+		Boolean queryCanBeAnswered = this.queryCanBeAnsweredMap.get(queryHash);
+
+		if(queryCanBeAnswered != null && !queryCanBeAnswered) {
+			// we already know this query cannot be answered, return null
+			return null;
+		}
+
+		// in case this query can be answered, the lineage is already present, and we can already return it
 		// now check if the query was already answered in the past
 		List<String[]> lineage = this.lineageMap.get(queryHash);
 
 		if(lineage != null)
 			return lineage;
 
-		//else, it is a new query, and we need to compute it
+
+
+		//if we are here, it is a new query, and we need to compute it
 		lineage = new ArrayList<String[]>();
 		// get the LINEAGE
 		GraphQuery graphQuery = TripleStoreHandler.getRepositoryConnection().prepareGraphQuery(query);
@@ -781,8 +871,17 @@ public class Experiment1 {
 				lineage.add(lin);
 			}
 		}
-		
+
 		this.lineageMap.put(queryHash, lineage);
+
+		if(lineage.size() != 0) {
+			// remember that this query can be answered
+			this.queryCanBeAnsweredMap.put(queryHash, true);
+		} else if (lineage.size() == 0) {
+			// remember that this query cannot be answered
+			this.queryCanBeAnsweredMap.put(queryHash, true);
+		}
+
 		return lineage;
 	}
 

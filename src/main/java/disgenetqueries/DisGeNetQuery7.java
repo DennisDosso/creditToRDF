@@ -41,7 +41,7 @@ public class DisGeNetQuery7 {
 			+ "sio:SIO_000205 ?symbolUri . "
 			+ "?symbolUri dcterms:title ?gSymbol . "
 			+ "}"
-			+ "WHERE {"
+			+ "WHERE { "
 			+ "%s rdf:type ?type; "// 2
 			+ "sio:SIO_000628 ?gene,?disease; "
 			+ "sio:SIO_000772 ?article . "
@@ -51,5 +51,5 @@ public class DisGeNetQuery7 {
 			+ "sio:SIO_000205 ?symbolUri . "
 			+ "?symbolUri dcterms:title ?gSymbol . "
 			+ "}  "
-			+ "LIMIT 10 ";
+			+ "LIMIT 100 ";
 }

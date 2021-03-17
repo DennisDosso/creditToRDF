@@ -10,6 +10,7 @@
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/database/FromTurtleToTripleStore.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/database/ExtractTriplesFromRDBAndBuildTripleStore.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/credittordf/utils/CreateAndPrintRandomNumbers.java
+/Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/disgenetqueries/DisGeNetUnboundedQueries.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/credit/distribution/CreditDistributor.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/credit/distribution/BSBMCreditDistributor.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/credittordf/utils/PropertiesUtils.java
@@ -24,6 +25,7 @@
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/experiment2/Experiment2.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/experiment1/SplitDatasetFile.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/credittordf/utils/TripleStoreHandler.java
+/Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/queries/PerformConstructQuery.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/data/MyQueries.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/data/ReturnBox.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/experimentDisGeNet/Experiment1.java
@@ -56,4 +58,5 @@
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/execution/ProduceValuesToPerformQueries.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/bigqueries/BSBMQuery7Big.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/queries/TakeTimes.java
+/Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/experimentDisGeNet/Experiment2.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/database/ExtractTriplesFromRDBAndNameThemInATriplestore.java

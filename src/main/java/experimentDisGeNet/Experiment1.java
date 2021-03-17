@@ -30,8 +30,11 @@ import org.eclipse.rdf4j.query.TupleQuery;
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.eclipse.rdf4j.query.Update;
 import org.eclipse.rdf4j.query.UpdateExecutionException;
+import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.sail.SailRepository;
+import org.eclipse.rdf4j.sail.nativerdf.NativeStore;
 
 import bigqueries.BSBMQuery10Big;
 import bigqueries.BSBMQuery7Big;
@@ -48,6 +51,7 @@ import disgenetqueries.DisGeNetQuery6;
 import disgenetqueries.DisGeNetQuery7;
 import disgenetqueries.DisGeNetQuery8;
 import disgenetqueries.DisGeNetQuery9;
+import disgenetqueries.DisGeNetUnboundedQueries;
 import it.unipd.dei.ims.credittordf.utils.CacheHandler;
 import it.unipd.dei.ims.credittordf.utils.ConnectionHandler;
 import it.unipd.dei.ims.credittordf.utils.TripleStoreHandler;
@@ -128,7 +132,21 @@ public class Experiment1 {
 		MyValues.setup();
 		MyPaths.setup();
 		RDB.setup();
-		TripleStoreHandler.openRepositoryAndConnection(MyPaths.querying_index);
+		System.out.println(MyPaths.querying_index);
+		
+		
+		File dataDir = new File( MyPaths.querying_index);
+		System.out.println("opened file " + dataDir);
+		Repository repository = new SailRepository(new NativeStore(dataDir));
+		System.out.println("opened repository " + repository);
+		repository.init();
+		System.out.println("initialized");
+		RepositoryConnection connection = repository.getConnection();
+		System.out.println("obtained connection");
+		TripleStoreHandler.setConnection(connection);
+		
+//		TripleStoreHandler.openRepositoryAndConnection(MyPaths.querying_index);
+		System.out.println("got the triplestore connection");
 
 		// create cache in memory
 		this.cacheHandler = new CacheHandler();
@@ -423,6 +441,30 @@ public class Experiment1 {
 			named_query = DisGeNetQuery11.select_named;
 		} else if (query_class == MyValues.QueryClass.DGNQUERY12) {
 			named_query = DisGeNetQuery12.select_named;
+		} else if (query_class == MyValues.QueryClass.DGN1) {
+			named_query = DisGeNetUnboundedQueries.select_named_1;
+		} else if (query_class == MyValues.QueryClass.DGN2) {
+			named_query = DisGeNetUnboundedQueries.select_named_2;
+		} else if (query_class == MyValues.QueryClass.DGN3) {
+			named_query = DisGeNetUnboundedQueries.select_named_3;
+		} else if (query_class == MyValues.QueryClass.DGN4) {
+			named_query = DisGeNetUnboundedQueries.select_named_4;
+		} else if (query_class == MyValues.QueryClass.DGN5) {
+			named_query = DisGeNetUnboundedQueries.select_named_5;
+		} else if (query_class == MyValues.QueryClass.DGN6) {
+			named_query = DisGeNetUnboundedQueries.select_named_6;
+		} else if (query_class == MyValues.QueryClass.DGN7) {
+			named_query = DisGeNetUnboundedQueries.select_named_7;
+		} else if (query_class == MyValues.QueryClass.DGN8) {
+			named_query = DisGeNetUnboundedQueries.select_named_8;
+		} else if (query_class == MyValues.QueryClass.DGN9) {
+			named_query = DisGeNetUnboundedQueries.select_named_9;
+		} else if (query_class == MyValues.QueryClass.DGN10) {
+			named_query = DisGeNetUnboundedQueries.select_named_10;
+		} else if (query_class == MyValues.QueryClass.DGN11) {
+			named_query = DisGeNetUnboundedQueries.select_named_11;
+		} else if (query_class == MyValues.QueryClass.DGN12) {
+			named_query = DisGeNetUnboundedQueries.select_named_12;
 		}
 
 		// decide whole query based on the class
@@ -470,6 +512,30 @@ public class Experiment1 {
 			whole_query = DisGeNetQuery11.select;
 		} else if (query_class == MyValues.QueryClass.DGNQUERY12) {
 			whole_query = DisGeNetQuery12.select;
+		} else if (query_class == MyValues.QueryClass.DGN1) {
+			whole_query = DisGeNetUnboundedQueries.select_1;
+		} else if (query_class == MyValues.QueryClass.DGN2) {
+			whole_query = DisGeNetUnboundedQueries.select_2;
+		} else if (query_class == MyValues.QueryClass.DGN3) {
+			whole_query = DisGeNetUnboundedQueries.select_3;
+		} else if (query_class == MyValues.QueryClass.DGN4) {
+			whole_query = DisGeNetUnboundedQueries.select_4;
+		} else if (query_class == MyValues.QueryClass.DGN5) {
+			whole_query = DisGeNetUnboundedQueries.select_5;
+		} else if (query_class == MyValues.QueryClass.DGN6) {
+			whole_query = DisGeNetUnboundedQueries.select_6;
+		} else if (query_class == MyValues.QueryClass.DGN7) {
+			whole_query = DisGeNetUnboundedQueries.select_7;
+		} else if (query_class == MyValues.QueryClass.DGN8) {
+			whole_query = DisGeNetUnboundedQueries.select_8;
+		} else if (query_class == MyValues.QueryClass.DGN9) {
+			whole_query = DisGeNetUnboundedQueries.select_9;
+		} else if (query_class == MyValues.QueryClass.DGN10) {
+			whole_query = DisGeNetUnboundedQueries.select_10;
+		} else if (query_class == MyValues.QueryClass.DGN11) {
+			whole_query = DisGeNetUnboundedQueries.select_11;
+		} else if (query_class == MyValues.QueryClass.DGN12) {
+			whole_query = DisGeNetUnboundedQueries.select_12;
 		}
 
 		if(using_named_graph) {
@@ -540,6 +606,8 @@ public class Experiment1 {
 			String param1 = values[0];
 			query = String.format(query, "<" + param1 + ">", "<" + param1 + ">");
 		}
+		
+		// in any other case no parameter is needed
 
 		return query;
 	}
@@ -592,7 +660,7 @@ public class Experiment1 {
 	/** This method reports the operations necessary to operate each time one epoch has passed.
 	 * That is, this method is updating the cache or the named graph
 	 * */
-	private ReturnBox oneYearHasPassed(MyValues.CoolDownStrategy strategy) {
+	protected ReturnBox oneYearHasPassed(MyValues.CoolDownStrategy strategy) {
 		// update the relational database with the credit from the hits
 		this.assignCreditBasedOnNumberOFHits();
 
@@ -975,6 +1043,30 @@ public class Experiment1 {
 			String param1 = valuesList.get(queryNum)[0];
 			query = DisGeNetQuery12.construct;
 			query = String.format(query, "<" + param1 + ">", "<" + param1 + ">");
+		} else if (query_class == MyValues.QueryClass.DGN1) {
+			query = DisGeNetUnboundedQueries.construct_1;
+		} else if (query_class == MyValues.QueryClass.DGN2) {
+			query = DisGeNetUnboundedQueries.construct_2;
+		} else if (query_class == MyValues.QueryClass.DGN3) {
+			query = DisGeNetUnboundedQueries.construct_3;
+		} else if (query_class == MyValues.QueryClass.DGN4) {
+			query = DisGeNetUnboundedQueries.construct_4;
+		} else if (query_class == MyValues.QueryClass.DGN5) {
+			query = DisGeNetUnboundedQueries.construct_5;
+		} else if (query_class == MyValues.QueryClass.DGN6) {
+			query = DisGeNetUnboundedQueries.construct_6;
+		} else if (query_class == MyValues.QueryClass.DGN7) {
+			query = DisGeNetUnboundedQueries.construct_7;
+		} else if (query_class == MyValues.QueryClass.DGN8) {
+			query = DisGeNetUnboundedQueries.construct_8;
+		} else if (query_class == MyValues.QueryClass.DGN9) {
+			query = DisGeNetUnboundedQueries.construct_9;
+		} else if (query_class == MyValues.QueryClass.DGN10) {
+			query = DisGeNetUnboundedQueries.construct_10;
+		} else if (query_class == MyValues.QueryClass.DGN11) {
+			query = DisGeNetUnboundedQueries.construct_11;
+		} else if (query_class == MyValues.QueryClass.DGN12) {
+			query = DisGeNetUnboundedQueries.construct_12;
 		}
 
 		return query;
@@ -1264,10 +1356,13 @@ public class Experiment1 {
 
 
 	public static void main(String[] args) throws SQLException {
+		System.out.println("starting execution...");
 		Experiment1 execution = new Experiment1();
 
+		System.out.println("we are truncating...");
 		execution.truncateRDBTriplestore();
 
+		System.out.println("starting query plan...");
 		execution.executeTheQueryPlan();
 
 		execution.close();

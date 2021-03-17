@@ -71,7 +71,7 @@ public class ImportDatabaseInTripleStoreUsingManyFiles {
 
 		System.out.println("importing files from " + inputDirectory);
 
-		// list all files, recursively (they myst be of type turtle, i.e. ttl)
+		// list all files, recursively (they must be of type turtle, i.e. ttl)
 		Collection<File> files = FileUtils.listFiles(new File(inputDirectory), new String[] {"ttl"}, true);
 
 		// open the triplestore
@@ -86,12 +86,16 @@ public class ImportDatabaseInTripleStoreUsingManyFiles {
 				continue;
 			System.out.println("Gonna import " + f.getName());
 
+			
 			// read data from file in Turtle format and save them in the triplestore
 			try(FileInputStream input = new FileInputStream(f)) {
 				// add the RDF data from the inputstream directly to our database
 				conn.add(input, "", RDFFormat.TURTLE);
 				conn.commit();
 				System.out.println("Woo! Committed to the file " + f.getName());
+			} catch (RDFParseException e) {
+				System.out.println("en error occurred with file " + f + ", moving on");
+				e.printStackTrace();
 			}
 
 		}

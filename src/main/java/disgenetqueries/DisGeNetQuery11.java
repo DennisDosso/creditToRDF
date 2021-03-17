@@ -73,5 +73,5 @@ public class DisGeNetQuery11 {
 			+ "sio:SIO_000300 ?pleioValue . "
 			+ "?variant sio:SIO_000061 ?chr . "
 			+ "?chr sio:SIO_000300 ?chrValue . } "
-			+ "LIMIT 20";
+			+ "LIMIT 200";
 }

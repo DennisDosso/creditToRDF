@@ -56,7 +56,7 @@ public class MyValues {
 		EIGHTB,
 		TEN,
 		TENB,
-		// DisGeNet Queries
+		// DisGeNet Queries (bounded)
 		DGNQUERY1,
 		DGNQUERY2,
 		DGNQUERY3,
@@ -68,7 +68,20 @@ public class MyValues {
 		DGNQUERY9,
 		DGNQUERY10,
 		DGNQUERY11,
-		DGNQUERY12;
+		DGNQUERY12,
+		// DisGeNet queries (unbounded) 
+		DGN1,
+		DGN2,
+		DGN3,
+		DGN4,
+		DGN5,
+		DGN6,
+		DGN7,
+		DGN8,
+		DGN9,
+		DGN10,
+		DGN11,
+		DGN12,;
 	}
 
 	/** Class of queries we are using. Change between ONE, TWO, THREE etc. */

@@ -48,7 +48,7 @@ public class DisGeNetQuery3 {
 			"		?gda sio:SIO_000772 ?pmid .\n" + 
 			"		?gda dcterms:description ?sentence .\n" +
 			"}\n" + 
-			"WHERE {GRAPH %here {\n" + 
+			"WHERE {\n" + 
 			"	%s sio:SIO_000628\n" + // 2
 			"		<http://linkedlifedata.com/resource/umls/id/C0035372>,\n" + 
 			"		<http://identifiers.org/ncbigene/4204> ;\n" + 
@@ -59,8 +59,7 @@ public class DisGeNetQuery3 {
 			"	OPTIONAL {\n" + 
 			"		?gda sio:SIO_000772 ?pmid .\n" + 
 			"		?gda dcterms:description ?sentence .\n" + 
-			"	}\n" + 
-			"}"
+			"	}\n"
 			+ "} LIMIT 200";
 			
 }
