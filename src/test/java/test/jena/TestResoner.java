@@ -10,6 +10,7 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.vocabulary.RDFS;
 
+
 public class TestResoner {
 
 	public static void main(String[] args) {

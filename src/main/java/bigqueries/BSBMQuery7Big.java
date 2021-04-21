@@ -1,5 +1,6 @@
 package bigqueries;
 
+
 import it.unipd.dei.ims.data.BSBMQuery7;
 
 public class BSBMQuery7Big extends BSBMQuery7 {

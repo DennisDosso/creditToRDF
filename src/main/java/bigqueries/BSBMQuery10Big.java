@@ -2,6 +2,7 @@ package bigqueries;
 
 public class BSBMQuery10Big {
 
+
 	public static String select = "PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/> "
 			+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>  "
 			+ "PREFIX dc: <http://purl.org/dc/elements/1.1/> "
