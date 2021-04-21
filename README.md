@@ -1,5 +1,6 @@
 # Credit to RDF project
 
+
 ## Step 1: prepare the RDF file
 
 The first step is to create an RDF file, containing triples. This is made using the jar
@@ -206,9 +207,10 @@ nohup java -Xms4000m -Xmx32000m -cp creditToRdf-1.0.jar:lib/* experiment1/Experi
 </code>
 
 
-## Step 5: Experiment2
+## Step 5: Experiment2 & Experiment3
 
-In this experiment, class *experiment2.Experiment2*, we test the time-based cooldown strategy.
+In this experiment, class *experiment2.Experiment2*, we test the time-based cool-down strategy.
+In experiment 3, *experiment3.Experiment3*, we thest the other cool-down function based on decrease of the values.
 
 Properties to set:
 
@@ -230,6 +232,8 @@ Properties to set:
 These last two should be one true and the other false for when you want to query using the cache or only the database,
 to get an idea of the times required. 
 
+* cool.down.factor (only for experiment 3): the amount of credit is taken from each triple after each year
+
 
 
 ##### paths.properties
@@ -246,3 +250,10 @@ to get an idea of the times required.
 <code>
 nohup java -cp creditToRdf-1.0.jar:lib/* experiment2/Experiment2
 </code> 
+<br/>
+To test the other cool-down strategy the parameters are the same. The class, in this case, is Experiment3, the command to run it is the following:
+<code>
+nohup java -cp creditToRdf-1.0.jar:lib/* experiment3/Experiment3 > 
+</code>
+
+

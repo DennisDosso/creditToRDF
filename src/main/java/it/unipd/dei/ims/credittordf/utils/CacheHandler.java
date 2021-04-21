@@ -132,4 +132,28 @@ public class CacheHandler {
 		return box;
 		
 	}
+
+	public Model getGraph() {
+		return graph;
+	}
+
+	public void setGraph(Model graph) {
+		this.graph = graph;
+	}
+
+	public Repository getCache() {
+		return cache;
+	}
+
+	public void setCache(Repository cache) {
+		this.cache = cache;
+	}
+
+	public RepositoryConnection getCacheConnection() {
+		return cacheConnection;
+	}
+
+	public void setCacheConnection(RepositoryConnection cacheConnection) {
+		this.cacheConnection = cacheConnection;
+	}
 }

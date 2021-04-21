@@ -27,12 +27,14 @@
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/credittordf/utils/TripleStoreHandler.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/queries/PerformConstructQuery.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/data/MyQueries.java
+/Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/experiment3/Experiment3enhanced.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/data/ReturnBox.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/experimentDisGeNet/Experiment1.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/data/BSBMQuery3.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/data/BSBMQuery6.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/data/RDB.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/database/FromTripleStoreToRDB.java
+/Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/experiment2/Experiment2NG.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/bigqueries/BSBMQuery8Big.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/disgenetqueries/DisGeNetQuery3.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/data/BSBMQuery2.java
@@ -40,6 +42,7 @@
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/credittordf/utils/ConnectionHandler.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/data/BSBMQuery8.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/disgenetqueries/DisGeNetQuery9.java
+/Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/experiment3/Experiment3.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/data/BSBMQuery10.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/disgenetqueries/DisGeNetQuery12.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/disgenetqueries/DisGeNetQuery11.java

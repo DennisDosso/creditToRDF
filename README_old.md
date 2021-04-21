@@ -15,6 +15,7 @@ Ok, I'll do it for you:
 * -pc 30000 produces 10M triples
 * -pc 300000 produces 100M triples (stop here, for God's sake!)
 
+
 command:
 <code>
 java -cp bsbm.jar benchmark/generator/Generator -s ttl -fn dataset1m -pc 3000

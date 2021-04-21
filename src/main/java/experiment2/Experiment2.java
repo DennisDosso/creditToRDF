@@ -9,10 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.rdf4j.repository.RepositoryConnection;
-
 import experiment1.Experiment1;
-import it.unipd.dei.ims.credittordf.utils.CacheHandler;
 import it.unipd.dei.ims.credittordf.utils.ConnectionHandler;
 import it.unipd.dei.ims.data.MyPaths;
 import it.unipd.dei.ims.data.MyValues;
@@ -20,7 +17,7 @@ import it.unipd.dei.ims.data.RDB;
 import it.unipd.dei.ims.data.ReturnBox;
 
 
-/** In this second experiment we implement a sort of cooldown function, based on time. 
+/** In this second experiment we implement a sort of cool-down function, based on time. 
  * Only the x last epoch of distributed credit are kept in cache.
  * <p>
  * This strategy is impact-factor like. When we compute the impact factor of a paper, we consider 
@@ -126,6 +123,8 @@ public class Experiment2 extends Experiment1 {
 						dbTimes.add(box.nanoTime);
 					}
 					
+					
+					
 					if(MyValues.areWeInterrogatingTheCache) {
 						// query the cache and the DB, if necessary
 						box = this.queryTheCache(query_class, values, this.repoConnection);
@@ -173,7 +172,7 @@ public class Experiment2 extends Experiment1 {
 	 * NB: the epochs should already have been updated
 	 * 
 	 * @throws SQLException */
-	private void assignCreditToDatabase() throws SQLException {
+	protected void assignCreditToDatabase() throws SQLException {
 		// first, we need to clean the database, if we want then to update it
 		this.cleanDatabase();
 		
@@ -201,6 +200,7 @@ public class Experiment2 extends Experiment1 {
 		try {
 			ConnectionHandler.createConnection(RDB.produceJdbcString());
 			ConnectionHandler.getConnection().prepareStatement(sql).execute();
+			ConnectionHandler.getConnection().commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

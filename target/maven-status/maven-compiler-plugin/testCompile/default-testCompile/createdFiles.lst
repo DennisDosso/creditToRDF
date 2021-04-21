@@ -1,7 +1,6 @@
 rdf4j/examples/from/the/website/Example06WriteRdfXml.class
 rdf4j/examples/from/the/website/Example04LanguageTags.class
 it/unipd/dei/ims/utils/test/TestRegex.class
-it/unipd/dei/ims/queries/PerformConstructQuery.class
 rdf4j/examples/from/the/website/Example03LiteralDatatypes.class
 rdf4j/examples/from/the/website/Example14AddRDFToDatabase.class
 it/unipd/dei/ims/testRdf4j/TestRdf4JCreateDatabase.class

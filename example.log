@@ -1,7 +1,0 @@
-DEBUG main org.eclipse.rdf4j.sail.nativerdf.NativeStore - Initializing NativeStore...
-DEBUG main org.eclipse.rdf4j.sail.nativerdf.NativeStore - Data dir is /Users/dennisdosso/MEGAsync/Ricerca/progetti_di_ricerca/CreditToRDF/bsbm_reduced
-DEBUG main org.eclipse.rdf4j.sail.nativerdf.NativeStore - NativeStore initialized
-DEBUG main org.eclipse.rdf4j.query.parser.QueryParserRegistry - Registered service class org.eclipse.rdf4j.query.parser.sparql.SPARQLParserFactory
-DEBUG main org.eclipse.rdf4j.sail.nativerdf.NativeStore - Shutting down NativeStore...
-DEBUG main org.eclipse.rdf4j.sail.nativerdf.NativeStore - NativeStore shut down
-DEBUG main org.eclipse.rdf4j.sail.nativerdf.NativeStore - NativeStore shut down

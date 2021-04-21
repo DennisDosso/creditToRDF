@@ -89,7 +89,7 @@ public class Experiment1 {
 
 	/** Updates a triple by changing its named graph. 
 	 * */
-	private final String SPARQL_UPDATE = "DELETE WHERE { <%s> <%s> %s}; "
+	protected final String SPARQL_UPDATE = "DELETE WHERE { <%s> <%s> %s}; "
 			+ "INSERT DATA {"
 			+ "GRAPH <%s> {"
 			+ "<%s> <%s> %s }}";
@@ -208,9 +208,6 @@ public class Experiment1 {
 
 
 					}	
-					// TODO debug, to be removed
-					//					if(epochTimer % 20 == 0)
-					//						System.out.println("processed " + epochTimer + " queries");
 
 					// now we process the query
 
@@ -252,7 +249,7 @@ public class Experiment1 {
 							if(tripleStoreTime!=0) {
 								time += tripleStoreTime;
 							} else {
-								box = this.queryTheTripleStore(query_class, false, values);						
+								box = this.queryTheTripleStore(query_class, false, values);
 								time += box.nanoTime;
 							}
 							cacheMiss ++;

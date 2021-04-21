@@ -86,6 +86,10 @@ public class MyValues {
 
 	/** Class of queries we are using. Change between ONE, TWO, THREE etc. */
 	public static QueryClass QUERYCLASS;
+	
+	/** Quantity used to reduce credit on each tuple. It is the x in the formula ln(1 +x)
+	 * */
+	public static double coolDownFactor = 1;
 
 	public enum CoolDownStrategy {
 		NONE, // no cooldown is used
@@ -198,6 +202,8 @@ public class MyValues {
 		epochLength = Integer.parseInt(map.get("epoch.length"));
 		
 		yearLength = Integer.parseInt(map.get("year.length"));
+		
+		coolDownFactor = Double.parseDouble(map.get("cool.down.factor"));
 	}
 
 	/** Method used to convert one string representing a query class in the corresponding
