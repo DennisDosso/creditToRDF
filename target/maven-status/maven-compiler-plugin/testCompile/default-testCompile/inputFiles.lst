@@ -8,8 +8,11 @@
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/it/unipd/dei/ims/queries/TestAsk.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/test/jena/TestResoner.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/rdf4j/examples/from/the/website/Example04LanguageTags.java
+/Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/test/database/CharacterReplacementTest.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/it/unipd/dei/ims/utils/test/TestPareto.java
+/Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/test/database/TestDecoding.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/rdf4j/examples/from/the/website/Example06WriteRdfXml.java
+/Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/test/precomputations/TestCleaningFile.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/rdf4j/examples/from/the/website/Example01BuildModel.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/it/unipd/dei/ims/queries/UpdateTest.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/test/java/it/unipd/dei/ims/testRdf4j/Example06WriteRdfXml.java

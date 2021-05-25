@@ -257,3 +257,72 @@ nohup java -cp creditToRdf-1.0.jar:lib/* experiment3/Experiment3 >
 </code>
 
 
+================
+
+####Something about Dbpedia
+
+Since the queries obtained from Bonifati et al. on DBpedia present a lot of UNIONS, which we do not like, I decided to only keep the ones that are BGP.
+
+Here the things to do to work with DBPEDIA
+
+###STEP 1: splitting DBpedia in smaller files
+
+Takes DBpedia (bigger files) and makes smaller files, more digestible by whatever processor.
+
+Execute:
+<code>
+nohup java -cp creditToRdf-1.0.jar:lib/* it/unipd/dei/ims/credittordf/utils/SplitDatasetFile > 
+</code>
+
+parameters (path.properties)
+
+<ol>
+<li> rdf_files_directory: the directory where to take the files to split
+<li>  fragmentsOutputDirectory: directory where to save the fragments
+</ol>
+
+In this script I added some code to remove certain UNICODE private characters that created problems in the import phase
+(rdf4j it appears cannot deal with those characters). The problem was only partially solved. There were certain files
+that still contained some malformed URLs. Since they were few, I corrected them by hand using Sublime Text and
+regular expressions. Thus, I do not have a clear code for this part. I still have those files saved, thus I am sure
+to be able to import them. All these problems are connected to ''peculiar'' URLs, often external to DBpedia.
+
+###STEP 2: import DBpedia in a triple store
+
+Now it is time to convert DBpedia from a set of textual files to your triplestore.
+
+parameters (path.properties)
+
+<ol>
+<li> fragments.output.directory: where we take the fragments
+<li> index_path: where to save the big index
+</ol>
+
+<code>
+nohup java -cp creditToRdf-1.0.jar:lib/* experiment1.ImportDatabaseInTripleStoreUsingManyFiles
+</code> 
+
+
+###STEP 3 : generate the required queries
+
+Given the dump of queries obtained from <a href="https://aksw.github.io/LSQ/">this website</a>, from here I extracted
+real SPARL queries. These are BPR queries that can be answered by our system. 
+
+<code>
+nohup java -cp creditToRdf-1.0.jar:lib/* it/unipd/dei/ims/credittordf/dbpedia/ConvertDumpToListOfQueries
+</code>
+
+I hardcoded things here since I did everything from my MacBook, so it is necessary to change the main method of this class
+to make it work. 
+
+This creates a file with a list of queries. I then need to create another file with an equivalent sequence of queries.
+
+
+
+
+
+=======
+
+Comments: the set of queries in the directory 0ca1 seems to be all in Russian. Our version of DBpedia is in English, 
+so I did not use those queries. 
+

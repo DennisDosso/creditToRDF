@@ -48,6 +48,8 @@ public class MyPaths {
 	
 	/** Where to save the files produced to build a whole RDF graph */
 	public static String fragmentsOutputDirectory;
+	
+	public static String rdf_files_directory;
 
 	public MyPaths() {
 		Map<String, String> map = PropertiesUtils.getPropertyMap("properties/paths.properties");
@@ -86,6 +88,7 @@ public class MyPaths {
 		updateEpochsTime = map.get("update.epochs.times");
 		
 		fragmentsOutputDirectory = map.get("fragments.output.directory");
+		rdf_files_directory = map.get("rdf_files_directory");
 		
 		queryInputFile = map.get("query.input.file");
 	}

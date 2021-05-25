@@ -18,6 +18,7 @@ it/unipd/dei/ims/data/BSBMQuery7.class
 it/unipd/dei/ims/data/RDB.class
 it/unipd/dei/ims/database/FromTurtleToTripleStore.class
 it/unipd/dei/ims/data/MyValues.class
+it/unipd/dei/ims/credittordf/utils/SplitDatasetFile.class
 it/unipd/dei/ims/data/BSBMQuery1.class
 it/unipd/dei/ims/data/BSBMQuery3.class
 it/unipd/dei/ims/data/MyValues$QueryClass.class

@@ -19,7 +19,15 @@ import it.unipd.dei.ims.data.MyPaths;
 import it.unipd.dei.ims.data.Queries;
 
 /** Performs a count query to know all the triples in a database
- * 
+ *
+ *
+ * path.properties
+ * <li>querying_index</li>
+ *
+ *
+ * <code>
+ *     java -cp creditToRdf-1.0.jar:lib/* it/unipd/dei/ims/queries/PerformCountQuery
+ * </code>
  * */
 public class PerformCountQuery {
 

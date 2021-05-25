@@ -38,10 +38,12 @@
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/bigqueries/BSBMQuery8Big.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/disgenetqueries/DisGeNetQuery3.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/data/BSBMQuery2.java
+/Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/credittordf/utils/CheckAWholeBunchOfQueries.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/experimentDisGeNet/CreateQueriesForDisGeNet.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/credittordf/utils/ConnectionHandler.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/data/BSBMQuery8.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/disgenetqueries/DisGeNetQuery9.java
+/Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/credittordf/utils/SplitDatasetFile.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/experiment3/Experiment3.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/it/unipd/dei/ims/data/BSBMQuery10.java
 /Users/dennisdosso/eclipse-workspace/creditToRdf/src/main/java/disgenetqueries/DisGeNetQuery12.java
