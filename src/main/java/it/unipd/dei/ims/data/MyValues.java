@@ -134,6 +134,12 @@ public class MyValues {
 	 * */
 	public static int execute_a_query_this_many_times = 10;
 
+
+	public static int select_query_timeout=3000;
+	public static int construct_query_timeout=15000;
+
+	public static int cap;
+
 	public MyValues() {
 		Map<String, String> map = PropertiesUtils.getPropertyMap("properties/values.properties");
 
@@ -204,6 +210,11 @@ public class MyValues {
 		yearLength = Integer.parseInt(map.get("year.length"));
 		
 		coolDownFactor = Double.parseDouble(map.get("cool.down.factor"));
+
+		select_query_timeout = Integer.parseInt(map.get("select_query_timeout"));
+		construct_query_timeout = Integer.parseInt(map.get("construct_query_timeout"));
+
+		cap = Integer.parseInt(map.get("cap"));
 	}
 
 	/** Method used to convert one string representing a query class in the corresponding

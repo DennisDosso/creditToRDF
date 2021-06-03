@@ -172,7 +172,6 @@ Class: *Experiment1*
 
 I hope these are self-explanatory. Take care to always run the credit distribution together with the named and cache strategy. Also, never run the whole and the named strategy together, since the underlying triplestore could apply some undetected underlying optimization that only it knows that could pollute the results. 
 
-What I suggest is two iterations in this way: (true, true, true, false) and (true, false, false, true)
 
 ##### paths.properties
 * querying.index: the path of the index triple store on disk that we are using. 
@@ -315,14 +314,65 @@ nohup java -cp creditToRdf-1.0.jar:lib/* it/unipd/dei/ims/credittordf/dbpedia/Co
 I hardcoded things here since I did everything from my MacBook, so it is necessary to change the main method of this class
 to make it work. 
 
-This creates a file with a list of queries. I then need to create another file with an equivalent sequence of queries.
+This creates a file with a list of queries. I then need to create another file with an equivalent sequence of construct
+queries.
+
+### STEP 3: Interrogate DBpedia using simply the database, without any cache
+
+<code>
+nohup java -cp creditToRdf-1.0.jar:lib/* it/unipd/dei/ims/credittordf/dbpedia/QueriesOnDbpedia
+</code>
+
+properties to set:
+path.properties
+<ul>
+<li>querying.index: the path of the index triple store on disk that we are using.</li>
+<li>whole.db.times: times to query the whole DB</li>
+<li>query_select_file: where we have the select queries as produced in the previous step.</li>
+</ul>
+
+On rdb.properties, set the properties to connect to the database. 
+
+values.properties
+<li>select_query_timeout: timeout of the query</li>
 
 
+### STEP 4: Interrogate DBpedia using cache, no cooldown, no cap
 
+<code>
+nohup java -cp creditToRdf-1.0.jar:lib/* it/unipd/dei/ims/credittordf/dbpedia/QueriesOnDbpediaWithCache
+</code>
+
+properties to set: 
+
+path.properties
+<ul>
+<li>querying.index: the path of the index triple store on disk that we are using.</li>
+<li>query.select.file: where we have the select queries as produced in the previous step.</li>
+<li>query.construct.file: where the construct queries are stored.</li>
+<li>query.data.file: where the results of our simple select queries are stored (same of whole.db.times at step 3)</li>
+<li>cache.times: where to save the results of the times obtained with the cache</li>
+<li>overhead.times: where to save the times to upodate the support RDB</li>
+<li>update.cache.times: where to save the times to update the cache and its size</li>
+</ul>
+
+On rdb.properties, set the properties to connect to the database.
+
+values.properties
+<li>select_query_timeout: timeout of the query</li>
+<li>construct.query.timeout: time to compute the construct query for the lineage. Otherwise, a thread goes 
+to timeout exception</li>
+<li>epoch.length: the length of one epoch (at the end of an epoch the cache is updated)</li>
+<li>credit.threshold: threshold to enter the cache.</li>
 
 
 =======
 
 Comments: the set of queries in the directory 0ca1 seems to be all in Russian. Our version of DBpedia is in English, 
 so I did not use those queries. 
+
+Certain queries answer even without a cache (i.e. empty cache). It appears that these are queries with only OPTIONAL
+operators and a SELECT *, like:
+(711) PREFIX  geo:  <http://www.w3.org/2003/01/geo/wgs84_pos#> PREFIX  foaf: <http://xmlns.com/foaf/0.1/> PREFIX  georss: <http://www.georss.org/georss/>  SELECT  * WHERE   { OPTIONAL       { <http://dbpedia.org/resource/Oviedo>                   geo:lat  ?lat .       }     OPTIONAL       { <http://dbpedia.org/resource/Oviedo>                   geo:long  ?long .       }     OPTIONAL       { <http://dbpedia.org/resource/Oviedo>                   foaf:depiction  ?depiction .       }     OPTIONAL       { <http://dbpedia.org/resource/Oviedo>                   foaf:homepage  ?homepage .       }   }  
+(854) PREFIX  geo:  <http://www.w3.org/2003/01/geo/wgs84_pos#> PREFIX  foaf: <http://xmlns.com/foaf/0.1/> PREFIX  georss: <http://www.georss.org/georss/>  SELECT  * WHERE   { OPTIONAL       { <http://dbpedia.org/resource/Caso>                   geo:lat  ?lat .       }     OPTIONAL       { <http://dbpedia.org/resource/Caso>                   geo:long  ?long .       }     OPTIONAL       { <http://dbpedia.org/resource/Caso>                   foaf:depiction  ?depiction .       }     OPTIONAL       { <http://dbpedia.org/resource/Caso>                   foaf:homepage  ?homepage .       }   }  
 

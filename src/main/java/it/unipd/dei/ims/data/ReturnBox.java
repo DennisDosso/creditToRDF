@@ -10,6 +10,12 @@ public class ReturnBox {
 	public long nanoTime;
 	
 	public int size;
+
+	public int resultSetSize;
 	
 	public boolean foundSomething = false;
+
+	public ReturnBox() {
+		this.resultSetSize = 0;
+	}
 }

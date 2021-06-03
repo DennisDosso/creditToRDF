@@ -58,24 +58,28 @@ import it.unipd.dei.ims.data.ReturnBox;
 public class Experiment1 {
 
 
-	private final String updateHits = "UPDATE %s.triplestore\n" + 
+	public final String updateHits = "UPDATE %s.triplestore\n" +
 			"SET hits = hits + ? \n" + 
 			"WHERE subject=? AND predicate=? AND \"object\"=?;\n" + 
 			"";
 
-	private final String INSERT_TRIPLE = "INSERT INTO %s.triplestore\n" + 
+	public final String INSERT_TRIPLE = "INSERT INTO %s.triplestore\n" +
 			"(subject, predicate, \"object\", credit, hits)\n" + 
 			"VALUES(?, ?, ?, 0, 1);";
 
-	private final String INSERT_TRIPLE_WITH_HITS = "INSERT INTO %s.triplestore\n" + 
+	protected final String INSERT_TRIPLE_WITH_HITS = "INSERT INTO %s.triplestore\n" +
 			"(subject, predicate, \"object\", credit, hits)\n" + 
 			"VALUES(?, ?, ?, 0, ?);";
 
-	private  String CHECK_TRIPLE_PRESENCE = "SELECT subject FROM %s.triplestore where subject = ? AND predicate = ? AND object = ?";
+	protected  String CHECK_TRIPLE_PRESENCE = "SELECT subject FROM %s.triplestore where subject = ? AND predicate = ? AND object = ?";
 
-	private final String updateWithCredit = "update %s.triplestore\n" + 
+	protected final String updateWithCredit = "update %s.triplestore\n" +
 			"set credit = ln(hits + 1)\n" + 
 			"where hits > 0";
+
+	public RepositoryConnection getRepoConnection() {
+		return repoConnection;
+	}
 
 	protected RepositoryConnection repoConnection;
 
@@ -309,7 +313,7 @@ public class Experiment1 {
 		System.out.println("cache hits: " + cacheHit + ", cache miss: " + cacheMiss);
 	}
 
-	protected void printOneArrayOfTimes(List<Long> times, String what) {
+	protected void printOneArrayOfTimes(List<?> times, String what) {
 		Path pa = null;
 
 		// we take the right path, based on 'what' we are doing, where to write the times
@@ -341,7 +345,7 @@ public class Experiment1 {
 
 
 		try(BufferedWriter writer = Files.newBufferedWriter(pa)) {
-			for(Long time : times) {
+			for(Object time : times) {
 				writer.write(time + "");
 				writer.newLine();
 			}
@@ -578,7 +582,7 @@ public class Experiment1 {
 		this.assignCreditBasedOnNumberOFHits();
 
 		ReturnBox rb = null;
-		// nessun update
+		// no update
 		if(strategy == MyValues.CoolDownStrategy.NONE) {
 			// update della cache
 			if(MyValues.areWeInterrogatingTheCache)
@@ -593,7 +597,7 @@ public class Experiment1 {
 		} else if (strategy == MyValues.CoolDownStrategy.TIME) {
 			// I decided to do a new class for this eventuality, to keep the code cleaner
 		} else if (strategy == MyValues.CoolDownStrategy.FUNCTION) {
-			// as above - TODO devo ancora farla però!!!
+			// as above
 		}
 
 		return rb;
@@ -655,11 +659,11 @@ public class Experiment1 {
 	 * when we have SPARQL queries that encompass a very big lineage. 
 	 * Apart from some minor improvements for efficiency, that I a currently too lazy to do but may be nice in the future, 
 	 * <p>
-	 * A more efficient method has been implemented in {@link assignHitsWithOneQueryMoreEfficiently}, but
+	 * A more efficient method has been implemented in  assignHitsWithOneQueryMoreEfficiently, but
 	 * it uses a local cache and it has a different set of limits.
 	 * 
 	 * @return the required time to assign hits with this query */
-	protected long assignHitsWithOneQuery(MyValues.QueryClass query_class, List<String[]> valuesList, int queryNum) throws SQLException {
+	public long assignHitsWithOneQuery(MyValues.QueryClass query_class, List<String[]> valuesList, int queryNum) throws SQLException {
 
 		long startTime = System.nanoTime();
 
@@ -784,8 +788,12 @@ public class Experiment1 {
 				ConnectionHandler.getConnection().commit();
 			}
 		} // covered the whole lineage
-		update_stmt.executeBatch();
-		ConnectionHandler.getConnection().commit();
+		try{
+			update_stmt.executeBatch();
+			ConnectionHandler.getConnection().commit();
+		} catch (Exception e) {
+			System.err.println("Unable to assign strikes to this query");
+		}
 
 		//stop timer
 		long totalTime = System.nanoTime() - startTime;
@@ -793,7 +801,7 @@ public class Experiment1 {
 
 	}
 
-	protected boolean checkTriplePresence(String[] triple) throws SQLException {
+	public boolean checkTriplePresence(String[] triple) throws SQLException {
 		String subject = triple[0];
 		String predicate = triple[1];
 		String object = triple[2];
@@ -805,11 +813,15 @@ public class Experiment1 {
 		check_stmt.setString(2, predicate);
 		check_stmt.setString(3, object);
 
-		ResultSet check_rs = check_stmt.executeQuery();
+		try{
+			ResultSet check_rs = check_stmt.executeQuery();
 		if(check_rs.next())
 			return true;
 		else
 			return false;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	/** this method first looks in RAM to see if we already computed the lineage of this query.
@@ -820,7 +832,7 @@ public class Experiment1 {
 	 * could be to implement strategies to deal with the lineages that are kept in memory. 
 	 * That is, this, in itself, is a form of caching used to help another form of caching. 
 	 * */
-	protected List<String[]> getTheLineageOfThisQuery(String query) {
+	public List<String[]> getTheLineageOfThisQuery(String query) {
 		String queryHash = "";
 		// convert the long query into a more manageable hash string
 		try {
@@ -877,6 +889,38 @@ public class Experiment1 {
 		} else if (lineage.size() == 0) {
 			// remember that this query cannot be answered
 			this.queryCanBeAnsweredMap.put(queryHash, true);
+		}
+
+		return lineage;
+	}
+
+	/** Same method as getTheLineageOfThisQuery, but it does not use the
+	 * lineage map, since we do not think to have a lot of repeated queries.
+	 *
+	 * */
+	public List<String[]> getTheLineageOfThisQueryWithoutMap(String query) {
+
+		//if we are here, it is a new query, and we need to compute it
+		List<String[]> lineage = new ArrayList<String[]>();
+		// get the LINEAGE
+		try{
+			GraphQuery graphQuery = TripleStoreHandler.getRepositoryConnection().prepareGraphQuery(query);
+
+			try (GraphQueryResult result = graphQuery.evaluate()) {
+				for (Statement st: result) {
+					if(MyValues.constructCheck) { // need to perform a check on the triples
+						boolean presence = this.checkTriplePresenceInTriplestore(st);
+						if(!presence) // the triple is not present in the triplestore, it was erroneously created in the CONSTRUCT, thus there is no need to deal with it
+							continue;
+					}
+					//build the new lineage string
+					String[] lin = new String[] {st.getSubject().stringValue(), st.getPredicate().stringValue(), st.getObject().toString()};
+					// add it to the lineage set
+					lineage.add(lin);
+				}
+			}
+		} catch (Exception e) {
+			System.err.println("Problems with query: " + query.substring(0, 10) + "...\nwhen we were computing the construct. Moving on...");
 		}
 
 		return lineage;
@@ -1039,7 +1083,7 @@ public class Experiment1 {
 
 	/** Check if a triple is actually present in the triplestore, 
 	 * or if it was obtained from the CONSTRUCT query */
-	private boolean checkTriplePresenceInTriplestore(Statement st) {
+	public boolean checkTriplePresenceInTriplestore(Statement st) {
 		// builds the triple
 		String subject = st.getSubject().toString();
 		String predicate = st.getPredicate().stringValue();

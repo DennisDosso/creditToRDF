@@ -51,6 +51,10 @@ public class MyPaths {
 	
 	public static String rdf_files_directory;
 
+	public static String query_select_file = "", query_construct_file = "";
+
+	public static String query_data_file = "";
+
 	public MyPaths() {
 		Map<String, String> map = PropertiesUtils.getPropertyMap("properties/paths.properties");
 
@@ -91,5 +95,10 @@ public class MyPaths {
 		rdf_files_directory = map.get("rdf_files_directory");
 		
 		queryInputFile = map.get("query.input.file");
+
+		query_select_file = map.get("query.select.file");
+		query_construct_file = map.get("query.construct.file");
+
+		query_data_file = map.get("query.data.file");
 	}
 }

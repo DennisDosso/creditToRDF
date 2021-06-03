@@ -139,7 +139,8 @@ public class ConvertDumpToListOfQueries {
                     //check the presence of keywords we do not want
                     if(line.contains("UNION ") || line.contains("union ")
                             || line.contains("ASK ") || line.contains("ask ")
-                            || line.contains("DESCRIBE ") || line.contains("describe ")) {
+                            || line.contains("DESCRIBE ") || line.contains("describe ")
+                    || line.contains("CONSTRUCT") || line.contains("construct")) {
                         queriesWeCannotDealWith ++;
                         continue;
                     }
@@ -222,7 +223,7 @@ public class ConvertDumpToListOfQueries {
      * */
     public static void main(String[] args) {
         String inputFile = "/Users/dennisdosso/Documents/databases/Dbpedia/Dbpedia_queries/lsq_dump/LSQ-DBpedia351.ttl";
-        String outputFile = "/Users/dennisdosso/Documents/databases/Dbpedia/Dbpedia_queries/processed_queries/query_dump.txt";
+        String outputFile = "/Users/dennisdosso/Documents/databases/Dbpedia/Dbpedia_queries/query_files/query_dump.txt";
 
         convertIntoOneFile(inputFile, outputFile);
     }
