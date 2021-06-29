@@ -8,9 +8,16 @@ public class TripleRecordComparator implements Comparator<TripleRecord> {
 
     @Override
     public int compare(TripleRecord o1, TripleRecord o2) {
-        if(o1.entryTime < o2.entryTime)
-            return -1;
-        else
-            return  1;
+        try{
+            if(o1.entryTime < o2.entryTime)
+                return -1;
+            else if (o1.entryTime > o2.entryTime)
+                return  1;
+            else
+                return 0;
+        } catch (Exception e) {
+            System.out.println("Error here, bucko");
+            return 1;
+        }
     }
 }

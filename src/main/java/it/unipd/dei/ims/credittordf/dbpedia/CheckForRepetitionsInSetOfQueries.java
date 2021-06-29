@@ -59,8 +59,11 @@ public class CheckForRepetitionsInSetOfQueries {
     }
 
     public static void main(String[] args) {
+//        String inputFile =
+//                "/Users/dennisdosso/Documents/databases/Dbpedia/Dbpedia_queries/processed_queries/query_dump.txt";
+
         String inputFile =
-                "/Users/dennisdosso/Documents/databases/Dbpedia/Dbpedia_queries/processed_queries/query_dump.txt";
+                "/Users/dennisdosso/Documents/databases/SW Dog Food/queries/select_queries.txt";
         try {
             checkForRepeatedQueries(inputFile);
         } catch (NoSuchAlgorithmException e) {

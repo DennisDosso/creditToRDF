@@ -124,7 +124,7 @@ public class MyValues {
 	 * */
 	public static int epochLength;
 
-	/** The length of a year. The years are the units used in the TIME based method
+	/** The length of a year/timeframe. The years are the units used in the TIME based method
 	 * */
 	public static int yearLength;
 

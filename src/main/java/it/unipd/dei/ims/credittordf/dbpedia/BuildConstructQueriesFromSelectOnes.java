@@ -23,11 +23,14 @@ public class BuildConstructQueriesFromSelectOnes {
             //read lines from the input file
             String line = "";
             String queryNumber = "";
+            int queryCount = 0;
+
             while((line = reader.readLine()) != null) {
                 if(line.startsWith("#")) {
                     // get the query number
                     queryNumber = line.split(" ")[2];
                 } else {
+                    queryCount ++;
                     // dealing with a query
                     String constructQuery = "";
 
@@ -141,9 +144,9 @@ public class BuildConstructQueriesFromSelectOnes {
 
     public static void main(String[] args) {
         String inputPath =
-                "/Users/dennisdosso/Documents/databases/Dbpedia/Dbpedia_queries/query_files/query_dump.txt";
+                "/Users/dennisdosso/Documents/databases/SW Dog Food/queries/select_queries.txt";
         String outputPath =
-                "/Users/dennisdosso/Documents/databases/Dbpedia/Dbpedia_queries/query_files/construct_dump.txt";
+                "/Users/dennisdosso/Documents/databases/SW Dog Food/queries/construct_queries.txt";
         convertQueriesToConstruct(inputPath, outputPath);
     }
 

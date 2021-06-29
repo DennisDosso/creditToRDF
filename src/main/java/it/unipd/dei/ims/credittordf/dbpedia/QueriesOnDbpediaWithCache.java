@@ -163,8 +163,13 @@ public class QueriesOnDbpediaWithCache extends QueriesOnDbpedia {
                 cacheMiss++;
             }
         } catch (InterruptedException | ExecutionException e) {
+            try{
             System.err.println("Interrupted or execution exception interrogating the cache with query number " + queryNo + "\n" +
-                    "i.e. query " + this.selectQuery.substring(0, 15) + "...");
+                    "i.e. query " + this.selectQuery.substring(0, 25) + "...");
+            } catch (StringIndexOutOfBoundsException e1) {
+                System.err.println("Interrupted or execution exception interrogating the cache with query number " + queryNo + "\n" +
+                        "i.e. query " + this.selectQuery);
+            }
             try {
                 writer.write(queryNo + "," + "error,0");
                 writer.newLine();

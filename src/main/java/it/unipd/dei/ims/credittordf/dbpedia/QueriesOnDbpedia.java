@@ -149,10 +149,6 @@ public class QueriesOnDbpedia extends Experiment1 {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // print the results
-        // todo controlla che questo funzioni correttamente
-//        this.printOneArrayOfTimes(wholeDbTimes, "whole");
     }
 
 

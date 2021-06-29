@@ -302,13 +302,18 @@ nohup java -cp creditToRdf-1.0.jar:lib/* experiment1.ImportDatabaseInTripleStore
 </code> 
 
 
-###STEP 3 : generate the required queries
+###STEP 2 bis : generate the required queries (this can also be used with other databases, like Dog Food)
 
 Given the dump of queries obtained from <a href="https://aksw.github.io/LSQ/">this website</a>, from here I extracted
 real SPARL queries. These are BPR queries that can be answered by our system. 
 
 <code>
 nohup java -cp creditToRdf-1.0.jar:lib/* it/unipd/dei/ims/credittordf/dbpedia/ConvertDumpToListOfQueries
+</code>
+
+After this, you also need to create the construct queries, using:
+<code>
+nohup java -cp creditToRdf-1.0.jar:lib/* it/unipd/dei/ims/credittordf/dbpedia/BuildConstructQueriesFromSelectOnes
 </code>
 
 I hardcoded things here since I did everything from my MacBook, so it is necessary to change the main method of this class
@@ -328,7 +333,7 @@ path.properties
 <ul>
 <li>querying.index: the path of the index triple store on disk that we are using.</li>
 <li>whole.db.times: times to query the whole DB</li>
-<li>query_select_file: where we have the select queries as produced in the previous step.</li>
+<li>query.select.file: where we have the select queries as produced in the previous step.</li>
 </ul>
 
 On rdb.properties, set the properties to connect to the database. 
@@ -352,6 +357,38 @@ path.properties
 <li>query.construct.file: where the construct queries are stored.</li>
 <li>query.data.file: where the results of our simple select queries are stored (same of whole.db.times at step 3)</li>
 <li>cache.times: where to save the results of the times obtained with the cache</li>
+<li>overhead.times: where to save the times to update the support RDB</li>
+<li>update.cache.times: where to save the times to update the cache and its size</li>
+</ul>
+
+On rdb.properties, set the properties to connect to the database.
+
+values.properties
+<li>select_query_timeout: timeout of the query</li>
+<li>construct.query.timeout: time to compute the construct query for the lineage. Otherwise, a thread goes 
+to timeout exception</li>
+<li>epoch.length: the length of one epoch (at the end of an epoch the cache is updated)</li>
+<li>credit.threshold: threshold to enter the cache.</li>
+
+values.properties
+<li>select_query_timeout: timeout of the query</li>
+<li>construct_query_timeout: timeout to build the lineage</li>
+
+### STEP 5: Interrogate DBpedia using cache AND cap
+
+<code>
+nohup java -cp creditToRdf-1.0.jar:lib/* it/unipd/dei/ims/credittordf/dbpedia/cachewithcap/QueriesOnDbpediaWithCacheAndCap
+</code>
+
+properties to set:
+
+path.properties
+<ul>
+<li>querying.index: the path of the index triple store on disk that we are using.</li>
+<li>query.select.file: where we have the select queries as produced in the previous step.</li>
+<li>query.construct.file: where the construct queries are stored.</li>
+<li>query.data.file: where the results of our simple select queries are stored (same of whole.db.times at step 3)</li>
+<li>cache.times: where to save the results of the times obtained with the cache</li>
 <li>overhead.times: where to save the times to upodate the support RDB</li>
 <li>update.cache.times: where to save the times to update the cache and its size</li>
 </ul>
@@ -364,6 +401,72 @@ values.properties
 to timeout exception</li>
 <li>epoch.length: the length of one epoch (at the end of an epoch the cache is updated)</li>
 <li>credit.threshold: threshold to enter the cache.</li>
+<li>cap: the maximum quantity of triples allowed for the cache</li>
+
+
+### STEP 6: Interrogate a synthetic DB to get the result set size and the times of the whole DB
+
+Without cache:
+
+<code>
+nohup java -cp creditToRdf-1.0.jar:lib/* it/unipd/dei/ims/credittordf/synthetic/cachewithcap/QueryWithoutCache
+</code>
+
+(path.properties)
+<li>query.values.file: where to take the queries</li>
+<li>whole.db.times</li>
+
+### STEP 7: Interrogate a synthetic DB with the cache and cap
+
+<code>
+nohup java -cp creditToRdf-1.0.jar:lib/* it/unipd/dei/ims/credittordf/synthetic/cachewithcap/QueryWithCacheAndCap
+</code>
+
+path.properties
+<ul>
+<li>querying.index: the path of the index triple store on disk that we are using.</li>
+<li>query.values.file: where data to create the queries are stored</li>
+<li>cache.times: where to save the results of the times obtained with the cache</li>
+<li>overhead.times: where to save the times to upodate the support RDB</li>
+<li>update.cache.times: where to save the times to update the cache and its size</li>
+</ul>
+
+values.properties
+<li>select_query_timeout: timeout of the query</li>
+<li>construct.query.timeout: time to compute the construct query for the lineage. Otherwise, a thread goes 
+to timeout exception</li>
+<li>epoch.length: the length of one epoch (at the end of an epoch the cache is updated)</li>
+<li>credit.threshold: threshold to enter the cache.</li>
+<li>cap: the maximum quantity of triples allowed for the cache</li>
+
+### STEP 8: interrogate a real DB with Cache, Cap, and Time-Based Cool-Down Strategy
+
+<code>
+nohup java -cp creditToRdf-1.0.jar:lib/* it/unipd/dei/ims/credittordf/dbpedia/cachewithcapandcooldown/QueriesWithCacheAndCapAndCooldown
+</code>
+
+
+path.properties
+<ul>
+<li>querying.index: the path of the index triple store on disk that we are using.</li>
+<li>query.select.file: where we have the select queries as produced in the previous step.</li>
+<li>query.construct.file: where the construct queries are stored.</li>
+<li>query.data.file: where the results of our simple select queries are stored (same of whole.db.times at step 3)</li>
+<li>cache.times: where to save the results of the times obtained with the cache</li>
+<li>overhead.times: where to save the times to upodate the support RDB</li>
+<li>update.cache.times: where to save the times to update the cache and its size</li>
+</ul>
+
+values.properties
+<li>select_query_timeout: timeout of the query</li>
+<li>construct.query.timeout: time to compute the construct query for the lineage. Otherwise, a thread goes 
+to timeout exception</li>
+<li>epoch.length: the length of one epoch (at the end of an epoch the cache is updated)</li>
+<li>credit.threshold: threshold to enter the cache.</li>
+<li>cap: the maximum quantity of triples allowed for the cache</li>
+<li>year.length: the length of a timeframe</li>
+<li>how.many.epochs: number of timeframes we are considering (do not let the name confuse you)</li>
+
 
 
 =======

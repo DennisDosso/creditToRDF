@@ -99,8 +99,6 @@ public class ImportDatabaseInTripleStoreUsingManyFiles {
 			}
 
 		}
-
-
 	}
 
 	public static void main(String[] args)  {

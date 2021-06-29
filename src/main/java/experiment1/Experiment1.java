@@ -98,7 +98,7 @@ public class Experiment1 {
 			+ "GRAPH <%s> {"
 			+ "<%s> <%s> %s }}";
 
-	private final String SPARQL_ASK = "ASK WHERE {<%s> <%s> %s}";
+	public final String SPARQL_ASK = "ASK WHERE {<%s> <%s> %s}";
 
 
 	/** A map that I use to keep track of the presence/absence of triples in the triplestore. 
@@ -114,7 +114,7 @@ public class Experiment1 {
 	/** A map containing the lineage of queries already produced */
 	private Map<String, List<String[]>> lineageMap;
 
-	private Map<String, Boolean> queryCanBeAnsweredMap;
+	public Map<String, Boolean> queryCanBeAnsweredMap;
 
 	/** Sets up the values.properties, rdb.properties, paths.properties and the connection to the RDB
 	 * @throws SQLException */
@@ -402,7 +402,7 @@ public class Experiment1 {
 	}
 
 	/** Convenience method used to decide the select query depending on the situation */
-	private String decideTheQuery(MyValues.QueryClass query_class, boolean using_named_graph, String[] values) {
+	protected String decideTheQuery(MyValues.QueryClass query_class, boolean using_named_graph, String[] values) {
 		String query = "", named_query = "", whole_query = "";
 
 		// decide which named query based on the class
@@ -885,10 +885,10 @@ public class Experiment1 {
 
 		if(lineage.size() != 0) {
 			// remember that this query can be answered
-			this.queryCanBeAnsweredMap.put(queryHash, true);
+//			this.queryCanBeAnsweredMap.put(queryHash, true);
 		} else if (lineage.size() == 0) {
 			// remember that this query cannot be answered
-			this.queryCanBeAnsweredMap.put(queryHash, true);
+//			this.queryCanBeAnsweredMap.put(queryHash, true);
 		}
 
 		return lineage;
@@ -926,8 +926,15 @@ public class Experiment1 {
 		return lineage;
 	}
 
+	/** compatibility method, look at the other buildConstructQuery*/
+	protected String buildConstructQuery(MyValues.QueryClass query_class, String[] values) {
+		List<String[]> v = new ArrayList<String[]>();
+		v.add(values);
+		return this.buildConstructQuery(query_class, v, 0);
+	}
+
 	/** Method used to build the construct query used to compute the Lineage */
-	private String buildConstructQuery(MyValues.QueryClass query_class, List<String[]> valuesList, int queryNum) {
+	protected String buildConstructQuery(MyValues.QueryClass query_class, List<String[]> valuesList, int queryNum) {
 		String query = "";
 		// deal with the parameters depending on the class, prepare the construct query
 		if(query_class == MyValues.QueryClass.ONE) {
@@ -1095,25 +1102,21 @@ public class Experiment1 {
 
 		if(presence == null) { // not in RAM, need to ask to the triplestore
 			//prepare and execute the ASK query
-			String query = String.format(this.SPARQL_ASK, subject, predicate, TripleStoreHandler.prepareObjectStringForQuery(object));
+			String query = String.format(this.SPARQL_ASK, subject, predicate, TripleStoreHandler.prepareObjectStringForQuery(object.replaceAll("\n", "")));
 			try {
 				BooleanQuery q = TripleStoreHandler.getRepositoryConnection().prepareBooleanQuery(query);
 				boolean result = q.evaluate();// it can be tre (present) or false (absent)
 				this.presenceOfTriplesMap.put(key, result); // we store the answer so next time we'll be faster
 				return result;							
 			} catch(MalformedQueryException e) {
-				System.err.println(query);
-				e.printStackTrace();
-				System.exit(0);
+				System.err.println("malformed query: " + query);
+//				e.printStackTrace();
+//				System.exit(0);
 			}
 		}
 
 		return presence;
 	}
-	// TODO-issimo a questo punto serve capire come si gestisce l'inserzione in cache/nell/RDB e nel named graph
-	// dei nostri elementi, serve non sbagliate tra toString ed altre cose
-
-
 
 	/** Checks if a triple is already present in the relational DB. 
 	 * 

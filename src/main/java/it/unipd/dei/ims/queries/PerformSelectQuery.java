@@ -130,6 +130,7 @@ public class PerformSelectQuery {
 			//					"LIMIT 20"
 			//					;
 
+			queryString = "PREFIX swc: <http://data.semanticweb.org/ns/swc/ontology#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>            SELECT DISTINCT ?conf_uri ?conf_name  ?conf_acronym WHERE { ?conf_uri a swc:ConferenceEvent . ?conf_uri rdfs:label ?conf_name .?conf_uri swc:hasAcronym ?conf_acronym .} ORDER BY ?conf_acronym ";
 
 			// execute the query
 			TupleQuery query = conn.prepareTupleQuery(queryString);

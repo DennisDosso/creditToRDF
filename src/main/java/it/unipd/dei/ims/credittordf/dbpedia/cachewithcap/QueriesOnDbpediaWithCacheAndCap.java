@@ -97,7 +97,8 @@ public class QueriesOnDbpediaWithCacheAndCap extends QueriesOnDbpediaWithCache {
                 if(queryCounter % MyValues.epochLength == 0 && queryCounter!=0) {
                     System.out.println("done " + queryCounter + " queries, now updating the cache...");
 
-                    this.updateTheCache(updateCacheWriter);
+                    this.updateTheCache(queryCounter, updateCacheWriter);
+
                     writer.flush();
                     updateRDBWriter.flush();
                     updateCacheWriter.flush();
@@ -122,11 +123,11 @@ public class QueriesOnDbpediaWithCacheAndCap extends QueriesOnDbpediaWithCache {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<ReturnBox> future = null;
 
-        // update the strikes number on the RDB
+        // update the strikes
         try {
             future = executor.submit(new UpdateTheHitCountsWithCapThread(this, this.constructQuery, this.cacheSupport));
             ReturnBox result = future.get(MyValues.construct_query_timeout, TimeUnit.MILLISECONDS);
-            writer.write(queryNo + "," + result.nanoTime  + result.size);
+            writer.write(queryNo + "," + result.nanoTime  + "," + result.size);
             writer.newLine();
         } catch (InterruptedException | ExecutionException e) {
             try {
@@ -145,8 +146,15 @@ public class QueriesOnDbpediaWithCacheAndCap extends QueriesOnDbpediaWithCache {
         }
     }
 
-    private void updateTheCache(BufferedWriter writer) {
-        this.cacheSupport.buildCache(this.cacheHandler.cacheConnection, MyValues.creditThreshold);
+    private void updateTheCache(int queryNo, BufferedWriter writer) {
+//        ReturnBox rb = this.cacheSupport.buildCache(this.cacheHandler.cacheConnection, MyValues.creditThreshold);
+        ReturnBox rb = this.cacheSupport.buildCacheFromQueue(this.cacheHandler.cacheConnection, MyValues.creditThreshold);
+        try {
+            writer.write(queryNo + "," + rb.nanoTime + "," + rb.size);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -157,13 +165,14 @@ public class QueriesOnDbpediaWithCacheAndCap extends QueriesOnDbpediaWithCache {
             execution = new QueriesOnDbpediaWithCacheAndCap();
 
             execution.truncateRDBTriplestore();
+            execution.executeQueriesWithCacheAndCap();
 
             execution.close();
+            System.out.println("done");
+            System.exit(0);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
-
     }
 
 

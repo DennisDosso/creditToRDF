@@ -44,7 +44,12 @@ public class QueryTheCacheThread implements Callable<ReturnBox> {
                 }
             }
         } catch(Exception e1) {
-            System.err.println("An error when submitting this select query to the cache: " + this.selectQuery.substring(0, 10) + "...");
+            try{
+                // todo maybe see what can be modified here
+//                System.err.println("An error when submitting this select query to the cache: " + this.selectQuery.substring(0, 25) + "...");
+            } catch (StringIndexOutOfBoundsException e2) {
+//                System.err.println("An error when submitting this select query to the cache: " + this.selectQuery);
+            }
             box.foundSomething = false;
         }
 
