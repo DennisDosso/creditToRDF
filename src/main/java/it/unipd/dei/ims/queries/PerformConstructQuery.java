@@ -38,7 +38,7 @@ public class PerformConstructQuery {
 //		query = "CONSTRUCT  WHERE {?s ?p ?o} LIMIT 10";
 
 
-		String path = "/nfsd/exadata/dosso/creditToRDF/DisGeNet/triplestore";
+		String path = "/nfsd/exadata/an/creditToRDF/DisGeNet/triplestore";
 		
 		TripleStoreHandler.initRepository(path);
 		Repository repository = TripleStoreHandler.getRepository();

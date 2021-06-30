@@ -20,7 +20,7 @@ public class CountCacheHitsAndCompleteness {
     /** size of a block*/
     public static int blockSize = 1000;
 
-    private static String outPath = "/Users/dennisdosso/Documents/databases/Dbpedia/statistiche/cache_cap_50k/block_statistics.txt";
+    private static String outPath = "/Users/anonymous/Documents/databases/Dbpedia/statistiche/cache_cap_50k/block_statistics.txt";
     
     public static void countCacheHitsAndCompleteness (String cacheFile, String wholeDbFile) {
         // open the whole db file
@@ -292,8 +292,8 @@ public class CountCacheHitsAndCompleteness {
     public static void main(String[] args) {
 
         // put here the paths of the two input files, the data of time on the whole DB and on the cache
-        String wholeDbTimes = "/Users/dennisdosso/Documents/databases/Dbpedia/results/whole_db/whole_db_times.csv";
-        String cacheTimes = "/Users/dennisdosso/Documents/databases/Dbpedia/results/cache_cap_50k/cache_times.csv";
+        String wholeDbTimes = "/Users/anonymous/Documents/databases/Dbpedia/results/whole_db/whole_db_times.csv";
+        String cacheTimes = "/Users/anonymous/Documents/databases/Dbpedia/results/cache_cap_50k/cache_times.csv";
 
         countCacheHitsAndCompleteness(cacheTimes, wholeDbTimes);
     }

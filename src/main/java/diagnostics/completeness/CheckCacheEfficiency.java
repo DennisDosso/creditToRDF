@@ -57,7 +57,7 @@ public class CheckCacheEfficiency {
 
 
     public static void main(String[] args) {
-        String path = "/Users/dennisdosso/Documents/databases/Dbpedia/results/statistiche/block_statistics.txt";
+        String path = "/Users/anonymous/Documents/databases/Dbpedia/results/statistiche/block_statistics.txt";
         checkCacheEfficiency(path);
     }
 }

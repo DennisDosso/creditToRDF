@@ -144,9 +144,9 @@ public class BuildConstructQueriesFromSelectOnes {
 
     public static void main(String[] args) {
         String inputPath =
-                "/Users/dennisdosso/Documents/databases/SW Dog Food/queries/select_queries.txt";
+                "/Users/anonymous/Documents/databases/SW Dog Food/queries/select_queries.txt";
         String outputPath =
-                "/Users/dennisdosso/Documents/databases/SW Dog Food/queries/construct_queries.txt";
+                "/Users/anonymous/Documents/databases/SW Dog Food/queries/construct_queries.txt";
         convertQueriesToConstruct(inputPath, outputPath);
     }
 

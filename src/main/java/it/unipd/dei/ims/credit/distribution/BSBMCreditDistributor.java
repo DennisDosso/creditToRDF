@@ -30,7 +30,6 @@ import it.unipd.dei.ims.data.RDB;
  * different 'color' of credit.
  * 
  * 
- * @author Dennis Dosso
  * */
 public class BSBMCreditDistributor {
 

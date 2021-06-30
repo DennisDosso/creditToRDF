@@ -19,9 +19,9 @@ import java.util.Set;
 public class QueriesFirstHitsVsFirstTimeQueries {
 
     public static void main(String[] args) {
-        String select_queries_path = "/Users/dennisdosso/Documents/databases/SW Dog Food/queries/select_queries.txt";
-        String queries_path = "/Users/dennisdosso/Documents/databases/SW Dog Food/results/times/cache_times_no_cap/cache_times.csv";
-        String whole_db_path = "/Users/dennisdosso/Documents/databases/SW Dog Food/results/times/whole_db/whole_db_times.csv";
+        String select_queries_path = "/Users/anonymous/Documents/databases/SW Dog Food/queries/select_queries.txt";
+        String queries_path = "/Users/anonymous/Documents/databases/SW Dog Food/results/times/cache_times_no_cap/cache_times.csv";
+        String whole_db_path = "/Users/anonymous/Documents/databases/SW Dog Food/results/times/whole_db/whole_db_times.csv";
 
         int skip = 100;
 

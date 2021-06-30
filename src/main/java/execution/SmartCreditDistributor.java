@@ -34,7 +34,7 @@ import it.unipd.dei.ims.data.RDB;
  * 
  * 
  * *
- * @author dennisdosso
+ * @author anonymous
  *
  */
 public class SmartCreditDistributor extends CreditDistributor {

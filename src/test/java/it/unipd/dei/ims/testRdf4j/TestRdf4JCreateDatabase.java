@@ -43,7 +43,7 @@ public class TestRdf4JCreateDatabase {
 		
 		
 		// read
-		String filename = "/Users/dennisdosso/eclipse-workspace/bsbmtools-0.2/jar/dataset.ttl";
+		String filename = "/Users/anonymous/eclipse-workspace/bsbmtools-0.2/jar/dataset.ttl";
 		InputStream input = TestRdf4JCreateDatabase.class.getResourceAsStream(filename);
 		model = Rio.parse(input, "", RDFFormat.TURTLE);
 		

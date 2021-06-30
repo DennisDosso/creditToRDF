@@ -222,8 +222,8 @@ public class ConvertDumpToListOfQueries {
      *
      * */
     public static void main(String[] args) {
-        String inputFile = "/Users/dennisdosso/Documents/databases/Dbpedia/Dbpedia_queries/lsq_dump/LSQ-DBpedia351.ttl";
-        String outputFile = "/Users/dennisdosso/Documents/databases/Dbpedia/Dbpedia_queries/query_files/query_dump.txt";
+        String inputFile = "/Users/anonymous/Documents/databases/Dbpedia/Dbpedia_queries/lsq_dump/LSQ-DBpedia351.ttl";
+        String outputFile = "/Users/anonymous/Documents/databases/Dbpedia/Dbpedia_queries/query_files/query_dump.txt";
 
         convertIntoOneFile(inputFile, outputFile);
     }

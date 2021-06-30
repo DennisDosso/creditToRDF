@@ -25,7 +25,6 @@ import it.unipd.dei.ims.data.RDBQueries;
  * 
  * step 2
  * 
- * @author Dennis Dosso
  * @license Apache 2.0
  * 
  * 

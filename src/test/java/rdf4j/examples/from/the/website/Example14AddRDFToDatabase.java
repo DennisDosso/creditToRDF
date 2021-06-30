@@ -24,14 +24,14 @@ public class Example14AddRDFToDatabase {
 	public static void main(String[] args)
 			throws IOException {
 		// Create a new Repository in Secondary Memory
-		File dataDir = new File("/Users/dennisdosso/MEGAsync/Ricerca/progetti_di_ricerca/CreditToRDF/testDatabase");
+		File dataDir = new File("/Users/anonymous/MEGAsync/Ricerca/progetti_di_ricerca/CreditToRDF/testDatabase");
 //		Repository db = new SailRepository(new MemoryStore(dataDir));
 		Repository db = new SailRepository(new NativeStore(dataDir));
 		db.init();
 
 		// Open a connection to the database
 		try (RepositoryConnection conn = db.getConnection()) {
-			String filename = "/Users/dennisdosso/MEGAsync/Ricerca/progetti_di_ricerca/CreditToRDF/test/textut.txt";
+			String filename = "/Users/anonymous/MEGAsync/Ricerca/progetti_di_ricerca/CreditToRDF/test/textut.txt";
 			
 //			try(FileInputStream input = new FileInputStream(filename)) {
 //				// add the RDF data from the inputstream directly to our database

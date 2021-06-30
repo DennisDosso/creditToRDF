@@ -13,7 +13,7 @@ Ok, I'll do it for you:
 * -pc 300 produces 100K triples
 * -pc 3000 produced 1M triples
 * -pc 30000 produces 10M triples
-* -pc 300000 produces 100M triples (stop here, for God's sake!)
+* -pc 300000 produces 100M triples 
 
 command:
 <code>

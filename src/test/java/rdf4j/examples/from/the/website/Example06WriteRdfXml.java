@@ -49,7 +49,7 @@ public class Example06WriteRdfXml {
 
 		// Note that instead of writing to the screen using `System.out` you could also provide
 		// a java.io.FileOutputStream or a java.io.FileWriter to save the model to a file
-		FileOutputStream outStream = new FileOutputStream("/Users/dennisdosso/MEGAsync/Ricerca/progetti_di_ricerca/CreditToRDF/test/textut.txt");
+		FileOutputStream outStream = new FileOutputStream("/Users/anonymous/MEGAsync/Ricerca/progetti_di_ricerca/CreditToRDF/test/textut.txt");
 		Rio.write(model, outStream, RDFFormat.TURTLE);
 		outStream.close();
 		System.out.println("done");

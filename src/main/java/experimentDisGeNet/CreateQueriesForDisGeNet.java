@@ -224,35 +224,35 @@ public class CreateQueriesForDisGeNet {
 		CreateQueriesForDisGeNet execution = new CreateQueriesForDisGeNet();
 //		execution.createQueriesForOneClass(MyPaths.queryInputFile, MyPaths.queryValuesFile, MyValues.how_many_queries, MyValues.QUERYCLASS);
 		
-		String inputPath = "/Users/dennisdosso/Documents/CreditToRDF/query_plans/DisGeNet/1/query_values.csv";
-		String output = "/Users/dennisdosso/Documents/CreditToRDF/query_plans/DisGeNet/query_plan_uniform_alpha_18.csv";
+		String inputPath = "/Users/anonymous/Documents/CreditToRDF/query_plans/DisGeNet/1/query_values.csv";
+		String output = "/Users/anonymous/Documents/CreditToRDF/query_plans/DisGeNet/query_plan_uniform_alpha_18.csv";
 		execution.createQueriesForOneClass(inputPath, output, MyValues.how_many_queries, MyValues.QueryClass.DGNQUERY1);
-		inputPath = "/Users/dennisdosso/Documents/CreditToRDF/query_plans/DisGeNet/2/query_values.csv";
+		inputPath = "/Users/anonymous/Documents/CreditToRDF/query_plans/DisGeNet/2/query_values.csv";
 		execution.createQueriesForOneClass(inputPath, output, MyValues.how_many_queries, MyValues.QueryClass.DGNQUERY2);
-		inputPath = "/Users/dennisdosso/Documents/CreditToRDF/query_plans/DisGeNet/3/query_values.csv";
+		inputPath = "/Users/anonymous/Documents/CreditToRDF/query_plans/DisGeNet/3/query_values.csv";
 		execution.createQueriesForOneClass(inputPath, output, MyValues.how_many_queries, MyValues.QueryClass.DGNQUERY3);
-		inputPath = "/Users/dennisdosso/Documents/CreditToRDF/query_plans/DisGeNet/4/query_values.csv";
+		inputPath = "/Users/anonymous/Documents/CreditToRDF/query_plans/DisGeNet/4/query_values.csv";
 		execution.createQueriesForOneClass(inputPath, output, MyValues.how_many_queries, MyValues.QueryClass.DGNQUERY4);
-		inputPath = "/Users/dennisdosso/Documents/CreditToRDF/query_plans/DisGeNet/5/query_values.csv";
+		inputPath = "/Users/anonymous/Documents/CreditToRDF/query_plans/DisGeNet/5/query_values.csv";
 		execution.createQueriesForOneClass(inputPath, output, MyValues.how_many_queries, MyValues.QueryClass.DGNQUERY5);
-		inputPath = "/Users/dennisdosso/Documents/CreditToRDF/query_plans/DisGeNet/6/query_values.csv";
+		inputPath = "/Users/anonymous/Documents/CreditToRDF/query_plans/DisGeNet/6/query_values.csv";
 		execution.createQueriesForOneClass(inputPath, output, MyValues.how_many_queries, MyValues.QueryClass.DGNQUERY6);
-		inputPath = "/Users/dennisdosso/Documents/CreditToRDF/query_plans/DisGeNet/7/query_values.csv";
+		inputPath = "/Users/anonymous/Documents/CreditToRDF/query_plans/DisGeNet/7/query_values.csv";
 		execution.createQueriesForOneClass(inputPath, output, MyValues.how_many_queries, MyValues.QueryClass.DGNQUERY7);
-		inputPath = "/Users/dennisdosso/Documents/CreditToRDF/query_plans/DisGeNet/8/query_values.csv";
+		inputPath = "/Users/anonymous/Documents/CreditToRDF/query_plans/DisGeNet/8/query_values.csv";
 		execution.createQueriesForOneClass(inputPath, output, MyValues.how_many_queries, MyValues.QueryClass.DGNQUERY8);
-		inputPath = "/Users/dennisdosso/Documents/CreditToRDF/query_plans/DisGeNet/9/query_values.csv";
+		inputPath = "/Users/anonymous/Documents/CreditToRDF/query_plans/DisGeNet/9/query_values.csv";
 		execution.createQueriesForOneClass(inputPath, output, MyValues.how_many_queries, MyValues.QueryClass.DGNQUERY9);
-		inputPath = "/Users/dennisdosso/Documents/CreditToRDF/query_plans/DisGeNet/10/query_values.csv";
+		inputPath = "/Users/anonymous/Documents/CreditToRDF/query_plans/DisGeNet/10/query_values.csv";
 		execution.createQueriesForOneClass(inputPath, output, MyValues.how_many_queries, MyValues.QueryClass.DGNQUERY10);
-		inputPath = "/Users/dennisdosso/Documents/CreditToRDF/query_plans/DisGeNet/11/query_values.csv";
+		inputPath = "/Users/anonymous/Documents/CreditToRDF/query_plans/DisGeNet/11/query_values.csv";
 		execution.createQueriesForOneClass(inputPath, output, MyValues.how_many_queries, MyValues.QueryClass.DGNQUERY11);
-		inputPath = "/Users/dennisdosso/Documents/CreditToRDF/query_plans/DisGeNet/12/query_values.csv";
+		inputPath = "/Users/anonymous/Documents/CreditToRDF/query_plans/DisGeNet/12/query_values.csv";
 		execution.createQueriesForOneClass(inputPath, output, MyValues.how_many_queries, MyValues.QueryClass.DGNQUERY12);
 		
 		
-		String mainDir = "/Users/dennisdosso/Documents/CreditToRDF/query_plans/DisGeNet";
-		output = "/Users/dennisdosso/Documents/CreditToRDF/query_plans/DisGeNet/query_plan_mixed_alpha_18.csv";
+		String mainDir = "/Users/anonymous/Documents/CreditToRDF/query_plans/DisGeNet";
+		output = "/Users/anonymous/Documents/CreditToRDF/query_plans/DisGeNet/query_plan_mixed_alpha_18.csv";
 		execution.createAMixedQueryPlan(mainDir, output, 2000);
 		
 		System.out.println("done");

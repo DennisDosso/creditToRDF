@@ -1,7 +1,5 @@
 package diagnostics;
 
-import org.mapdb.Atomic;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,9 +19,9 @@ public class ComputeQueryFirstHits {
     private static Object HashMap;
 
     public static void main(String[] args) {
-        String select_queries_path = "/Users/dennisdosso/Documents/databases/SW Dog Food/queries/select_queries.txt";
-        String queries_path = "/Users/dennisdosso/Documents/databases/SW Dog Food/results/times/cache_times_cap_10%/cache_times.csv";
-        String whole_db_path = "/Users/dennisdosso/Documents/databases/SW Dog Food/results/times/whole_db/whole_db_times.csv";
+        String select_queries_path = "/Users/anonymous/Documents/databases/SW Dog Food/queries/select_queries.txt";
+        String queries_path = "/Users/anonymous/Documents/databases/SW Dog Food/results/times/cache_times_cap_10%/cache_times.csv";
+        String whole_db_path = "/Users/anonymous/Documents/databases/SW Dog Food/results/times/whole_db/whole_db_times.csv";
 
         // keeps the id of a query and the hash of its string formulation
         Map<Integer, String> index = new HashMap<Integer, String>();

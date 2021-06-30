@@ -17,7 +17,7 @@ public class TestCleaningFile {
         Path fileIn = Paths.get(inputString);
         try(BufferedReader reader = Files.newBufferedReader(fileIn)) {
             String line = "";
-            String outputDirectory = "/Users/dennisdosso/Documents/databases/Dbpedia/output_fragments/";
+            String outputDirectory = "/Users/anonymous/Documents/databases/Dbpedia/output_fragments/";
 
             int fileCounter = 0;
             int triplesCounter = 0;
@@ -98,7 +98,7 @@ public class TestCleaningFile {
     }
 
     public static void main(String[] args) {
-        String inputFile = "/Users/dennisdosso/Documents/databases/Dbpedia/fragments/630.ttl";
+        String inputFile = "/Users/anonymous/Documents/databases/Dbpedia/fragments/630.ttl";
         TestCleaningFile.splitDatasetFile(inputFile);
     }
 }

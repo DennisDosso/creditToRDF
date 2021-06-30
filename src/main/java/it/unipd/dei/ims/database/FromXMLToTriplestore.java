@@ -28,7 +28,7 @@ public class FromXMLToTriplestore {
 
         // path of the directory where the turtle files are located
         String inputDirectory = MyPaths.fragmentsOutputDirectory;
-//        String inputDirectory = "/Users/dennisdosso/Documents/databases/SW Dog Food/SWDFood";
+//        String inputDirectory = "/Users/anonymous/Documents/databases/SW Dog Food/SWDFood";
 
         System.out.println("importing files from " + inputDirectory);
 
